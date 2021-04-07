@@ -1,0 +1,13 @@
+# Default ignored files
+/shelf/
+/workspace.xml
+# Rider ignored files
+/.idea.Obligatorio-Programacion-De-Redes.iml
+/contentModel.xml
+/projectSettingsUpdater.xml
+/modules.xml
+# Datasource local storage ignored files
+/../../../../../../../../../../../:\Users\Choche\OneDrive\Escritorio\Semestre 6\Programacion de redes\Obligatorio-Programacion-De-Redes\.idea\.idea.Obligatorio-Programacion-De-Redes\.idea/dataSources/
+/dataSources.local.xml
+# Editor-based HTTP Client requests
+/httpRequests/

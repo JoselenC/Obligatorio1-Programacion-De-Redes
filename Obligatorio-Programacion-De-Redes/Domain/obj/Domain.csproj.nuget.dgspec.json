@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Choche\\OneDrive\\Escritorio\\Semestre 6\\Programacion de redes\\Obligatorio-Programacion-De-Redes\\Domain\\Domain.csproj": {}
+    "C:\\Users\\Choche\\OneDrive\\Escritorio\\Semestre 6\\Lenguajes de programacion\\Obligatorio1-Programacion-De-Redes\\Obligatorio-Programacion-De-Redes\\Domain\\Domain.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Choche\\OneDrive\\Escritorio\\Semestre 6\\Programacion de redes\\Obligatorio-Programacion-De-Redes\\Domain\\Domain.csproj": {
+    "C:\\Users\\Choche\\OneDrive\\Escritorio\\Semestre 6\\Lenguajes de programacion\\Obligatorio1-Programacion-De-Redes\\Obligatorio-Programacion-De-Redes\\Domain\\Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Choche\\OneDrive\\Escritorio\\Semestre 6\\Programacion de redes\\Obligatorio-Programacion-De-Redes\\Domain\\Domain.csproj",
+        "projectUniqueName": "C:\\Users\\Choche\\OneDrive\\Escritorio\\Semestre 6\\Lenguajes de programacion\\Obligatorio1-Programacion-De-Redes\\Obligatorio-Programacion-De-Redes\\Domain\\Domain.csproj",
         "projectName": "Domain",
-        "projectPath": "C:\\Users\\Choche\\OneDrive\\Escritorio\\Semestre 6\\Programacion de redes\\Obligatorio-Programacion-De-Redes\\Domain\\Domain.csproj",
+        "projectPath": "C:\\Users\\Choche\\OneDrive\\Escritorio\\Semestre 6\\Lenguajes de programacion\\Obligatorio1-Programacion-De-Redes\\Obligatorio-Programacion-De-Redes\\Domain\\Domain.csproj",
         "packagesPath": "C:\\Users\\Choche\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Choche\\OneDrive\\Escritorio\\Semestre 6\\Programacion de redes\\Obligatorio-Programacion-De-Redes\\Domain\\obj\\",
+        "outputPath": "C:\\Users\\Choche\\OneDrive\\Escritorio\\Semestre 6\\Lenguajes de programacion\\Obligatorio1-Programacion-De-Redes\\Obligatorio-Programacion-De-Redes\\Domain\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Choche\\AppData\\Roaming\\NuGet\\NuGet.Config",

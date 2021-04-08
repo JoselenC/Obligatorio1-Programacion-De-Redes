@@ -5,4 +5,10 @@
         <TargetFramework>netcoreapp3.1</TargetFramework>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Domain\Domain.csproj" />
+      <ProjectReference Include="..\Library\Library.csproj" />
+      <ProjectReference Include="..\Protocol\Protocol.csproj" />
+    </ItemGroup>
+
 </Project>

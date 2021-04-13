@@ -1,4 +1,4 @@
-﻿namespace Library
+﻿namespace Protocol
 {
     public class CommandConstants
     {

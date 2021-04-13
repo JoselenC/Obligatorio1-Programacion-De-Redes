@@ -1,6 +1,6 @@
 ﻿using System.Net.Sockets;
 
-namespace Protocol
+namespace DataHandler
 {
     public class SocketHandler:ISocketHandler
     {

@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using BusinessLogic;
-using Library;
 using Protocol;
+using DataHandler;
 
 namespace Domain.Services
 {
@@ -60,5 +61,18 @@ namespace Domain.Services
         {
             throw new System.NotImplementedException();
         }
+
+        public List<Post> OrderPostByCreationDate()
+        {
+            IOrderedEnumerable<Post> orderedList = repository.Posts.OrderBy((x => x.CreationDate));
+            return orderedList.ToList();
+        }
+        
+        public List<Post> OrderPostTheme()
+        {
+            IOrderedEnumerable<Post> orderedList = repository.Posts.OrderBy((x => x.CreationDate));
+            return orderedList.ToList();
+        }
+        
     }
 }

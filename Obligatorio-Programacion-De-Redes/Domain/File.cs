@@ -4,9 +4,9 @@ namespace Domain
 {
     public class File
     {
-        private string name;
-        private double size;
-        private Theme theme;
-        private DateTime uploadDate;
+        public string Name { get; set; }
+        public double Size { get; set; }
+        public Theme Theme { get; set; }
+        public DateTime UploadDate { get; set; }
     }
 }

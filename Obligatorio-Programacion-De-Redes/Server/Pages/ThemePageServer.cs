@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Net.Sockets;
-using Protocol;
+using BusinessLogic;
+using DataHandler;
 
-namespace Client
+namespace Server
 {
-    public class ThemePage
+    public class ThemePageServer
     {
-        public void ShowMenu(Socket SocketClient,SocketHandler socketHandler)
+        public void ShowMenu(Socket SocketClient,SocketHandler socketHandler, MemoryRepository repository)
         {
             Console.Clear();
             Console.Write("Select option");
@@ -22,17 +23,14 @@ namespace Client
                 switch (option)
                 {
                     case "1":
-                        AddTheme(socketHandler);
+                        ShowThemeList(socketHandler);
                         break;
                     case "2":
-                        ModifyTheme(socketHandler);
+                        ShowThemeWithMorePosts(socketHandler);
                         break;
                     case "3":
-                        DeleteTheme(socketHandler);
-                        break;
-                    case "4":
                         exit = true;
-                        new HomePage().ShowMenu(SocketClient,socketHandler);
+                        new HomePageServer().ShowMenu(SocketClient, socketHandler, repository);
                         break;
                     default:
                         Console.WriteLine("Invalid option");
@@ -41,17 +39,12 @@ namespace Client
             }
         }
 
-        private void DeleteTheme(SocketHandler socketHandler)
+        private void ShowThemeList(SocketHandler socketHandler)
         {
             throw new NotImplementedException();
         }
 
-        private void ModifyTheme(SocketHandler socketHandler)
-        {
-            throw new NotImplementedException();
-        }
-
-        private void AddTheme(SocketHandler socketHandler)
+        private void ShowThemeWithMorePosts(SocketHandler socketHandler)
         {
             throw new NotImplementedException();
         }

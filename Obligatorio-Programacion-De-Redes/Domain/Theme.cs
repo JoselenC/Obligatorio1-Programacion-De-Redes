@@ -4,7 +4,7 @@ namespace Domain
 {
     public class Theme
     {
-        private string Name;
-        private string description;
+        public string Name { get; set; }
+        public string Description { get; set; }
     }
 }

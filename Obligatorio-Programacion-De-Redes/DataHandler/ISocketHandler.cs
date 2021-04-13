@@ -1,4 +1,4 @@
-﻿namespace Protocol
+﻿namespace DataHandler
 {
     public interface ISocketHandler
     {

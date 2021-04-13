@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Protocol
+namespace DataHandler
 {
     class Program
     {

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Net;
 using System.Net.Sockets;
-using Library;
 using Protocol;
+using DataHandler;
 
 namespace Client
 {
@@ -21,7 +21,7 @@ namespace Client
            SocketHandler socketHandler = new SocketHandler(SocketClient);
            try
             {
-                new HomePage().ShowMenu(SocketClient,socketHandler);
+                new HomePageClient().ShowMenu(SocketClient,socketHandler);
             }
             catch (SocketException e)
             {

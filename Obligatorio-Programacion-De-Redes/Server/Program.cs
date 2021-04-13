@@ -6,8 +6,8 @@ using System.Threading;
 using BusinessLogic;
 using Domain;
 using Domain.Services;
-using Library;
 using Protocol;
+using DataHandler;
 
 namespace Server
 {
@@ -84,7 +84,6 @@ namespace Server
                     Tuple<short, int> header = headerHandler.DecodeHeader(buffer);
                     switch (header.Item1)
                     {
-                       
                         case CommandConstants.CommandAddPost:
                             Console.WriteLine("Adding new post");
                             new PostService(repository).AddPost(socketHandler,headerHandler);

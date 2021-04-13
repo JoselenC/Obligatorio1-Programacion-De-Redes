@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Net.Sockets;
 using Domain;
-using Protocol;
+using DataHandler;
 
 namespace Client
 {
-    public class PostPage
+    public class PostPageClient
     {
 
         public void ShowMenu(Socket socketClient,SocketHandler socketHandler)
@@ -38,7 +38,7 @@ namespace Client
                         break;
                     case "5":
                         exit = true;
-                        new HomePage().ShowMenu(socketClient,socketHandler);
+                        new HomePageClient().ShowMenu(socketClient,socketHandler);
                         break;
                     default:
                         Console.WriteLine("Invalid option");

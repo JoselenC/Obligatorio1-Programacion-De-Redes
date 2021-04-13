@@ -1,23 +1,23 @@
 ﻿using System;
 using System.Net.Sockets;
-using Library;
+using BusinessLogic;
 using Protocol;
+using DataHandler;
 
-namespace Client
+namespace Server
 {
-    public class HomePage
+    public class HomePageServer
     {
         
-        public void ShowMenu(Socket SocketClient,SocketHandler socketHandler)
+        public void ShowMenu(Socket SocketClient, SocketHandler socketHandler, MemoryRepository repository)
         {
             Console.Clear();
             Console.WriteLine("----Menu----");
-            Console.WriteLine("1-Posts");
-            Console.WriteLine("2-Themes");
-            Console.WriteLine("3-File");
-            Console.WriteLine("4-Search post");
-            Console.WriteLine("5-Asociate post");
-            Console.WriteLine("6-Exit");
+            Console.WriteLine("1-Client list");
+            Console.WriteLine("2-Posts");
+            Console.WriteLine("3-Themes");
+            Console.WriteLine("4-File");
+            Console.WriteLine("5-Exit");
             var exit = false;
             while (!exit)
             {
@@ -26,25 +26,21 @@ namespace Client
                 {
                     case "uno":
                         SendData(1,SocketClient);
-                        new PostPage().ShowMenu(SocketClient, socketHandler);
+                        new ClientPageServer().ShowClientList(socketHandler);
                         break;
                     case "dos":
-                        SendData(2,SocketClient);
-                        new ThemePage().ShowMenu(SocketClient,socketHandler);
+                        SendData(1,SocketClient);
+                        new PostPageServer().ShowMenu(SocketClient, socketHandler, repository);
                         break;
                     case "tres":
-                        SendData(3,SocketClient);
-                        new FilePage().UploadFile(socketHandler);
+                        SendData(2,SocketClient);
+                        new ThemePageServer().ShowMenu(SocketClient, socketHandler, repository);
                         break;
-                    case "Cuatro":
-                        SendData(4,SocketClient);
-                        new PostPage().SearchPost(socketHandler); 
+                    case "cuatro":
+                        SendData(3,SocketClient);
+                        new FilePageServer().ShowFileList(socketHandler);
                         break;
                     case "Cinco":
-                        SendData(5,SocketClient);
-                        new PostPage().AsociateTheme(socketHandler); 
-                        break;
-                    case "Seis":
                         SendData(6,SocketClient);
                         exit = true;
                         SocketClient.Shutdown(SocketShutdown.Both);

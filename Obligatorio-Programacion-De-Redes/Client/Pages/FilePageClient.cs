@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Net.Sockets;
-using Protocol;
+using DataHandler;
 
 namespace Client
 {
-    public class FilePage
+    public class FilePageClient
     {
         
         public void UploadFile(SocketHandler socketHandler)

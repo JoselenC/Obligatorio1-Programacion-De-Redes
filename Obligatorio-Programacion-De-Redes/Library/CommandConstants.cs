@@ -2,7 +2,7 @@
 {
     public class CommandConstants
     {
-        public const short CommandAddPost = 1;
+        public const short CommandAddPost = 0;
         public const short CommandModifyPost = 2;
         public const short CommandDeletePost = 3;
         public const short CommandAsociateTheme = 4;

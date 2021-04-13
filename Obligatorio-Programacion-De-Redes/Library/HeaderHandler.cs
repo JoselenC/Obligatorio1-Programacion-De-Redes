@@ -4,7 +4,7 @@ namespace Library
 {
     public class HeaderHandler
     {
-        public byte[] EncodeHeader(short command, int dataLength)
+        public static byte[] EncodeHeader(short command, int dataLength)
         {
             var header = new byte[HeaderConstants.CommandLength + HeaderConstants.DataLength];
             Array.Copy(BitConverter.GetBytes(command), 0, header, 0, HeaderConstants.CommandLength);

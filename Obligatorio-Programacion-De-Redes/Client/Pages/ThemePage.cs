@@ -1,11 +1,14 @@
 ﻿using System;
+using System.Net.Sockets;
+using Protocol;
 
 namespace Client
 {
     public class ThemePage
     {
-        public void ShowMenu()
+        public void ShowMenu(Socket SocketClient,SocketHandler socketHandler)
         {
+            Console.Clear();
             Console.WriteLine("1-Dar de alta");
             Console.WriteLine("2-Modificar");
             Console.WriteLine("3-Borrar");
@@ -25,6 +28,7 @@ namespace Client
                         break;
                     case "4":
                         exit = true;
+                        new HomePage().ShowMenu(SocketClient,socketHandler);
                         break;
                     default:
                         Console.WriteLine("Opcion invalida...");

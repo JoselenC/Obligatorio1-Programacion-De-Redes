@@ -5,9 +5,9 @@ namespace Domain
 {
     public class Post
     {
-        private string name;
-        private List<Theme> theme;
-        private DateTime creationDate;
-        private Archive archive;
+        public string Name { get; set; }
+        public List<Theme>  Theme { get; set; }
+        public string CreationDate { get; set; }
+        public Archive Archive { get; set; }
     }
 }

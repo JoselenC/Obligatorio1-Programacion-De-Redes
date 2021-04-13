@@ -4,4 +4,9 @@
         <TargetFramework>netcoreapp3.1</TargetFramework>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Library\Library.csproj" />
+      <ProjectReference Include="..\Protocol\Protocol.csproj" />
+    </ItemGroup>
+
 </Project>

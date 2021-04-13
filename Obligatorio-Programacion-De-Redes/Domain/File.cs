@@ -2,7 +2,7 @@
 
 namespace Domain
 {
-    public class Archive
+    public class File
     {
         private string name;
         private double size;

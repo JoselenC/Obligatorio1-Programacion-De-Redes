@@ -11,10 +11,10 @@ namespace Client
         public void ShowMenu(Socket SocketClient,SocketHandler socketHandler)
         {
             Console.Clear();
-            Console.WriteLine("Bienvenido al client");
+            Console.WriteLine("----Menu----");
             Console.WriteLine("1-Posts");
             Console.WriteLine("2-Themes");
-            Console.WriteLine("3-Archive");
+            Console.WriteLine("3-File");
             Console.WriteLine("4-Search post");
             Console.WriteLine("5-Asociate post");
             Console.WriteLine("6-Exit");
@@ -29,24 +29,29 @@ namespace Client
                         new PostPage().ShowMenu(SocketClient, socketHandler);
                         break;
                     case "dos":
+                        SendData(2,SocketClient);
                         new ThemePage().ShowMenu(SocketClient,socketHandler);
                         break;
                     case "tres":
-                        new ArchivePage().UploadArchive(SocketClient,socketHandler);
+                        SendData(3,SocketClient);
+                        new FilePage().UploadFile(socketHandler);
                         break;
                     case "Cuatro":
-                        new PostPage().SearchPost(SocketClient,socketHandler); //Metodo buscar
+                        SendData(4,SocketClient);
+                        new PostPage().SearchPost(socketHandler); 
                         break;
                     case "Cinco":
-                        new PostPage().AsociateTheme(SocketClient,socketHandler); //Metodo buscar
+                        SendData(5,SocketClient);
+                        new PostPage().AsociateTheme(socketHandler); 
                         break;
                     case "Seis":
+                        SendData(6,SocketClient);
                         exit = true;
                         SocketClient.Shutdown(SocketShutdown.Both);
                         SocketClient.Close();
                         break;
                     default:
-                        Console.WriteLine("Opcion invalida...");
+                        Console.WriteLine("Invalid option");
                         break;
                 }
             }
@@ -56,7 +61,6 @@ namespace Client
             return HeaderHandler.EncodeHeader(command, data);
         }
 
-        //Capaz poner el send y el received en una clase que se llame protocolo perono este el de la clase ultima
         private static void SendData(short command,Socket SocketClient)
         {
             if (SocketClient.Send(ConvertDataToHeader(command, new Random().Next())) == 0)

@@ -11,11 +11,12 @@ namespace Client
         public void ShowMenu(Socket socketClient,SocketHandler socketHandler)
         {
             Console.Clear();
-            Console.WriteLine("1-Dar de alta");
-            Console.WriteLine("2-Modificar");
-            Console.WriteLine("3-Borrar");
-            Console.WriteLine("4-Asociar a un tema");
-            Console.WriteLine("5-Volver");
+            Console.Write("Select option");
+            Console.WriteLine("1-Add post");
+            Console.WriteLine("2-Modify post");
+            Console.WriteLine("3-Delete post");
+            Console.WriteLine("4-Associate theme");
+            Console.WriteLine("5-Back");
             bool exit = false;
             while (!exit)
             {
@@ -24,46 +25,52 @@ namespace Client
                 switch (option)
                 {
                     case "1":
-                        AddPost(socketClient,socketHandler);
+                        AddPost(socketHandler);
                         break;
                     case "2":
-                        ModifyPost(socketClient, socketHandler);
+                        ModifyPost(socketHandler);
                         break;
                     case "3":
-                        DeletePost(socketClient, socketHandler);
+                        DeletePost(socketHandler);
                         break;
                     case "4":
-                        AddTheme(socketClient, socketHandler);
+                        AddTheme( socketHandler);
                         break;
                     case "5":
                         exit = true;
                         new HomePage().ShowMenu(socketClient,socketHandler);
                         break;
                     default:
-                        Console.WriteLine("Opcion invalida...");
+                        Console.WriteLine("Invalid option");
                         break;
                 }
             }
         }
 
-        private void AddTheme(Socket socketClient, SocketHandler socketHandler)
+       
+        private void DeletePost(SocketHandler socketHandler)
         {
-            throw new NotImplementedException();
+            Console.WriteLine("Name of the post to delete"); 
+            string name = Console.ReadLine();
+            byte[] data = System.Text.Encoding.UTF8.GetBytes(name);
+            byte[] dataLength = BitConverter.GetBytes(data.Length);
+            socketHandler.Send(dataLength);
+            socketHandler.Send(data);
+            Console.WriteLine("Message sent to the server");
         }
 
-        private void DeletePost(Socket socketClient, SocketHandler socketHandler)
+        private void ModifyPost(SocketHandler socketHandler)
         {
-            Console.WriteLine("Nombre del post a borrar"); 
-            //SendString(socketHandler);
+            Console.WriteLine("Name of the post to modify");
+            string name = Console.ReadLine();
+            byte[] data = System.Text.Encoding.UTF8.GetBytes(name);
+            byte[] dataLength = BitConverter.GetBytes(data.Length);
+            socketHandler.Send(dataLength);
+            socketHandler.Send(data);
+            Console.WriteLine("Message sent to the server");
         }
 
-        private void ModifyPost(Socket socketClient, SocketHandler socketHandler)
-        {
-            Console.WriteLine("Nombre del post a modificar");
-           // SendString(socketHandler);
-        }
-
-        public void AddPost(Socket socketClient,SocketHandler socketHandler)
+        public void AddPost(SocketHandler socketHandler)
         {
             
             Console.Write("Name: ");
@@ -78,12 +85,17 @@ namespace Client
             Console.WriteLine("Message sent to the server");
         }
 
-        public void AsociateTheme(Socket SocketClient,SocketHandler socketHandler)
+        private void AddTheme(SocketHandler socketHandler)
+        {
+            throw new NotImplementedException();
+        }
+        
+        public void AsociateTheme(SocketHandler socketHandler)
         {
                 
         }
         
-        public void SearchPost(Socket SocketClient,SocketHandler socketHandler)
+        public void SearchPost(SocketHandler socketHandler)
         {
                 
         }

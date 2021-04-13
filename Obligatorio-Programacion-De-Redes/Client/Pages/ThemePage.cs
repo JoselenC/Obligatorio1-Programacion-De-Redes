@@ -9,10 +9,11 @@ namespace Client
         public void ShowMenu(Socket SocketClient,SocketHandler socketHandler)
         {
             Console.Clear();
-            Console.WriteLine("1-Dar de alta");
-            Console.WriteLine("2-Modificar");
-            Console.WriteLine("3-Borrar");
-            Console.WriteLine("4-Volver");
+            Console.Write("Select option");
+            Console.WriteLine("1-Add theme");
+            Console.WriteLine("2-Modify theme");
+            Console.WriteLine("3-Delete theme");
+            Console.WriteLine("4-Back");
             bool exit = false;
             while (!exit)
             {
@@ -21,20 +22,38 @@ namespace Client
                 switch (option)
                 {
                     case "1":
+                        AddTheme(socketHandler);
                         break;
                     case "2":
+                        ModifyTheme(socketHandler);
                         break;
                     case "3":
+                        DeleteTheme(socketHandler);
                         break;
                     case "4":
                         exit = true;
                         new HomePage().ShowMenu(SocketClient,socketHandler);
                         break;
                     default:
-                        Console.WriteLine("Opcion invalida...");
+                        Console.WriteLine("Invalid option");
                         break;
                 }
             }
+        }
+
+        private void DeleteTheme(SocketHandler socketHandler)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void ModifyTheme(SocketHandler socketHandler)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void AddTheme(SocketHandler socketHandler)
+        {
+            throw new NotImplementedException();
         }
     }
 }

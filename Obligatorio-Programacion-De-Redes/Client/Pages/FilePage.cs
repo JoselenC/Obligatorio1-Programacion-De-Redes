@@ -4,10 +4,10 @@ using Protocol;
 
 namespace Client
 {
-    public class ArchivePage
+    public class FilePage
     {
         
-        public void UploadArchive(Socket SocketClient,SocketHandler socketHandler)
+        public void UploadFile(SocketHandler socketHandler)
         {
            
             

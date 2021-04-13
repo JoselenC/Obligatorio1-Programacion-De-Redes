@@ -8,6 +8,6 @@ namespace Domain
         public string Name { get; set; }
         public List<Theme>  Theme { get; set; }
         public string CreationDate { get; set; }
-        public Archive Archive { get; set; }
+        public File File { get; set; }
     }
 }

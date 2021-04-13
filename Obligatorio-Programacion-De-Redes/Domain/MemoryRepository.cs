@@ -7,13 +7,13 @@ namespace BusinessLogic
     {
         public List<Post> Posts { get; set; }
         public List<Theme> Themes { get; set; }
-        public List<Archive> Archive { get; set; }
+        public List<File> Files { get; set; }
 
         public MemoryRepository()
         {
             Posts = new List<Post>();
             Themes = new List<Theme>();
-            Archive = new List<Archive>();
+            Files = new List<File>();
         }
     }
 }

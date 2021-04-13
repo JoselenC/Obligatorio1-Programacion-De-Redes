@@ -25,7 +25,7 @@ namespace Client
             }
             catch (SocketException e)
             {
-                Console.WriteLine("Se perdió la conexión con el servidor: " + e.Message);
+                Console.WriteLine("The connection to the server was lost: " + e.Message);
             }
         }
 

@@ -86,33 +86,35 @@ namespace Server
                     {
                        
                         case CommandConstants.CommandAddPost:
-                            Console.WriteLine("Recibi comando uno...");
+                            Console.WriteLine("Adding new post");
                             new PostService(repository).AddPost(socketHandler,headerHandler);
                             break;
                         case CommandConstants.CommandModifyPost:
+                            Console.WriteLine("Modifying post");
                             new PostService(repository).ModifyPost(socketHandler);
                             break;
                         case CommandConstants.CommandDeletePost:
+                            Console.WriteLine("Deleting post");
                            new PostService(repository).DeletePost(socketHandler);
                             break;
                         case CommandConstants.CommandAsociateTheme:
-                            Console.WriteLine("Recibi comando uno...");
+                            Console.WriteLine("Associating theme");
                             new PostService(repository).AsociateTheme();
                             break;
                         case CommandConstants.CommandAddTheme:
-                            Console.WriteLine("Recibi comando dos...");
+                            Console.WriteLine("Adding new theme");
                             new ThemeService().AddTheme();
                             break;
                         case CommandConstants.CommandModifyTheme:
-                            Console.WriteLine("El cliente se desconectó");
+                            Console.WriteLine("Modifying theme");
                             new ThemeService().ModifyTheme();
                             break;
                         case CommandConstants.CommandDeleteTheme:
-                            Console.WriteLine("El cliente se desconectó");
+                            Console.WriteLine("Deleting theme");
                             new ThemeService().DeleteTheme();
                             break;
                         case CommandConstants.CommandBack:
-                            Console.WriteLine("El cliente se desconectó");
+                            Console.WriteLine("The client logged out");
                             //Your Command code here
                             break;
                         default:
@@ -120,14 +122,12 @@ namespace Server
                             break;
                     }
                 }
-                Console.WriteLine("Sali del while...");
             }
             catch (SocketException e)
             {
                 Console.WriteLine("Removing client....");
                 ConnectedClients.Remove(clientSocket);
             }
-            Console.WriteLine("Saliendo del thread cliente....");
         }
 
       

@@ -17,8 +17,6 @@ C:\Users\Choche\OneDrive\Escritorio\Semestre 6\Programacion de redes\Obligatorio
 C:\Users\Choche\OneDrive\Escritorio\Semestre 6\Programacion de redes\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\Client\bin\Debug\netcoreapp3.1\Client.runtimeconfig.dev.json
 C:\Users\Choche\OneDrive\Escritorio\Semestre 6\Programacion de redes\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\Client\bin\Debug\netcoreapp3.1\Client.dll
 C:\Users\Choche\OneDrive\Escritorio\Semestre 6\Programacion de redes\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\Client\bin\Debug\netcoreapp3.1\Client.pdb
-C:\Users\Choche\OneDrive\Escritorio\Semestre 6\Programacion de redes\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\Client\bin\Debug\netcoreapp3.1\Library.dll
-C:\Users\Choche\OneDrive\Escritorio\Semestre 6\Programacion de redes\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\Client\bin\Debug\netcoreapp3.1\Library.pdb
 C:\Users\Choche\OneDrive\Escritorio\Semestre 6\Programacion de redes\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\Client\obj\Debug\netcoreapp3.1\Client.csprojAssemblyReference.cache
 C:\Users\Choche\OneDrive\Escritorio\Semestre 6\Programacion de redes\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\Client\obj\Debug\netcoreapp3.1\Client.AssemblyInfoInputs.cache
 C:\Users\Choche\OneDrive\Escritorio\Semestre 6\Programacion de redes\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\Client\obj\Debug\netcoreapp3.1\Client.AssemblyInfo.cs
@@ -27,11 +25,9 @@ C:\Users\Choche\OneDrive\Escritorio\Semestre 6\Programacion de redes\Obligatorio
 C:\Users\Choche\OneDrive\Escritorio\Semestre 6\Programacion de redes\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\Client\obj\Debug\netcoreapp3.1\Client.dll
 C:\Users\Choche\OneDrive\Escritorio\Semestre 6\Programacion de redes\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\Client\obj\Debug\netcoreapp3.1\Client.pdb
 C:\Users\Choche\OneDrive\Escritorio\Semestre 6\Programacion de redes\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\Client\obj\Debug\netcoreapp3.1\Client.genruntimeconfig.cache
-C:\Users\Choche\OneDrive\Escritorio\Semestre 6\Programacion de redes\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\Client\bin\Debug\netcoreapp3.1\Protocol.deps.json
-C:\Users\Choche\OneDrive\Escritorio\Semestre 6\Programacion de redes\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\Client\bin\Debug\netcoreapp3.1\Protocol.runtimeconfig.json
-C:\Users\Choche\OneDrive\Escritorio\Semestre 6\Programacion de redes\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\Client\bin\Debug\netcoreapp3.1\Protocol.runtimeconfig.dev.json
-C:\Users\Choche\OneDrive\Escritorio\Semestre 6\Programacion de redes\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\Client\bin\Debug\netcoreapp3.1\Protocol.exe
 C:\Users\Choche\OneDrive\Escritorio\Semestre 6\Programacion de redes\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\Client\bin\Debug\netcoreapp3.1\Domain.dll
 C:\Users\Choche\OneDrive\Escritorio\Semestre 6\Programacion de redes\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\Client\bin\Debug\netcoreapp3.1\Protocol.dll
 C:\Users\Choche\OneDrive\Escritorio\Semestre 6\Programacion de redes\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\Client\bin\Debug\netcoreapp3.1\Domain.pdb
 C:\Users\Choche\OneDrive\Escritorio\Semestre 6\Programacion de redes\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\Client\bin\Debug\netcoreapp3.1\Protocol.pdb
+C:\Users\Choche\OneDrive\Escritorio\Semestre 6\Programacion de redes\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\Client\bin\Debug\netcoreapp3.1\DataHandler.dll
+C:\Users\Choche\OneDrive\Escritorio\Semestre 6\Programacion de redes\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\Client\bin\Debug\netcoreapp3.1\DataHandler.pdb

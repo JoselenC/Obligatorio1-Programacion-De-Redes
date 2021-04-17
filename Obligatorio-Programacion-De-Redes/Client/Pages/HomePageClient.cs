@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Dynamic;
 using System.Net.Sockets;
 using Protocol;
 using DataHandler;
@@ -8,43 +9,32 @@ namespace Client
     public class HomePageClient
     {
         
-        public void ShowMenu(Socket SocketClient,SocketHandler socketHandler)
+        public void Menu(Socket SocketClient,SocketHandler socketHandler)
         {
             Console.Clear();
-            Console.WriteLine("----Menu----");
-            Console.WriteLine("1-Posts");
-            Console.WriteLine("2-Themes");
-            Console.WriteLine("3-File");
-            Console.WriteLine("4-Search post");
-            Console.WriteLine("5-Asociate post");
-            Console.WriteLine("6-Exit");
-            var exit = false;
+           var exit = false;
+           string[] _options = {"Posts", "Themes", "Files", "Search post", "Asociate post", "Exit"};
             while (!exit)
             {
-                var option = Console.ReadLine();
+                var option = new MenuClient().ShowMenu(_options);
                 switch (option)
                 {
-                    case "uno":
-                        SendData(1,SocketClient);
-                        new PostPageClient().ShowMenu(SocketClient, socketHandler);
+                    case 1:
+                        new PostPageClient().Menu(SocketClient, socketHandler);
                         break;
-                    case "dos":
-                        SendData(2,SocketClient);
-                        new ThemePageClient().ShowMenu(SocketClient,socketHandler);
+                    case 2:
+                        new ThemePageClient().Menu(SocketClient,socketHandler);
                         break;
-                    case "tres":
-                        SendData(3,SocketClient);
-                        new FilePageClient().UploadFile(socketHandler);
+                    case 3:
+                        new FilePageClient().UploadFile(socketHandler,SocketClient);
                         break;
-                    case "Cuatro":
-                        SendData(4,SocketClient);
-                        new PostPageClient().SearchPost(socketHandler); 
+                    case 4:
+                        new PostPageClient().SearchPost(socketHandler,SocketClient); 
                         break;
-                    case "Cinco":
-                        SendData(5,SocketClient);
-                        new PostPageClient().AsociateTheme(socketHandler); 
+                    case 5:
+                        new PostPageClient().AsociateTheme(socketHandler,SocketClient); 
                         break;
-                    case "Seis":
+                    case 6:
                         SendData(6,SocketClient);
                         exit = true;
                         SocketClient.Shutdown(SocketShutdown.Both);

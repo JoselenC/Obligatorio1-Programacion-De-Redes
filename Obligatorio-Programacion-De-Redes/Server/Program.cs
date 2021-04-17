@@ -54,7 +54,7 @@ namespace Server
                     var socketConnected = socketServer.Accept();
                     ConnectedClients.Add(socketConnected);
                     Console.WriteLine("Acepte una nueva conexion");
-                    var threadClient = new Thread(() => HandleClient(socketConnected,repository));
+                    var threadClient = new Thread(() => new HandleClient().HandleClientMethod(socketConnected,repository,_exit,ConnectedClients));
                     threadClient.Start();
                 }
                 catch (SocketException se)
@@ -69,66 +69,5 @@ namespace Server
             }
             Console.WriteLine("Saliendo del listen...");
         }
-
-        private static void HandleClient(Socket clientSocket,MemoryRepository repository)
-        {
-            SocketHandler socketHandler = new SocketHandler(clientSocket);
-            try
-            {
-                while (!_exit)
-                {
-                    var headerHandler = new HeaderHandler();
-                    var buffer = new byte[HeaderConstants.CommandLength + HeaderConstants.DataLength];
-                    socketHandler.Receive(HeaderConstants.CommandLength + HeaderConstants.DataLength ); //Revisar este largo 
-                    Console.WriteLine("Recibi nueva data");
-                    Tuple<short, int> header = headerHandler.DecodeHeader(buffer);
-                    switch (header.Item1)
-                    {
-                        case CommandConstants.CommandAddPost:
-                            Console.WriteLine("Adding new post");
-                            new PostService(repository).AddPost(socketHandler,headerHandler);
-                            break;
-                        case CommandConstants.CommandModifyPost:
-                            Console.WriteLine("Modifying post");
-                            new PostService(repository).ModifyPost(socketHandler);
-                            break;
-                        case CommandConstants.CommandDeletePost:
-                            Console.WriteLine("Deleting post");
-                           new PostService(repository).DeletePost(socketHandler);
-                            break;
-                        case CommandConstants.CommandAsociateTheme:
-                            Console.WriteLine("Associating theme");
-                            new PostService(repository).AsociateTheme();
-                            break;
-                        case CommandConstants.CommandAddTheme:
-                            Console.WriteLine("Adding new theme");
-                            new ThemeService().AddTheme();
-                            break;
-                        case CommandConstants.CommandModifyTheme:
-                            Console.WriteLine("Modifying theme");
-                            new ThemeService().ModifyTheme();
-                            break;
-                        case CommandConstants.CommandDeleteTheme:
-                            Console.WriteLine("Deleting theme");
-                            new ThemeService().DeleteTheme();
-                            break;
-                        case CommandConstants.CommandBack:
-                            Console.WriteLine("The client logged out");
-                            //Your Command code here
-                            break;
-                        default:
-                            Console.WriteLine("No valid command received");
-                            break;
-                    }
-                }
-            }
-            catch (SocketException e)
-            {
-                Console.WriteLine("Removing client....");
-                ConnectedClients.Remove(clientSocket);
-            }
-        }
-
-      
     }
 }

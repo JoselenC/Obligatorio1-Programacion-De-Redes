@@ -1,8 +1,10 @@
-﻿using System.Net.Sockets;
+﻿using System;
+using System.Net.Sockets;
+using Protocol;
 
 namespace DataHandler
 {
-    public class SocketHandler:ISocketHandler
+    public class SocketHandler : ISocketHandler
     {
         private readonly Socket _socket;
 
@@ -25,6 +27,7 @@ namespace DataHandler
                 {
                     throw new SocketException();
                 }
+
                 totalSentBytes += sentBytes;
             }
         }
@@ -44,10 +47,37 @@ namespace DataHandler
                 {
                     throw new SocketException();
                 }
+
                 totalReceivedBytes += receivedBytes;
             }
 
             return data;
         }
+
+        public string[] ReceiveMessage()
+        {
+            var dataLength = Receive(HeaderConstants.DataLength);
+            int length = BitConverter.ToInt32(dataLength);
+            var data = Receive(length);
+            string message = System.Text.Encoding.UTF8.GetString(data);
+            string[] messageArray = message.Split("#");
+            return messageArray;
+        }
+
+
+
+        private static byte[] ConvertDataToHeader(short command, int data)
+        {
+            return HeaderHandler.EncodeHeader(command, data);
+        }
+
+        public void SendData(short command, Socket SocketClient)
+        {
+            if (SocketClient.Send(ConvertDataToHeader(command, new Random().Next())) == 0)
+            {
+                throw new SocketException();
+            }
+        }
+        
     }
 }

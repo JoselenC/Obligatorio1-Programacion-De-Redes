@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Net.Sockets;
 using BusinessLogic;
+using Client;
 using Domain;
 using DataHandler;
 using Domain.Services;
@@ -11,33 +12,28 @@ namespace Server
     public class PostPageServer
     {
 
-        public void ShowMenu(Socket socketClient,SocketHandler socketHandler, MemoryRepository repository)
+        public void Menu(Socket socketClient,SocketHandler socketHandler, MemoryRepository repository)
         {
             Console.Clear();
-            Console.Write("Select option");
-            Console.WriteLine("1-Show theme post");
-            Console.WriteLine("2-Show post");
-            Console.WriteLine("3-Show file post");
-            Console.WriteLine("4-Back");
-            bool exit = false;
+            var exit = false;
+            string[] _options = {"Show theme post", "Show post", "Show file post", "Back"};
             while (!exit)
             {
-
-                var option = Console.ReadLine();
+                var option = new MenuServer().ShowMenu(_options);
                 switch (option)
                 {
-                    case "1":
+                    case 1:
                         ShowThemePost(socketClient, socketHandler, repository);
                         break;
-                    case "2":
+                    case 2:
                         ShowPost(socketHandler, repository);
                         break;
-                    case "3":
+                    case 3:
                         ShowFilePost(socketHandler, repository);
                         break;
-                    case "4":
+                    case 4:
                         exit = true;
-                        new HomePageServer().ShowMenu(socketClient,socketHandler, repository);
+                        new HomePageServer().Menu(socketClient,socketHandler, repository);
                         break;
                     default:
                         Console.WriteLine("Invalid option");
@@ -46,33 +42,27 @@ namespace Server
             }
         }
 
-       
-        private void ShowThemePost(Socket socketClient, SocketHandler socketHandler, MemoryRepository repository)
-        {
+       private void ShowThemePost(Socket socketClient, SocketHandler socketHandler, MemoryRepository repository)
+        { 
             Console.Clear();
-            Console.Write("Select filter ");
-            Console.WriteLine("1-By creation date");
-            Console.WriteLine("2-By theme");
-            Console.WriteLine("3-By both");
-            Console.WriteLine("4-Back");
-            bool exit = false;
+            var exit = false;
             while (!exit)
             {
-                var option = Console.ReadLine();
+                var option = ShowFilter();
                 switch (option)
                 {
-                    case "1":
+                    case 1:
                         ShowThemePostByCreationDate(socketHandler, repository);
                         break;
-                    case "2":
+                    case 2:
                         ShowThemePostByTheme(socketHandler, repository);
                         break;
-                    case "3":
+                    case 3:
                         ShowThemePostByDateAndTheme(socketHandler, repository);
                         break;
-                    case "4":
+                    case 4:
                         exit = true;
-                        new HomePageServer().ShowMenu(socketClient, socketHandler, repository);
+                        new HomePageServer().Menu(socketClient, socketHandler, repository);
                         break;
                     default:
                         Console.WriteLine("Invalid option");
@@ -80,6 +70,56 @@ namespace Server
                 }
             }
         }
+        
+        private int ShowFilter()
+        {
+            string[] _options = {"By creation date", "By theme", "By both", "Back"};
+            bool salir = false;
+            int index = 0;
+            while (!salir)
+            {
+                Console.Write("Select filter ");
+                for (var i = 0; i < 4; i++)
+                {
+                    var prefix = "  ";
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.BackgroundColor = ConsoleColor.Black;
+                    if (i == index)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Black;
+                        Console.BackgroundColor = ConsoleColor.Magenta;
+                        prefix = "> ";
+                    }
+                
+                    Console.WriteLine($"{prefix}{_options[i]}");
+                }
+                switch (Console.ReadKey().Key)
+                {
+                    case ConsoleKey.Enter:
+                        Console.Clear();
+                        salir = true;
+                        return index+1;
+                    case ConsoleKey.UpArrow:
+                        Console.Clear();
+                        if (index > 0)
+                            index = index - 1;
+                        break;
+                    case ConsoleKey.DownArrow:
+                        Console.Clear();
+                        if (index < 3)
+                            index = index + 1;
+                        else
+                            index = 0;
+                        break;
+                    case ConsoleKey.Escape:
+                        index = 3;
+                        break;
+                }
+            }
+
+            return 1;
+        }
+
 
         private void ShowPost(SocketHandler socketHandler, MemoryRepository repository)
         {

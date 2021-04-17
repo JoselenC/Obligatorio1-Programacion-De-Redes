@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net.Sockets;
 using BusinessLogic;
+using Client;
 using Protocol;
 using DataHandler;
 
@@ -9,39 +10,34 @@ namespace Server
     public class HomePageServer
     {
         
-        public void ShowMenu(Socket SocketClient, SocketHandler socketHandler, MemoryRepository repository)
+        public void Menu(Socket SocketClient, SocketHandler socketHandler, MemoryRepository repository)
         {
             Console.Clear();
-            Console.WriteLine("----Menu----");
-            Console.WriteLine("1-Client list");
-            Console.WriteLine("2-Posts");
-            Console.WriteLine("3-Themes");
-            Console.WriteLine("4-File");
-            Console.WriteLine("5-Exit");
             var exit = false;
+            string[] _options = {"Client list", "Posts", "Themes", "File", "Exit"};
             while (!exit)
             {
-                var option = Console.ReadLine();
+                var option = new MenuServer().ShowMenu(_options);
                 switch (option)
                 {
-                    case "uno":
+                    case 1:
                         SendData(1,SocketClient);
                         new ClientPageServer().ShowClientList(socketHandler);
                         break;
-                    case "dos":
-                        SendData(1,SocketClient);
-                        new PostPageServer().ShowMenu(SocketClient, socketHandler, repository);
-                        break;
-                    case "tres":
+                    case 2:
                         SendData(2,SocketClient);
-                        new ThemePageServer().ShowMenu(SocketClient, socketHandler, repository);
+                        new PostPageServer().Menu(SocketClient, socketHandler, repository);
                         break;
-                    case "cuatro":
+                    case 3:
                         SendData(3,SocketClient);
+                        new ThemePageServer().Menu(SocketClient, socketHandler, repository);
+                        break;
+                    case 4:
+                        SendData(4,SocketClient);
                         new FilePageServer().ShowFileList(socketHandler);
                         break;
-                    case "Cinco":
-                        SendData(6,SocketClient);
+                    case 5:
+                        SendData(5,SocketClient);
                         exit = true;
                         SocketClient.Shutdown(SocketShutdown.Both);
                         SocketClient.Close();
@@ -52,6 +48,7 @@ namespace Server
                 }
             }
         }
+        
         private static byte[] ConvertDataToHeader(short command, int data)
         {
             return HeaderHandler.EncodeHeader(command, data);

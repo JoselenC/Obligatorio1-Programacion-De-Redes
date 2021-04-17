@@ -6,33 +6,31 @@ namespace Client
 {
     public class ThemePageClient
     {
-        public void ShowMenu(Socket SocketClient,SocketHandler socketHandler)
+        public void Menu(Socket SocketClient,SocketHandler socketHandler)
         {
             Console.Clear();
-            Console.Write("Select option");
-            Console.WriteLine("1-Add theme");
-            Console.WriteLine("2-Modify theme");
-            Console.WriteLine("3-Delete theme");
-            Console.WriteLine("4-Back");
-            bool exit = false;
+            var exit = false;
+            string[] _options = {"Add theme", "Modify theme", "Delete theme","Back"};
             while (!exit)
             {
-
-                var option = Console.ReadLine();
+                var option = new MenuClient().ShowMenu(_options);
                 switch (option)
                 {
-                    case "1":
+                    case 1:
+                        socketHandler.SendData(5,SocketClient);
                         AddTheme(socketHandler);
                         break;
-                    case "2":
+                    case 2:
+                        socketHandler.SendData(6,SocketClient);
                         ModifyTheme(socketHandler);
                         break;
-                    case "3":
+                    case 3:
+                        socketHandler.SendData(7,SocketClient);
                         DeleteTheme(socketHandler);
                         break;
-                    case "4":
+                    case 4:
                         exit = true;
-                        new HomePageClient().ShowMenu(SocketClient,socketHandler);
+                        new HomePageClient().Menu(SocketClient,socketHandler);
                         break;
                     default:
                         Console.WriteLine("Invalid option");
@@ -40,20 +38,54 @@ namespace Client
                 }
             }
         }
-
+        
         private void DeleteTheme(SocketHandler socketHandler)
         {
-            throw new NotImplementedException();
+            Console.WriteLine("Name of the theme to delete"); 
+            string name = Console.ReadLine();
+            byte[] data = System.Text.Encoding.UTF8.GetBytes(name);
+            byte[] dataLength = BitConverter.GetBytes(data.Length);
+            socketHandler.Send(dataLength);
+            socketHandler.Send(data);
+            string[] messageArray = socketHandler.ReceiveMessage();
+            Console.WriteLine(messageArray[0]);
         }
 
         private void ModifyTheme(SocketHandler socketHandler)
         {
-            throw new NotImplementedException();
+            Console.WriteLine("Name of the theme to modify");
+            string oldName = Console.ReadLine();
+            Console.WriteLine("New data theme:");
+            Console.Write("Name: ");
+            string name = Console.ReadLine();
+            Console.Write("Description: ");
+            string description = Console.ReadLine();
+            string message = oldName + "#" + name + "#" +description;
+            byte[] data = System.Text.Encoding.UTF8.GetBytes(message);
+            byte[] dataLength = BitConverter.GetBytes(data.Length);
+            socketHandler.Send(dataLength);
+            socketHandler.Send(data);
+            string[] messageArray = socketHandler.ReceiveMessage();
+            Console.WriteLine(messageArray[0]);
+            
         }
 
-        private void AddTheme(SocketHandler socketHandler)
+        public void AddTheme(SocketHandler socketHandler)
         {
-            throw new NotImplementedException();
+            Console.Write("New theme ");
+            Console.Write("Name: ");
+            string name = Console.ReadLine();
+            Console.Write("Description: ");
+            string description = Console.ReadLine();
+            string message = name + "#" + description;
+            byte[] data = System.Text.Encoding.UTF8.GetBytes(message);
+            byte[] dataLength = BitConverter.GetBytes(data.Length);
+            socketHandler.Send(dataLength);
+            socketHandler.Send(data);
+            string[] messageArray = socketHandler.ReceiveMessage();
+            Console.WriteLine(messageArray[0]);
         }
+
+        
     }
 }

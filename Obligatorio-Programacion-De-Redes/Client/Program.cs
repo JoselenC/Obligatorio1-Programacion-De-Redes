@@ -21,7 +21,7 @@ namespace Client
            SocketHandler socketHandler = new SocketHandler(SocketClient);
            try
             {
-                new HomePageClient().ShowMenu(SocketClient,socketHandler);
+                new HomePageClient().Menu(SocketClient,socketHandler);
             }
             catch (SocketException e)
             {

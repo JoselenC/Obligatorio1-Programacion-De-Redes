@@ -14,52 +14,116 @@ namespace Domain.Services
         {
             this.repository = repository;
         }
-        public void AddPost(SocketHandler socketHandler,HeaderHandler headerHandler)
+
+        public void AddPost(SocketHandler socketHandler)
         {
-            var dataLength = socketHandler.Receive(HeaderConstants.DataLength);
-            int length = BitConverter.ToInt32(dataLength);
-            var data = socketHandler.Receive(length);
-            string message = System.Text.Encoding.UTF8.GetString(data);
-            string[] messageArray = message.Split("#");
+            var messageArray = socketHandler.ReceiveMessage();
             string name = messageArray[0];
             string creationDate = messageArray[1];
-            Console.WriteLine("Post name: " + name + "Creation date"+ creationDate);
-            Post post = new Post() {Name = name, CreationDate = creationDate};
-            repository.Posts.Add(post);
+            string message= "";
+            if (!AlreadyExistPost(name))
+            {
+                Console.WriteLine("Post name: " + name + "Creation date"+ creationDate);
+                Post post = new Post() {Name = name, CreationDate = creationDate};
+                repository.Posts.Add(post);
+                message = "The post" + name + " was created";
+            }
+            else
+            {
+                message = "The post" + name + "already exist";
+            }
+            byte[] data = System.Text.Encoding.UTF8.GetBytes(message);
+            byte[] dataLength = BitConverter.GetBytes(data.Length);
+            socketHandler.Send(dataLength);
+            socketHandler.Send(data);
         }
 
-        public string ReceiveString(SocketHandler socketHandler)
+        private bool AlreadyExistPost(string name)
         {
-            return "";
+            Post post = repository.Posts.Find(x => x.Name == name);
+            if (post == null)
+                return false;
+            return true;
         }
-        
+
         public void ModifyPost(SocketHandler socketHandler)
         {
-            string name = ReceiveString(socketHandler);
-            List<Post> postByName= repository.Posts.FindAll(x => x.Name == name);
-            foreach (var post in postByName)
+            string[] messageArray = socketHandler.ReceiveMessage();
+            string oldName = messageArray[0];
+            string name = messageArray[1];
+            string newCreationDate = messageArray[2];
+            string message;
+            if (AlreadyExistPost(oldName))
             {
-                Post newPost = new Post(); //aca cargar el nuevo post
-                repository.Posts.Remove(post);
+                Post postByName = repository.Posts.Find(x => x.Name == oldName);
+                repository.Posts.Remove(postByName);
+                Post newPost = new Post() {Name = name, CreationDate = newCreationDate};
                 repository.Posts.Add(newPost);
-
+                message = "The post" + name + "was modified";
             }
+            else
+            {
+                message = "The post" + name + "already exist";
+            }
+            byte[] data = System.Text.Encoding.UTF8.GetBytes(message);
+            byte[] dataLength = BitConverter.GetBytes(data.Length);
+            socketHandler.Send(dataLength);
+            socketHandler.Send(data);
         }
 
         public void DeletePost(SocketHandler socketHandler)
         {
-            string name = ReceiveString(socketHandler);
-            List<Post> postByName= repository.Posts.FindAll(x => x.Name == name);
-            foreach (var post in postByName)
+            string[] messageArray = socketHandler.ReceiveMessage();
+            string name = messageArray[0];
+            string message;
+            if (AlreadyExistPost(name))
             {
-                repository.Posts.Remove(post);
-
+                Post postByName = repository.Posts.Find(x => x.Name == name);
+                repository.Posts.Remove(postByName);
+                message = "The post" + name + "was deleted";
             }
+            else
+            {
+                message = "The post" + name + "not exist";
+            }
+            byte[] data = System.Text.Encoding.UTF8.GetBytes(message);
+            byte[] dataLength = BitConverter.GetBytes(data.Length);
+            socketHandler.Send(dataLength);
+            socketHandler.Send(data);
         }
 
-        public void AsociateTheme()
+        
+        public void AsociateTheme(SocketHandler socketHandler)
         {
-            throw new System.NotImplementedException();
+            string[] messageArray = socketHandler.ReceiveMessage();
+            string namePost = messageArray[0];
+            string nameTheme = messageArray[1];
+            string message = "";
+            if (AlreadyExistTheme(nameTheme))
+            {
+                Post postByName = repository.Posts.Find(x => x.Name == namePost);
+                Theme theme = repository.Themes.Find(x => x.Name == nameTheme);
+                if (postByName.Theme == null)
+                    postByName.Theme = new List<Theme>();
+                postByName.Theme.Add(theme);
+                message = "The theme" + nameTheme + "was associated";
+            }
+            else
+            {
+                message = "The theme" + nameTheme + " not exist";
+            }
+            byte[] data = System.Text.Encoding.UTF8.GetBytes(message);
+            byte[] dataLength = BitConverter.GetBytes(data.Length);
+            socketHandler.Send(dataLength);
+            socketHandler.Send(data);
+        }
+        
+        private bool AlreadyExistTheme(string name)
+        {
+            Theme theme = repository.Themes.Find(x => x.Name == name);
+            if (theme == null)
+                return false;
+            return true;
         }
 
         public List<Post> OrderPostByCreationDate()
@@ -73,6 +137,27 @@ namespace Domain.Services
             IOrderedEnumerable<Post> orderedList = repository.Posts.OrderBy((x => x.CreationDate));
             return orderedList.ToList();
         }
-        
+
+        public void SearchPost(SocketHandler socketHandler)
+        {
+            string[] messageArray = socketHandler.ReceiveMessage();
+            string namePost = messageArray[0];
+            string message;
+            if (AlreadyExistPost(namePost))
+            {
+                Post post = repository.Posts.Find(x => x.Name == namePost);
+                message = post.Name + "#" + post.CreationDate;
+            }
+            else
+
+            {
+                message = "The post" + namePost + "not exist";
+            }
+
+            byte[] data = System.Text.Encoding.UTF8.GetBytes(message);
+            byte[] dataLength = BitConverter.GetBytes(data.Length);
+            socketHandler.Send(dataLength);
+            socketHandler.Send(data);
+        }
     }
 }

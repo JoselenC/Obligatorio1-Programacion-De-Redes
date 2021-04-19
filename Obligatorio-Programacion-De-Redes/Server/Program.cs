@@ -46,9 +46,7 @@ namespace Server
                 {
                     var socketConnected = socketServer.Accept();
                     ConnectedClients.Add(socketConnected);
-                   
-                    var threadClient = new Thread(() => new HandleClient().HandleClientMethod(socketConnected,repository,_exit,ConnectedClients));
-                    threadClient.Start();
+                    new HandleClient().HandleClientMethod(socketConnected,repository,_exit,ConnectedClients);
                 }
                 catch (SocketException se)
                 {

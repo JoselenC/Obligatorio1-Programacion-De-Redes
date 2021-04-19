@@ -15,14 +15,15 @@ namespace Server
         public void HandleClientMethod(Socket clientSocket,MemoryRepository repository,bool _exit, List<Socket> connectedClients)
         {
             SocketHandler socketHandler = new SocketHandler(clientSocket);
+            var threadClient = new Thread(() => new HomePageServer().Menu(clientSocket, socketHandler));
+            threadClient.Start();
             try
             {
                 while (!_exit)
                 {
+                    
                     var headerHandler = new HeaderHandler();
                     var buffer = new byte[HeaderConstants.CommandLength + HeaderConstants.DataLength];
-                    var threadClient = new Thread(() => new HomePageServer().Menu(clientSocket, socketHandler));
-                    threadClient.Start();
                     buffer = socketHandler.Receive(HeaderConstants.CommandLength + HeaderConstants.DataLength);
                     Tuple<short, int> header = headerHandler.DecodeHeader(buffer);
                     switch (header.Item1)

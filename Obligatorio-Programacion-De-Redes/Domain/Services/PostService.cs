@@ -77,7 +77,6 @@ namespace Domain.Services
             {
                 if (!AlreadyExistPost(name))
                 {
-                    Console.WriteLine("Post name: " + name + "Creation date" + creationDate);
                     Post post = new Post() {Name = name, CreationDate = creationDate};
                     repository.Posts.Add(post);
                     message = "The post " + name + " was created";

@@ -7,51 +7,47 @@ namespace Client
         public int ShowMenu( string[] _options)
         {
             bool salir = false;
-            int indexMenu = 0;
+            int indexA = 0;
             while (!salir)
             {
-                Console.Clear();
-                Console.WriteLine("----Menu----");
                 for (var i = 0; i < _options.Length; i++)
                 {
                     var prefix = "  ";
                     Console.ForegroundColor = ConsoleColor.White;
                     Console.BackgroundColor = ConsoleColor.Black;
-                    if (i == indexMenu)
+                    if (i == indexA)
                     {
                         Console.ForegroundColor = ConsoleColor.Black;
-                        Console.BackgroundColor = ConsoleColor.Magenta;
+                        Console.BackgroundColor = ConsoleColor.DarkGreen;
                         prefix = "> ";
                     }
-
+                
                     Console.WriteLine($"{prefix}{_options[i]}");
                 }
-
-                indexMenu = 0;
+                
                 switch (Console.ReadKey().Key)
                 {
                     case ConsoleKey.Enter:
-                        return indexMenu+1;
+                        Console.Clear();
+                        return indexA+1;
                     case ConsoleKey.UpArrow:
                         Console.Clear();
-                        if (indexMenu > 0)
-                            indexMenu = indexMenu - 1;
+                        if (indexA > 0)
+                            indexA = indexA - 1;
                         break;
                     case ConsoleKey.DownArrow:
                         Console.Clear();
-                        if (indexMenu < _options.Length - 1)
-                            indexMenu = indexMenu + 1;
+                        if (indexA < _options.Length-1)
+                            indexA = indexA + 1;
                         else
-                            indexMenu = 0;
+                            indexA = 0;
                         break;
                     case ConsoleKey.Escape:
-                        indexMenu = _options.Length - 1;
+                        indexA = _options.Length-1;
                         break;
-                    default:
-                        return 1;
-                        ;
                 }
             }
+
             return 1;
         }
     }

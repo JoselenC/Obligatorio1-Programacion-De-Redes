@@ -64,7 +64,13 @@ namespace DataHandler
             return messageArray;
         }
 
-
+        public void SendMessage(string message)
+        {
+            byte[] data2 = System.Text.Encoding.UTF8.GetBytes(message);
+            byte[] dataLength2 = BitConverter.GetBytes(data2.Length);
+            Send(dataLength2);
+            Send(data2);
+        }
 
         private static byte[] ConvertDataToHeader(short command, int data)
         {

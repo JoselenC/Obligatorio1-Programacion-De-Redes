@@ -8,7 +8,7 @@ namespace Server
 {
     public class ThemePageServer
     {
-        public void Menu(Socket SocketClient,SocketHandler socketHandler, MemoryRepository repository)
+        public void Menu(Socket SocketClient,SocketHandler socketHandler)
         {
             var exit = false;
             string[] _options = {"Add theme", "Modify theme", "Delete theme", "Back"};
@@ -18,14 +18,16 @@ namespace Server
                 switch (option)
                 {
                     case 1:
+                        socketHandler.SendData(17,SocketClient);
                         ShowThemeList(socketHandler);
                         break;
                     case 2:
+                        socketHandler.SendData(18,SocketClient);
                         ShowThemeWithMorePosts(socketHandler);
                         break;
                     case 3:
                         exit = true;
-                        new HomePageServer().Menu(SocketClient, socketHandler, repository);
+                        new HomePageServer().Menu(SocketClient, socketHandler);
                         break;
                     default:
                         Console.WriteLine("Invalid option");

@@ -10,7 +10,6 @@ namespace Client
             int index = 0;
             while (!salir)
             {
-                Console.WriteLine("----Menu----");
                 for (var i = 0; i < _options.Length; i++)
                 {
                     var prefix = "  ";
@@ -19,7 +18,7 @@ namespace Client
                     if (i == index)
                     {
                         Console.ForegroundColor = ConsoleColor.Black;
-                        Console.BackgroundColor = ConsoleColor.Magenta;
+                        Console.BackgroundColor = ConsoleColor.DarkGreen;
                         prefix = "> ";
                     }
                 

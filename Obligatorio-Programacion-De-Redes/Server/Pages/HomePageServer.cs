@@ -10,9 +10,8 @@ namespace Server
     public class HomePageServer
     {
         
-        public void Menu(Socket SocketClient, SocketHandler socketHandler, MemoryRepository repository)
+        public void Menu(Socket SocketClient, SocketHandler socketHandler)
         {
-            Console.Clear();
             var exit = false;
             string[] _options = {"Client list", "Posts", "Themes", "File", "Exit"};
             while (!exit)
@@ -21,23 +20,21 @@ namespace Server
                 switch (option)
                 {
                     case 1:
-                        SendData(1,SocketClient);
+                        SendData(13,SocketClient);
                         new ClientPageServer().ShowClientList(socketHandler);
                         break;
                     case 2:
-                        SendData(2,SocketClient);
-                        new PostPageServer().Menu(SocketClient, socketHandler, repository);
+                        new PostPageServer().Menu(SocketClient, socketHandler);
                         break;
                     case 3:
                         SendData(3,SocketClient);
-                        new ThemePageServer().Menu(SocketClient, socketHandler, repository);
+                        new ThemePageServer().Menu(SocketClient, socketHandler);
                         break;
                     case 4:
-                        SendData(4,SocketClient);
+                        SendData(19,SocketClient);
                         new FilePageServer().ShowFileList(socketHandler);
                         break;
                     case 5:
-                        SendData(5,SocketClient);
                         exit = true;
                         SocketClient.Shutdown(SocketShutdown.Both);
                         SocketClient.Close();

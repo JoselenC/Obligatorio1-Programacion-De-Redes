@@ -18,20 +18,24 @@ namespace Domain.Services
             string name = messageArray[0];
             string description = messageArray[1];
             string message;
-            if (!AlreadyExistTheme(name))
+            if (name != "")
             {
-                Theme theme = new Theme() {Name = name, Description = description};
-                repository.Themes.Add(theme);
-                message = "The theme " + name + " was added";
+                if (!AlreadyExistTheme(name))
+                {
+                    Theme theme = new Theme() {Name = name, Description = description};
+                    repository.Themes.Add(theme);
+                    message = "The theme " + name + " was added";
+                }
+                else
+                {
+                    message = "The theme " + name + " already exist";
+                }
             }
             else
             {
-                message = "The theme " + name + " already exist";
+                message = "The theme name cannot be empty";
             }
-            byte[] data = System.Text.Encoding.UTF8.GetBytes(message);
-            byte[] dataLength = BitConverter.GetBytes(data.Length);
-            socketHandler.Send(dataLength);
-            socketHandler.Send(data);
+            socketHandler.SendMessage(message);
         }
         
         private bool AlreadyExistTheme(string name)
@@ -42,66 +46,80 @@ namespace Domain.Services
             return true;
         }
 
-
         public void ModifyTheme(SocketHandler socketHandler)
         {
-            string[] messageArray = socketHandler.ReceiveMessage();
-            string oldName = messageArray[0];
-            string name = messageArray[1];
-            string description = messageArray[2];
-            string message;
-            if (AlreadyExistTheme(oldName))
+            string posts="";
+            foreach (var post in repository.Themes)
             {
-                Theme theme = new Theme() {Name = name, Description = description};
-                if (!AlreadyExistTheme(name))
+                posts += post.Name + "#";
+            }
+            posts+="Back";
+            socketHandler.SendMessage(posts);
+            string message;
+            string[] messageArray = socketHandler.ReceiveMessage();
+            string option = messageArray[0];
+            if (option != "Back")
+            {
+                string name = messageArray[1];
+                if (name != "")
                 {
-                    Theme themeName = repository.Themes.Find(x => x.Name == oldName);
-                    repository.Themes.Remove(themeName);
-                    repository.Themes.Add(theme);
-                    message = "The theme " + name + " was modify";
+                    string description = messageArray[2];
+                    Theme theme = new Theme() {Name = name, Description = description};
+                    if (!AlreadyExistTheme(name))
+                    {
+                        Theme themeName = repository.Themes.Find(x => x.Name == option);
+                        repository.Themes.Remove(themeName);
+                        repository.Themes.Add(theme);
+                        message = "The theme " + option + " was modified";
+                    }
+                    else
+                    {
+                        message = "The theme " + name + " already exist";
+                    }
                 }
                 else
                 {
-                    message = "The theme " + name + " already exist";
+                    message = "The theme name cannot be empty";
                 }
+
+                socketHandler.SendMessage(message);
             }
-            else
-            {
-                message = "The theme " + name + " not exist";
-            }
-            byte[] data = System.Text.Encoding.UTF8.GetBytes(message);
-            byte[] dataLength = BitConverter.GetBytes(data.Length);
-            socketHandler.Send(dataLength);
-            socketHandler.Send(data);
         }
 
         public void DeleteTheme(SocketHandler socketHandler)
         {
-            string[] messageArray = socketHandler.ReceiveMessage();
-            string name = messageArray[0];
-            string message;
-            if (AlreadyExistTheme(name))
+            string posts="";
+            foreach (var post in repository.Themes)
             {
-                Theme themeByName = repository.Themes.Find(x => x.Name == name);
-                if (!IsAssociatedAPost(themeByName))
+                posts += post.Name + "#";
+            }
+            posts+="Back";
+            socketHandler.SendMessage(posts);
+            string message;
+            string[] messageArray = socketHandler.ReceiveMessage();
+            string oldName = messageArray[0];
+            if (oldName != "Back")
+            {
+                if (AlreadyExistTheme(oldName))
                 {
-                    repository.Themes.Remove(themeByName);
-                    message = "The theme " + name + " was deleted";
+                    Theme themeName = repository.Themes.Find(x => x.Name == oldName);
+                    if (!IsAssociatedAPost(themeName))
+                    {
+                        repository.Themes.Remove(themeName);
+                    }
+                    else
+                    {
+                        message = "The theme " + oldName + " is associated with a post";
+                        socketHandler.SendMessage(message);
+                    }
+                    message = "The theme " + oldName + " was deleted";
                 }
                 else
                 {
-                    message = "The theme " + name + " was not deleted because have a post";
+                    message = "The theme " + oldName + " not exist";
                 }
+                socketHandler.SendMessage(message);
             }
-            else
-            {
-                message = "The theme " + name + " not exist";
-            }
-
-            byte[] data = System.Text.Encoding.UTF8.GetBytes(message);
-            byte[] dataLength = BitConverter.GetBytes(data.Length);
-            socketHandler.Send(dataLength);
-            socketHandler.Send(data);
         }
 
         private bool IsAssociatedAPost(Theme theme)
@@ -112,6 +130,11 @@ namespace Domain.Services
                     return true;
             }
             return false;
+        }
+
+        public void ShowThemeList(SocketHandler socketHandler)
+        {
+            throw new NotImplementedException();
         }
     }
 }

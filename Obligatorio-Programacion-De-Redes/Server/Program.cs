@@ -4,9 +4,6 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using BusinessLogic;
-using Domain;
-using Domain.Services;
-using Protocol;
 using DataHandler;
 
 namespace Server
@@ -21,17 +18,13 @@ namespace Server
             var socketServer = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             socketServer.Bind(new IPEndPoint(IPAddress.Parse("127.0.0.1"), 30000));
             socketServer.Listen(10);
+            SocketHandler socketHandler = new SocketHandler(socketServer);
             MemoryRepository repository = new MemoryRepository();
             var threadServer = new Thread(() => ListenForConnections(socketServer,repository));
             threadServer.Start();
-
-            Console.WriteLine("Bienvenido al server, presione enter para salir....");
-            Console.ReadLine();
-            _exit = true;
-            socketServer.Close(0);
-            
             foreach (var socketClient in ConnectedClients)
             {
+               
                 try
                 {
                     socketClient.Shutdown(SocketShutdown.Both);
@@ -53,7 +46,7 @@ namespace Server
                 {
                     var socketConnected = socketServer.Accept();
                     ConnectedClients.Add(socketConnected);
-                    Console.WriteLine("Acepte una nueva conexion");
+                   
                     var threadClient = new Thread(() => new HandleClient().HandleClientMethod(socketConnected,repository,_exit,ConnectedClients));
                     threadClient.Start();
                 }

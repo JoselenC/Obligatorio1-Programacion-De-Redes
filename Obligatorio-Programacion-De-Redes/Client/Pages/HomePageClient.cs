@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Dynamic;
 using System.Net.Sockets;
+using BusinessLogic;
 using Protocol;
 using DataHandler;
 
@@ -11,11 +12,11 @@ namespace Client
         
         public void Menu(Socket SocketClient,SocketHandler socketHandler)
         {
-            Console.Clear();
            var exit = false;
-           string[] _options = {"Posts", "Themes", "Files", "Search post", "Asociate post", "Exit"};
+           string[] _options = {"Posts", "Themes", "Files", "Search post","Exit"};
             while (!exit)
             {
+                Console.WriteLine("----Menu----");
                 var option = new MenuClient().ShowMenu(_options);
                 switch (option)
                 {
@@ -29,12 +30,10 @@ namespace Client
                         new FilePageClient().UploadFile(socketHandler,SocketClient);
                         break;
                     case 4:
+                        SendData(9,SocketClient);
                         new PostPageClient().SearchPost(socketHandler,SocketClient); 
                         break;
                     case 5:
-                        new PostPageClient().AsociateTheme(socketHandler,SocketClient); 
-                        break;
-                    case 6:
                         SendData(6,SocketClient);
                         exit = true;
                         SocketClient.Shutdown(SocketShutdown.Both);
@@ -44,6 +43,7 @@ namespace Client
                         Console.WriteLine("Invalid option");
                         break;
                 }
+             
             }
         }
         private static byte[] ConvertDataToHeader(short command, int data)

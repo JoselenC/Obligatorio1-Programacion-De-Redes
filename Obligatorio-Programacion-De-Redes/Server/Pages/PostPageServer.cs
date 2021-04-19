@@ -12,7 +12,7 @@ namespace Server
     public class PostPageServer
     {
 
-        public void Menu(Socket socketClient,SocketHandler socketHandler, MemoryRepository repository)
+        public void Menu(Socket socketClient,SocketHandler socketHandler)
         {
             Console.Clear();
             var exit = false;
@@ -23,17 +23,19 @@ namespace Server
                 switch (option)
                 {
                     case 1:
-                        ShowThemePost(socketClient, socketHandler, repository);
+                       ShowThemePost(socketClient, socketHandler);
                         break;
                     case 2:
-                        ShowPost(socketHandler, repository);
+                        socketHandler.SendData(15,socketClient);
+                        ShowPost(socketClient,socketHandler);
                         break;
                     case 3:
-                        ShowFilePost(socketHandler, repository);
+                        socketHandler.SendData(16,socketClient);
+                        ShowFilePost(socketClient,socketHandler);
                         break;
                     case 4:
                         exit = true;
-                        new HomePageServer().Menu(socketClient,socketHandler, repository);
+                        new HomePageServer().Menu(socketClient,socketHandler);
                         break;
                     default:
                         Console.WriteLine("Invalid option");
@@ -42,27 +44,31 @@ namespace Server
             }
         }
 
-       private void ShowThemePost(Socket socketClient, SocketHandler socketHandler, MemoryRepository repository)
+       private void ShowThemePost(Socket socketClient, SocketHandler socketHandler)
         { 
             Console.Clear();
             var exit = false;
+            string[] _options = {"By creation date", "By theme", "By both", "Back"};
             while (!exit)
             {
-                var option = ShowFilter();
+                var option = new MenuServer().ShowMenu(_options);
                 switch (option)
                 {
                     case 1:
-                        ShowThemePostByCreationDate(socketHandler, repository);
+                        socketHandler.SendData(14,socketClient);
+                        ShowThemePostByCreationDate(socketClient,socketHandler);
                         break;
                     case 2:
-                        ShowThemePostByTheme(socketHandler, repository);
+                        socketHandler.SendData(20,socketClient);
+                        ShowThemePostByTheme(socketClient,socketHandler);
                         break;
                     case 3:
-                        ShowThemePostByDateAndTheme(socketHandler, repository);
+                        socketHandler.SendData(21,socketClient);
+                        ShowThemePostByDateAndTheme(socketClient,socketHandler);
                         break;
                     case 4:
                         exit = true;
-                        new HomePageServer().Menu(socketClient, socketHandler, repository);
+                        new HomePageServer().Menu(socketClient, socketHandler);
                         break;
                     default:
                         Console.WriteLine("Invalid option");
@@ -70,142 +76,94 @@ namespace Server
                 }
             }
         }
-        
-        private int ShowFilter()
+       
+       private static string ReceiveListPost(SocketHandler socketHandler,string message)
+       {
+           Console.ForegroundColor = ConsoleColor.DarkCyan;
+           Console.WriteLine(message+"\n");
+           Console.ForegroundColor = ConsoleColor.Black;
+           string[] postsNAmes = socketHandler.ReceiveMessage();
+           int index = new MenuServer().ShowMenu(postsNAmes);
+           string optionSelect = postsNAmes[index - 1];
+           return optionSelect;
+       }
+       
+       private static string ReceiveThemes(SocketHandler socketHandler,string message)
+       {
+           Console.ForegroundColor = ConsoleColor.DarkCyan;
+           Console.WriteLine(message+"\n");
+           Console.ForegroundColor = ConsoleColor.Black;
+           string[] themesNames = socketHandler.ReceiveMessage();
+           int indexThemes = new MenuServer().ShowMenu(themesNames);
+           string optionSelectThemes = themesNames[indexThemes - 1];
+           return optionSelectThemes;
+       }
+
+       private void ShowPost(Socket socketClient,SocketHandler socketHandler)
+       {
+           var optionSelect = ReceiveListPost(socketHandler,"Posts");
+           if (optionSelect == "Back")
+           {
+               socketHandler.SendMessage(optionSelect);
+               Menu(socketClient, socketHandler);
+           }
+       }
+
+        public void ShowFilePost(Socket socketClient,SocketHandler socketHandler)
         {
-            string[] _options = {"By creation date", "By theme", "By both", "Back"};
-            bool salir = false;
-            int index = 0;
-            while (!salir)
+            string title = "Select post";
+            var optionSelect = ReceiveListPost(socketHandler,"File posts");
+            if (optionSelect == "Back")
             {
-                Console.Write("Select filter ");
-                for (var i = 0; i < 4; i++)
-                {
-                    var prefix = "  ";
-                    Console.ForegroundColor = ConsoleColor.White;
-                    Console.BackgroundColor = ConsoleColor.Black;
-                    if (i == index)
-                    {
-                        Console.ForegroundColor = ConsoleColor.Black;
-                        Console.BackgroundColor = ConsoleColor.Magenta;
-                        prefix = "> ";
-                    }
-                
-                    Console.WriteLine($"{prefix}{_options[i]}");
-                }
-                switch (Console.ReadKey().Key)
-                {
-                    case ConsoleKey.Enter:
-                        Console.Clear();
-                        salir = true;
-                        return index+1;
-                    case ConsoleKey.UpArrow:
-                        Console.Clear();
-                        if (index > 0)
-                            index = index - 1;
-                        break;
-                    case ConsoleKey.DownArrow:
-                        Console.Clear();
-                        if (index < 3)
-                            index = index + 1;
-                        else
-                            index = 0;
-                        break;
-                    case ConsoleKey.Escape:
-                        index = 3;
-                        break;
-                }
-            }
-
-            return 1;
-        }
-
-
-        private void ShowPost(SocketHandler socketHandler, MemoryRepository repository)
-        {
-            List<Post> posts = ShowThemePostByCreationDate(socketHandler, repository);
-            Console.WriteLine("Select post number");
-            int option = Int32.Parse(Console.ReadLine());
-            String name = posts[option].Name;
-            List<Theme> postThemes = posts[option].Theme;
-            String creationDate = posts[option].CreationDate;
-            File file = posts[option].File;
-            
-            Console.WriteLine("Name: " + name);
-
-            if (postThemes == null || postThemes.Count == 0)
-            {
-                Console.WriteLine("Themes: no themes");
+                socketHandler.SendMessage(optionSelect);
+                Menu(socketClient, socketHandler);
             }
             else
             {
-                Console.WriteLine("Themes: ");
-                for (int i = 0; i < postThemes.Count; i++)
-                {
-                    Console.WriteLine(i + ". " + postThemes[i].Name);   
-                }    
-            }
-            Console.WriteLine("Creation date: " + creationDate);
-            if (file == null)
-            {
-                Console.WriteLine("File: no file");
-            }
-            else
-            {
-                Console.WriteLine("File: " + file.Name);
-            }
-            
-        }
-
-        public void ShowFilePost(SocketHandler socketHandler, MemoryRepository repository)
-        {
-            List<Post> posts = ShowThemePostByCreationDate(socketHandler, repository);
-            Console.WriteLine("Select post number");
-            int option = Int32.Parse(Console.ReadLine());
-            File file = posts[option].File;
-            if (file == null)
-            {
-                Console.WriteLine("File: no file");
-            }
-            else
-            {
-                Console.WriteLine("File: " + file.Name);
+                string message = optionSelect;
+                socketHandler.SendMessage(message);
+                string[] messageArray = socketHandler.ReceiveMessage();
+                string name = messageArray[0];
+                Console.WriteLine("name:" + name);
+                string creationDate = messageArray[1];
+                Console.WriteLine("Creation date:" + creationDate);
             }
 
         }
         
-        private List<Post> ShowThemePostByCreationDate(SocketHandler socketHandler, MemoryRepository repository)
+        private void ShowThemePostByCreationDate(Socket socketClient, SocketHandler socketHandler)
         {
-            PostService postService = new PostService(repository);
-            List<Post> orderedPosts = postService.OrderPostByCreationDate();
-            Console.WriteLine("Posts by creation date");
-            for (int i = 0; i < orderedPosts.Count; i++)
+            var optionSelect = ReceiveListPost(socketHandler,"Posts by creation date");
+            if (optionSelect == "Back")
             {
-                Console.WriteLine(i + ". " + orderedPosts[i].Name);   
+                socketHandler.SendMessage(optionSelect);
+                Menu(socketClient, socketHandler);
             }
-
-            return orderedPosts;
         }
 
-        public void ShowThemePostByTheme(SocketHandler socketHandler, MemoryRepository repository)
+        public void ShowThemePostByTheme(Socket socketClient,SocketHandler socketHandler)
         {
-            PostService postService = new PostService(repository);
-            List<Post> orderedPosts = postService.OrderPostTheme();
-            Console.WriteLine("Posts by theme");
-            for (int i = 0; i < orderedPosts.Count; i++)
+            Console.WriteLine("Theme name to filter");
+            string themeName = Console.ReadLine();
+            socketHandler.SendMessage(themeName);
+            var optionSelect = ReceiveListPost(socketHandler,"Posts by theme name");
+            if (optionSelect == "Back")
             {
-                Console.WriteLine(i + ". " + orderedPosts[i].Name);   
+                socketHandler.SendMessage(optionSelect);
+                Menu(socketClient, socketHandler);
             }
         }
         
-        public void ShowThemePostByDateAndTheme(SocketHandler socketHandler, MemoryRepository repository)
+        public void ShowThemePostByDateAndTheme(Socket socketClient,SocketHandler socketHandler)
         {
-            PostService postService = new PostService(repository);
-            List<Post> orderedPosts = postService.OrderPostTheme();
-            Console.WriteLine("Posts by theme");
-            for (int i = 0; i < orderedPosts.Count; i++)
+            Console.WriteLine("Theme name to filter");
+            string themeName = Console.ReadLine();
+            socketHandler.SendMessage(themeName);
+            var optionSelect = ReceiveListPost(socketHandler,"Posts by theme name");
+            if (optionSelect == "Back")
             {
-                Console.WriteLine(i + ". " + orderedPosts[i].Name);   
+                socketHandler.SendMessage(optionSelect);
+                Menu(socketClient, socketHandler);
             }
         }
 

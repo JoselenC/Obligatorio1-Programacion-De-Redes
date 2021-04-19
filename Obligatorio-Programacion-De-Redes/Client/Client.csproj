@@ -9,6 +9,7 @@
       <ProjectReference Include="..\DataHandler\DataHandler.csproj" />
       <ProjectReference Include="..\Domain\Domain.csproj" />
       <ProjectReference Include="..\Protocol\Protocol.csproj" />
+      <ProjectReference Include="..\Server\Server.csproj" />
     </ItemGroup>
 
 </Project>

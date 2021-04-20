@@ -20,9 +20,9 @@ namespace Client
                 {
                     var headerHandler = new HeaderHandler();
                     var buffer = new byte[HeaderConstants.CommandLength + HeaderConstants.DataLength];
-                    new HomePageClient().Menu(clientSocket, socketHandler);
-                   buffer = socketHandler.Receive(HeaderConstants.CommandLength + HeaderConstants.DataLength);
                     
+                   new HomePageClient().Menu(clientSocket, socketHandler);
+                    buffer = socketHandler.Receive(HeaderConstants.CommandLength + HeaderConstants.DataLength);
                     Tuple<short, int> header = headerHandler.DecodeHeader(buffer);
                     switch (header.Item1)
                     {
@@ -30,6 +30,7 @@ namespace Client
                             new ClientService(repository).ClientList(socketHandler);
                             break;
                         case CommandConstants.CommandShowThemePostByCreationDate:
+                            Console.WriteLine("holasd");
                             new PostService(repository).ShowThemePostByCreationDate(socketHandler);
                             break;
                         case CommandConstants.CommandShowThemePostByTheme:

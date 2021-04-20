@@ -14,7 +14,7 @@ namespace Server
             string[] _options = {"Add theme", "Modify theme", "Delete theme", "Back"};
             while (!exit)
             {
-                var option = new MenuServer().ShowMenu(_options);
+                var option = new MenuServer().ShowMenu(_options,exit);
                 switch (option)
                 {
                     case 1:

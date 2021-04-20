@@ -8,7 +8,7 @@ namespace Server
     public class ClientPageServer
     {
         
-        public void ShowClientList(SocketHandler socketHandler)
+        public void ShowClientList(SocketHandler socketHandler,Socket socketClient)
         {
             Console.WriteLine("Name of the post to delete"); 
             string name = Console.ReadLine();

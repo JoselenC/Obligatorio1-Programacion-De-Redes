@@ -8,15 +8,14 @@ namespace Client
     public class PostPageClient
     {
 
-        public void Menu(Socket socketClient,SocketHandler socketHandler)
+        public void Menu(Socket socketClient,SocketHandler socketHandler,bool exit)
         {
             Console.Clear();
-            var exit = false;
             string[] _options = {"Add post", "Modify post", "Delete post", "Associate theme", "Disassociate theme","Back"};
             while (!exit)
             {
                 Console.WriteLine("----Menu----");
-                var option = new MenuClient().ShowMenu(_options);
+                var option = new MenuClient().ShowMenu(_options,false);
                 switch (option)
                 {
                     case 1:
@@ -44,7 +43,6 @@ namespace Client
                         new HomePageClient().Menu(socketClient,socketHandler);
                         break;
                     default:
-                        Console.WriteLine("Invalid option");
                         break;
                 }
             }
@@ -58,7 +56,7 @@ namespace Client
             if (optionSelect == "Back")
             {
                 socketHandler.SendMessage(optionSelect);
-                Menu(socketClient, socketHandler);
+                Menu(socketClient, socketHandler,false);
             }
             else
             {
@@ -75,7 +73,7 @@ namespace Client
             if (optionSelect == "Back")
             {
                 socketHandler.SendMessage(optionSelect);
-                Menu(socketClient, socketHandler);
+                Menu(socketClient, socketHandler,false);
             }
             else
             {
@@ -121,7 +119,7 @@ namespace Client
         {
             while (!exit)
             {
-                var option = new MenuClient().ShowMenu(_options);
+                var option = new MenuClient().ShowMenu(_options,false);
                 switch (option)
                 {
                     case 1:
@@ -130,7 +128,7 @@ namespace Client
                         break;
                     case 2:
                         exit = true;
-                        Menu(socketClient, socketHandler);
+                        Menu(socketClient, socketHandler,false);
                         break;
                 }
             }
@@ -143,7 +141,7 @@ namespace Client
             if (optionSelect == "Back")
             {
                 socketHandler.SendMessage(optionSelect);
-                Menu(socketClient, socketHandler);
+                Menu(socketClient, socketHandler,false);
             }
             else
             {
@@ -163,7 +161,7 @@ namespace Client
             if (optionSelect == "Back")
             {
                 socketHandler.SendMessage(optionSelect);
-                Menu(socketClient, socketHandler);
+                Menu(socketClient, socketHandler,false);
             }
             else
             {
@@ -172,7 +170,7 @@ namespace Client
                 if (optionSelectThemes == "Back")
                 {
                     socketHandler.SendMessage(optionSelectThemes);
-                    Menu(socketClient, socketHandler);
+                    Menu(socketClient, socketHandler,false);
                 }
                 else
                 {
@@ -192,7 +190,7 @@ namespace Client
             Console.WriteLine(message+"\n");
             Console.ForegroundColor = ConsoleColor.Black;
             string[] themesNames = socketHandler.ReceiveMessage();
-            int indexThemes = new MenuClient().ShowMenu(themesNames);
+            int indexThemes = new MenuClient().ShowMenu(themesNames,false);
             string optionSelectThemes = themesNames[indexThemes - 1];
             return optionSelectThemes;
         }
@@ -203,7 +201,7 @@ namespace Client
             Console.WriteLine(message+"\n");
             Console.ForegroundColor = ConsoleColor.Black;
             string[] postsNAmes = socketHandler.ReceiveMessage();
-            int index = new MenuClient().ShowMenu(postsNAmes);
+            int index = new MenuClient().ShowMenu(postsNAmes,false);
             string optionSelect = postsNAmes[index - 1];
             return optionSelect;
         }
@@ -243,7 +241,7 @@ namespace Client
             if (optionSelect == "Back")
             {
                 socketHandler.SendMessage(optionSelect);
-                Menu(SocketClient, socketHandler);
+                Menu(SocketClient, socketHandler,false);
             }
             else
             {

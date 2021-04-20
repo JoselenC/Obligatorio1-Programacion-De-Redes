@@ -19,7 +19,7 @@ namespace Server
             string[] _options = {"Show theme post", "Show post", "Show file post", "Back"};
             while (!exit)
             {
-                var option = new MenuServer().ShowMenu(_options);
+                var option = new MenuServer().ShowMenu(_options,false);
                 switch (option)
                 {
                     case 1:
@@ -51,7 +51,7 @@ namespace Server
             string[] _options = {"By creation date", "By theme", "By both", "Back"};
             while (!exit)
             {
-                var option = new MenuServer().ShowMenu(_options);
+                var option = new MenuServer().ShowMenu(_options,false);
                 switch (option)
                 {
                     case 1:
@@ -83,7 +83,7 @@ namespace Server
            Console.WriteLine(message+"\n");
            Console.ForegroundColor = ConsoleColor.Black;
            string[] postsNAmes = socketHandler.ReceiveMessage();
-           int index = new MenuServer().ShowMenu(postsNAmes);
+           int index = new MenuServer().ShowMenu(postsNAmes,false);
            string optionSelect = postsNAmes[index - 1];
            return optionSelect;
        }
@@ -94,7 +94,7 @@ namespace Server
            Console.WriteLine(message+"\n");
            Console.ForegroundColor = ConsoleColor.Black;
            string[] themesNames = socketHandler.ReceiveMessage();
-           int indexThemes = new MenuServer().ShowMenu(themesNames);
+           int indexThemes = new MenuServer().ShowMenu(themesNames,false);
            string optionSelectThemes = themesNames[indexThemes - 1];
            return optionSelectThemes;
        }

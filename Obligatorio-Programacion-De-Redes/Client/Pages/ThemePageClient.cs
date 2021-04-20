@@ -19,7 +19,7 @@ namespace Client
                 Console.ForegroundColor = ConsoleColor.DarkCyan;
                 Console.WriteLine("----Menu----");
                 Console.ForegroundColor = ConsoleColor.Black;
-                var option = new MenuClient().ShowMenu(_options);
+                var option = new MenuClient().ShowMenu(_options,exit);
                 switch (option)
                 {
                     case 1:
@@ -51,7 +51,7 @@ namespace Client
             Console.WriteLine("Delete theme");
             Console.ForegroundColor = ConsoleColor.Black;
             string[] postsNAmes = socketHandler.ReceiveMessage();
-            int index = new MenuClient().ShowMenu(postsNAmes);
+            int index = new MenuClient().ShowMenu(postsNAmes,false);
             string optionSelect = postsNAmes[index - 1];
             if (optionSelect == "Back")
             {
@@ -71,7 +71,7 @@ namespace Client
             Console.ForegroundColor = ConsoleColor.DarkCyan;
             Console.WriteLine("Modify theme\n");
             string[] postsNames = socketHandler.ReceiveMessage();
-            int index=new MenuClient().ShowMenu(postsNames);
+            int index=new MenuClient().ShowMenu(postsNames,false);
             string optionSelected = postsNames[index-1];
             if (optionSelected == "Back")
             {

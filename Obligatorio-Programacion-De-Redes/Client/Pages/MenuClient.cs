@@ -1,12 +1,12 @@
 ﻿using System;
+using System.Threading;
 
 namespace Client
 {
     public class MenuClient
     {
-        public int ShowMenu( string[] _options)
+        public int ShowMenu( string[] _options,bool salir)
         {
-            bool salir = false;
             int index = 0;
             while (!salir)
             {
@@ -24,30 +24,41 @@ namespace Client
                 
                     Console.WriteLine($"{prefix}{_options[i]}");
                 }
-                switch (Console.ReadKey().Key)
-                {
-                    case ConsoleKey.Enter:
-                        Console.Clear();
-                        return index+1;
-                    case ConsoleKey.UpArrow:
-                        Console.Clear();
-                        if (index > 0)
-                            index = index - 1;
-                        break;
-                    case ConsoleKey.DownArrow:
-                        Console.Clear();
-                        if (index < _options.Length-1)
-                            index = index + 1;
-                        else
-                            index = 0;
-                        break;
-                    case ConsoleKey.Escape:
-                        index = _options.Length-1;
-                        break;
+
+                if(){
+                    switch (Console.ReadKey(true).Key)
+                    {
+                        case ConsoleKey.Enter:
+                            Console.Clear();
+                            return index + 1;
+                        case ConsoleKey.UpArrow:
+                            Console.Clear();
+                            if (index > 0)
+                                index = index - 1;
+                            break;
+                        case ConsoleKey.DownArrow:
+                            Console.Clear();
+                            if (index < _options.Length - 1)
+                                index = index + 1;
+                            else
+                                index = 0;
+                            break;
+                        case ConsoleKey.Escape:
+                            index = _options.Length - 1;
+                            break;
+                        
+                    }
+                    salir = false;
                 }
+                else
+                {
+                    salir = true;
+                }
+
             }
 
-            return 1;
+            return 0;
         }
+        
     }
 }

@@ -13,10 +13,8 @@ namespace Server
     public class HandleClient
     {
         public void HandleClientMethod(Socket clientSocket,MemoryRepository repository,bool _exit, List<Socket> connectedClients)
-        {
+        { 
             SocketHandler socketHandler = new SocketHandler(clientSocket);
-            var threadClient = new Thread(() => new HomePageServer().Menu(clientSocket, socketHandler));
-            threadClient.Start();
             try
             {
                 while (!_exit)
@@ -24,13 +22,15 @@ namespace Server
                     
                     var headerHandler = new HeaderHandler();
                     var buffer = new byte[HeaderConstants.CommandLength + HeaderConstants.DataLength];
+                    new HomePageServer().Menu(clientSocket, socketHandler);
                     buffer = socketHandler.Receive(HeaderConstants.CommandLength + HeaderConstants.DataLength);
                     Tuple<short, int> header = headerHandler.DecodeHeader(buffer);
                     switch (header.Item1)
                     {
                         case CommandConstants.CommandAddPost:
-                            new PostService(repository).AddPost(socketHandler);
-                            break;
+                            Console.WriteLine("add post");
+                                new PostService(repository).AddPost(socketHandler);
+                                break;
                         case CommandConstants.CommandModifyPost:
                             new PostService(repository).ModifyPost(socketHandler);
                             break;

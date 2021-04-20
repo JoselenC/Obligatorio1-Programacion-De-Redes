@@ -17,33 +17,37 @@ namespace Client
             while (!exit)
             {
                 Console.WriteLine("----Menu----");
-                var option = new MenuClient().ShowMenu(_options);
-                switch (option)
+                var option = new MenuClient().ShowMenu(_options,exit);
+                if (option == 0)
+                    exit = true;
+                else
                 {
-                    case 1:
-                        new PostPageClient().Menu(SocketClient, socketHandler);
-                        break;
-                    case 2:
-                        new ThemePageClient().Menu(SocketClient,socketHandler);
-                        break;
-                    case 3:
-                        new FilePageClient().UploadFile(socketHandler,SocketClient);
-                        break;
-                    case 4:
-                        SendData(9,SocketClient);
-                        new PostPageClient().SearchPost(socketHandler,SocketClient); 
-                        break;
-                    case 5:
-                        SendData(6,SocketClient);
-                        exit = true;
-                        SocketClient.Shutdown(SocketShutdown.Both);
-                        SocketClient.Close();
-                        break;
-                    default:
-                        Console.WriteLine("Invalid option");
-                        break;
+                    switch (option)
+                    {
+                        case 1:
+                            new PostPageClient().Menu(SocketClient, socketHandler, exit);
+                            break;
+                        case 2:
+                            new ThemePageClient().Menu(SocketClient, socketHandler);
+                            break;
+                        case 3:
+                            new FilePageClient().UploadFile(socketHandler, SocketClient);
+                            break;
+                        case 4:
+                            SendData(9, SocketClient);
+                            new PostPageClient().SearchPost(socketHandler, SocketClient);
+                            break;
+                        case 5:
+                            SendData(6, SocketClient);
+                            exit = true;
+                            SocketClient.Shutdown(SocketShutdown.Both);
+                            SocketClient.Close();
+                            break;
+                        default:
+                            Console.WriteLine("Invalid option");
+                            break;
+                    }
                 }
-             
             }
         }
         private static byte[] ConvertDataToHeader(short command, int data)

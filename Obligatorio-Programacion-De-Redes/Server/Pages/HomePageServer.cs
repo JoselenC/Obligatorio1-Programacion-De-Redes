@@ -16,32 +16,38 @@ namespace Server
             string[] _options = {"Client list", "Posts", "Themes", "File", "Exit"};
             while (!exit)
             {
-                var option = new MenuServer().ShowMenu(_options);
-                switch (option)
+                Console.WriteLine("----Menu----");
+                var option = new MenuServer().ShowMenu(_options,exit);
+                if (option == 0)
+                    exit = true;
+                else
                 {
-                    case 1:
-                        SendData(13,SocketClient);
-                        new ClientPageServer().ShowClientList(socketHandler);
-                        break;
-                    case 2:
-                        new PostPageServer().Menu(SocketClient, socketHandler);
-                        break;
-                    case 3:
-                        SendData(3,SocketClient);
-                        new ThemePageServer().Menu(SocketClient, socketHandler);
-                        break;
-                    case 4:
-                        SendData(19,SocketClient);
-                        new FilePageServer().ShowFileList(socketHandler);
-                        break;
-                    case 5:
-                        exit = true;
-                        SocketClient.Shutdown(SocketShutdown.Both);
-                        SocketClient.Close();
-                        break;
-                    default:
-                        Console.WriteLine("Invalid option");
-                        break;
+                    switch (option)
+                    {
+                        case 1:
+                            SendData(13, SocketClient);
+                            new ClientPageServer().ShowClientList(socketHandler, SocketClient);
+                            break;
+                        case 2:
+                            new PostPageServer().Menu(SocketClient, socketHandler);
+                            break;
+                        case 3:
+                            SendData(3, SocketClient);
+                            new ThemePageServer().Menu(SocketClient, socketHandler);
+                            break;
+                        case 4:
+                            SendData(19, SocketClient);
+                            new FilePageServer().ShowFileList(socketHandler);
+                            break;
+                        case 5:
+                            exit = true;
+                            SocketClient.Shutdown(SocketShutdown.Both);
+                            SocketClient.Close();
+                            break;
+                        default:
+                            Console.WriteLine("Invalid option");
+                            break;
+                    }
                 }
             }
         }

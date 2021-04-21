@@ -40,24 +40,25 @@ namespace Server
 
         private static void ListenForConnections(Socket socketServer,MemoryRepository repository)
         {
-            while (!_exit)
+            try
             {
-                try
-                {
-                    var socketConnected = socketServer.Accept();
-                    ConnectedClients.Add(socketConnected);
-                    new HandleClient().HandleClientMethod(socketConnected,repository,_exit,ConnectedClients);
-                }
-                catch (SocketException se)
-                {
-                    Console.WriteLine("El servidor está cerrándose...");
-                    _exit = true;
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e.Message);
-                }
+                var socketConnected = socketServer.Accept();
+                ConnectedClients.Add(socketConnected);
+                SocketHandler socketHandler = new SocketHandler(socketConnected);
+                new Thread(a => new HomePageServer().Menu(socketConnected, socketHandler)).Start();
+                new HandleClient().HandleClientMethod(socketConnected, repository, _exit, ConnectedClients,
+                    socketHandler);
             }
+            catch (SocketException se)
+            {
+                Console.WriteLine("El servidor está cerrándose...");
+                _exit = true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+
             Console.WriteLine("Saliendo del listen...");
         }
     }

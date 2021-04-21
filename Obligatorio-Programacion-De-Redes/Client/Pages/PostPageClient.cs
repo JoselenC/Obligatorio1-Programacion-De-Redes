@@ -10,43 +10,51 @@ namespace Client
 
         public void Menu(Socket socketClient,SocketHandler socketHandler,bool exit)
         {
-            Console.Clear();
             string[] _options = {"Add post", "Modify post", "Delete post", "Associate theme", "Disassociate theme","Back"};
-            while (!exit)
+            Console.WriteLine("----Menu----");
+            for (var i = 0; i < _options.Length; i++)
             {
-                Console.WriteLine("----Menu----");
-                var option = new MenuClient().ShowMenu(_options,false);
+                var prefix =i;
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.BackgroundColor = ConsoleColor.Black;
+                Console.WriteLine($"{prefix}{_options[i]}");
+            }
+            var var = Console.ReadLine();
+            int option= Int32.Parse(var);
                 switch (option)
                 {
                     case 1:
-                        socketHandler.SendData(1,socketClient);
-                        AddPost(socketHandler,socketClient);
+                        Console.Clear();
+                        socketHandler.SendData(1, socketClient);
+                        AddPost(socketHandler, socketClient);
                         break;
                     case 2:
-                        socketHandler.SendData(2,socketClient);
-                        ModifyPost(socketHandler,socketClient);
+                        Console.Clear();
+                        socketHandler.SendData(2, socketClient);
+                        ModifyPost(socketHandler, socketClient);
                         break;
                     case 3:
-                        socketHandler.SendData(3,socketClient);
-                        DeletePost(socketHandler,socketClient);
+                        Console.Clear();
+                        socketHandler.SendData(3, socketClient);
+                        DeletePost(socketHandler, socketClient);
                         break;
                     case 4:
-                        socketHandler.SendData(4,socketClient);
-                        AsociateTheme( socketHandler,socketClient);
+                        Console.Clear();
+                        socketHandler.SendData(4, socketClient);
+                        AsociateTheme(socketHandler, socketClient);
                         break;
                     case 5:
-                        socketHandler.SendData(11,socketClient);
-                        DisassociateTheme( socketHandler,socketClient);
+                        Console.Clear();
+                        socketHandler.SendData(11, socketClient);
+                        DisassociateTheme(socketHandler, socketClient);
                         break;
                     case 6:
-                        exit = true;
-                        new HomePageClient().Menu(socketClient,socketHandler);
+                        Console.Clear();
+                        new HomePageClient().Menu(socketClient, socketHandler);
                         break;
                     default:
                         break;
                 }
-            }
-     
         }
 
        private void DeletePost(SocketHandler socketHandler,Socket socketClient)
@@ -63,6 +71,7 @@ namespace Client
                 socketHandler.SendMessage(optionSelect);
                 string[] messageArray = socketHandler.ReceiveMessage();
                 Console.WriteLine(messageArray[0]);
+                Menu(socketClient, socketHandler,false);
             }
         }
 
@@ -89,6 +98,7 @@ namespace Client
                 socketHandler.SendMessage(message);
                 string[] messageArray = socketHandler.ReceiveMessage();
                 Console.WriteLine(messageArray[0]);
+                Menu(socketClient, socketHandler,false);
             }
 
         }
@@ -111,15 +121,23 @@ namespace Client
             string[] messageArray = socketHandler.ReceiveMessage();
             Console.WriteLine(messageArray[0]);
             AssociateThemePost(socketHandler, socketClient, exit, _options, name);
+            Menu(socketClient, socketHandler,false);
            
         }
 
         private void AssociateThemePost(SocketHandler socketHandler, Socket socketClient, bool exit, string[] _options,
             string name)
         {
-            while (!exit)
-            {
-                var option = new MenuClient().ShowMenu(_options,false);
+                Console.WriteLine("----Menu----");
+                for (var i = 0; i < _options.Length; i++)
+                {
+                    var prefix =i+1;
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.BackgroundColor = ConsoleColor.Black;
+                    Console.WriteLine($"{prefix}{_options[i]}");
+                }
+                var var = Console.ReadLine();
+                int option= Int32.Parse(var);
                 switch (option)
                 {
                     case 1:
@@ -130,7 +148,7 @@ namespace Client
                         exit = true;
                         Menu(socketClient, socketHandler,false);
                         break;
-                }
+                
             }
         }
 
@@ -149,6 +167,7 @@ namespace Client
                 socketHandler.SendMessage(message);
                 string[] messageArray = socketHandler.ReceiveMessage();
                 Console.WriteLine(messageArray[0]);
+                Menu(socketClient, socketHandler,false);
             }
 
         }
@@ -180,7 +199,9 @@ namespace Client
                     socketHandler.SendMessage(message);
                     string[] messageArray = socketHandler.ReceiveMessage();
                     Console.WriteLine(messageArray[0]);
+                    Menu(socketClient, socketHandler,false);
                 }
+                
             }
         }
 
@@ -190,9 +211,19 @@ namespace Client
             Console.WriteLine(message+"\n");
             Console.ForegroundColor = ConsoleColor.Black;
             string[] themesNames = socketHandler.ReceiveMessage();
-            int indexThemes = new MenuClient().ShowMenu(themesNames,false);
-            string optionSelectThemes = themesNames[indexThemes - 1];
+            Console.WriteLine("----Themes----");
+            for (var i = 0; i < themesNames.Length; i++)
+            {
+                var prefix =i;
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.BackgroundColor = ConsoleColor.Black;
+                Console.WriteLine($"{prefix}{themesNames[i]}");
+            }
+            var var=Console.ReadLine();
+            int indexThemes= Int32.Parse(var);
+            string optionSelectThemes = themesNames[indexThemes-1];
             return optionSelectThemes;
+            
         }
 
         private static string ReceiveListPost(SocketHandler socketHandler,string message)
@@ -201,8 +232,17 @@ namespace Client
             Console.WriteLine(message+"\n");
             Console.ForegroundColor = ConsoleColor.Black;
             string[] postsNAmes = socketHandler.ReceiveMessage();
-            int index = new MenuClient().ShowMenu(postsNAmes,false);
-            string optionSelect = postsNAmes[index - 1];
+            Console.WriteLine("----Themes----");
+            for (var i = 0; i < postsNAmes.Length; i++)
+            {
+                var prefix =i;
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.BackgroundColor = ConsoleColor.Black;
+                Console.WriteLine($"{prefix}{postsNAmes[i]}");
+            }
+            var var=Console.ReadLine();
+            int index= Int32.Parse(var);
+            string optionSelect = postsNAmes[index-1];
             return optionSelect;
         }
 
@@ -230,6 +270,7 @@ namespace Client
                     socketHandler.SendMessage(message);
                     string[] messageArray = socketHandler.ReceiveMessage();
                     Console.WriteLine(messageArray[0]);
+                    Menu(SocketClient, socketHandler,false);
                 }
             }
         }
@@ -252,6 +293,7 @@ namespace Client
                 Console.WriteLine("name:" + name);
                 string creationDate = messageArray[1];
                 Console.WriteLine("Creation date:" + creationDate);
+                Menu(SocketClient, socketHandler,false);
             }
         }
     }

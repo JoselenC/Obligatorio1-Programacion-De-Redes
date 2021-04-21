@@ -12,9 +12,9 @@ namespace Server
 {
     public class HandleClient
     {
-        public void HandleClientMethod(Socket clientSocket,MemoryRepository repository,bool _exit, List<Socket> connectedClients)
+        public void HandleClientMethod(Socket clientSocket,MemoryRepository repository,bool _exit, List<Socket> connectedClients,SocketHandler socketHandler)
         { 
-            SocketHandler socketHandler = new SocketHandler(clientSocket);
+            
             try
             {
                 while (!_exit)
@@ -22,7 +22,6 @@ namespace Server
                     
                     var headerHandler = new HeaderHandler();
                     var buffer = new byte[HeaderConstants.CommandLength + HeaderConstants.DataLength];
-                    new HomePageServer().Menu(clientSocket, socketHandler);
                     buffer = socketHandler.Receive(HeaderConstants.CommandLength + HeaderConstants.DataLength);
                     Tuple<short, int> header = headerHandler.DecodeHeader(buffer);
                     switch (header.Item1)
@@ -65,7 +64,6 @@ namespace Server
                             Console.WriteLine("The client logged out");
                             break;
                         default:
-                            Console.WriteLine("No valid command received");
                             break;
                     }
                   

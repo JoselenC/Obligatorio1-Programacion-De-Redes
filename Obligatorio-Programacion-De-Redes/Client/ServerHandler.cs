@@ -11,18 +11,15 @@ namespace Client
 {
     public class ServerHandler
     {
-         public void HandleClientMethod(Socket clientSocket,MemoryRepository repository,bool _exit)
+        public void HandleClientMethod(Socket clientSocket, MemoryRepository repository, bool _exit, SocketHandler socketHandler)
         {
-            SocketHandler socketHandler = new SocketHandler(clientSocket);
             try
             {
                 while (!_exit)
                 {
                     var headerHandler = new HeaderHandler();
                     var buffer = new byte[HeaderConstants.CommandLength + HeaderConstants.DataLength];
-                    
-                   new HomePageClient().Menu(clientSocket, socketHandler);
-                    buffer = socketHandler.Receive(HeaderConstants.CommandLength + HeaderConstants.DataLength);
+                    socketHandler.Receive(HeaderConstants.CommandLength + HeaderConstants.DataLength);
                     Tuple<short, int> header = headerHandler.DecodeHeader(buffer);
                     switch (header.Item1)
                     {
@@ -30,7 +27,7 @@ namespace Client
                             new ClientService(repository).ClientList(socketHandler);
                             break;
                         case CommandConstants.CommandShowThemePostByCreationDate:
-                            Console.WriteLine("holasd");
+                            Console.WriteLine("add post");
                             new PostService(repository).ShowThemePostByCreationDate(socketHandler);
                             break;
                         case CommandConstants.CommandShowThemePostByTheme:
@@ -59,10 +56,9 @@ namespace Client
                             //Your Command code here
                             break;
                         default:
-                            Console.WriteLine("No valid command received");
                             break;
+
                     }
-                
                 }
             }
             catch (SocketException e)
@@ -70,5 +66,6 @@ namespace Client
                 Console.WriteLine("Removing client....");
             }
         }
+        
     }
 }

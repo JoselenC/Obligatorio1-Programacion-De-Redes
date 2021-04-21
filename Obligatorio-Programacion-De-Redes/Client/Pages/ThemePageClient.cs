@@ -14,45 +14,44 @@ namespace Client
             Console.Clear();
             var exit = false;
             string[] _options = {"Add theme", "Modify theme", "Delete theme","Back"};
-            while (!exit)
+            Console.WriteLine("----Menu----");
+            for (var i = 0; i < _options.Length; i++)
             {
-                Console.ForegroundColor = ConsoleColor.DarkCyan;
-                Console.WriteLine("----Menu----");
-                Console.ForegroundColor = ConsoleColor.Black;
-                var option = new MenuClient().ShowMenu(_options,exit);
-                switch (option)
-                {
-                    case 1:
-                        socketHandler.SendData(5,SocketClient);
-                        AddTheme(socketHandler);
-                        break;
-                    case 2:
-                        socketHandler.SendData(6,SocketClient);
-                        ModifyTheme(socketHandler,SocketClient);
-                        break;
-                    case 3:
-                        socketHandler.SendData(7,SocketClient);
-                        DeleteTheme(socketHandler,SocketClient);
-                        break;
-                    case 4:
-                        exit = true;
-                        new HomePageClient().Menu(SocketClient,socketHandler);
-                        break;
-                    default:
-                        Console.WriteLine("Invalid option");
-                        break;
-                }
+                var prefix =i;
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.BackgroundColor = ConsoleColor.Black;
+                Console.WriteLine($"{prefix}{_options[i]}");
+            }
+            var var = Console.ReadLine();
+            int option= Int32.Parse(var);
+            switch (option)
+            {
+                case 1:
+                    socketHandler.SendData(5, SocketClient);
+                    AddTheme(socketHandler,SocketClient);
+                    break;
+                case 2:
+                    socketHandler.SendData(6, SocketClient);
+                    ModifyTheme(socketHandler, SocketClient);
+                    break;
+                case 3:
+                    socketHandler.SendData(7, SocketClient);
+                    DeleteTheme(socketHandler, SocketClient);
+                    break;
+                case 4:
+                    exit = true;
+                    new HomePageClient().Menu(SocketClient, socketHandler);
+                    break;
+                default:
+                    Console.WriteLine("Invalid option");
+                    break;
+
             }
         }
 
         private void DeleteTheme(SocketHandler socketHandler, Socket socketClient)
         {
-            Console.ForegroundColor = ConsoleColor.DarkCyan;
-            Console.WriteLine("Delete theme");
-            Console.ForegroundColor = ConsoleColor.Black;
-            string[] postsNAmes = socketHandler.ReceiveMessage();
-            int index = new MenuClient().ShowMenu(postsNAmes,false);
-            string optionSelect = postsNAmes[index - 1];
+            string optionSelect= ReceiveListThemes(socketHandler,"Themes");
             if (optionSelect == "Back")
             {
                 socketHandler.SendMessage(optionSelect);
@@ -63,16 +62,33 @@ namespace Client
                 socketHandler.SendMessage(optionSelect);
                 string[] messageArray = socketHandler.ReceiveMessage();
                 Console.WriteLine(messageArray[0]);
+                Menu(socketClient, socketHandler);
             }
+        }
+        
+        private static string ReceiveListThemes(SocketHandler socketHandler,string message)
+        {
+            Console.ForegroundColor = ConsoleColor.DarkCyan;
+            Console.WriteLine(message+"\n");
+            Console.ForegroundColor = ConsoleColor.Black;
+            string[] postsNAmes = socketHandler.ReceiveMessage();
+            Console.WriteLine("----Themes----");
+            for (var i = 0; i < postsNAmes.Length; i++)
+            {
+                var prefix =i;
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.BackgroundColor = ConsoleColor.Black;
+                Console.WriteLine($"{prefix}{postsNAmes[i]}");
+            }
+            var var=Console.ReadLine();
+            int index= Int32.Parse(var);
+            string optionSelect = postsNAmes[index-1];
+            return optionSelect;
         }
 
         private void ModifyTheme(SocketHandler socketHandler,Socket socketClient)
         {
-            Console.ForegroundColor = ConsoleColor.DarkCyan;
-            Console.WriteLine("Modify theme\n");
-            string[] postsNames = socketHandler.ReceiveMessage();
-            int index=new MenuClient().ShowMenu(postsNames,false);
-            string optionSelected = postsNames[index-1];
+            string optionSelected= ReceiveListThemes(socketHandler,"Themes");
             if (optionSelected == "Back")
             {
                 socketHandler.SendMessage(optionSelected);
@@ -93,10 +109,11 @@ namespace Client
                 socketHandler.SendMessage(message);
                 string[] messageArray = socketHandler.ReceiveMessage();
                 Console.WriteLine(messageArray[0]);
+                Menu(socketClient, socketHandler);
             }
         }
 
-        public void AddTheme(SocketHandler socketHandler)
+        public void AddTheme(SocketHandler socketHandler,Socket socketClient)
         {
             Console.Write("New theme \n");
             Console.ForegroundColor = ConsoleColor.DarkCyan;
@@ -114,6 +131,7 @@ namespace Client
             socketHandler.Send(data);
             string[] messageArray = socketHandler.ReceiveMessage();
             Console.WriteLine(messageArray[0]);
+            Menu(socketClient, socketHandler);
         }
 
         

@@ -132,9 +132,20 @@ namespace Domain.Services
             return false;
         }
 
+        private void SendListThemes(SocketHandler socketHandler)
+        {
+            string posts = "";
+            for (int i = 0; i < repository.Themes.Count; i++)
+            {
+                posts +=repository.Themes[i].Name + "#";
+            }
+            posts += "Back";
+            socketHandler.SendMessage(posts);
+        }
+        
         public void ShowThemeList(SocketHandler socketHandler)
         {
-            throw new NotImplementedException();
+            SendListThemes(socketHandler);
         }
     }
 }

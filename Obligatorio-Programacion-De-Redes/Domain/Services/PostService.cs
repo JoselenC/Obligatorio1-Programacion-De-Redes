@@ -18,11 +18,10 @@ namespace Domain.Services
         {
             Post postByName = repository.Posts.Find(x => x.Name == namePost);
             string themes = "";
-            foreach (var theme in postByName.Theme)
+            for (int i = 0; i < postByName.Theme.Count; i++)
             {
-                themes += theme.Name + "#";
+                themes +=postByName.Theme[i].Name + "#";
             }
-
             themes += "Back";
             socketHandler.SendMessage(themes);
         }
@@ -30,11 +29,10 @@ namespace Domain.Services
         private void SendListPost(SocketHandler socketHandler)
         {
             string posts = "";
-            foreach (var post in repository.Posts)
+            for (int i = 0; i < repository.Posts.Count; i++)
             {
-                posts += post.Name + "#";
+                posts +=repository.Posts[i].Name + "#";
             }
-
             posts += "Back";
             socketHandler.SendMessage(posts);
         }
@@ -42,11 +40,10 @@ namespace Domain.Services
         private void SendListThemes(SocketHandler socketHandler)
         {
             string posts = "";
-            foreach (var post in repository.Themes)
+            for (int i = 0; i < repository.Themes.Count; i++)
             {
-                posts += post.Name + "#";
+                posts +=repository.Themes[i].Name + "#";
             }
-
             posts += "Back";
             socketHandler.SendMessage(posts);
         }
@@ -316,12 +313,43 @@ namespace Domain.Services
 
        public void ShowFilePost(SocketHandler socketHandler)
        {
-           throw new NotImplementedException();
+           string[] messageArray = socketHandler.ReceiveMessage();
+           string namePost = messageArray[0];
+           if (namePost != "Back")
+           {
+               string message;
+               if (AlreadyExistPost(namePost))
+               {
+                   Post post = repository.Posts.Find(x => x.Name == namePost);
+                   File file = repository.Files.Find(x => x.Name == post.File.Name);
+                   if(file!=null)
+                     message= file.Name+"#" + file.Size+
+                   "#" + file.UploadDate;
+                   else
+                   message= "The post " + namePost + "has no file";
+                   
+               }
+               else
+
+               {
+                   message = "The post " + namePost + " does not exist";
+               } 
+               socketHandler.SendMessage(message);
+           }
        }
 
        public void ShowThemeWithMorePosts(SocketHandler socketHandler)
        {
-           throw new NotImplementedException();
+           int max= Int32.MinValue;
+           string themeName = "";
+           foreach (var theme in repository.Themes)
+           {
+               if (theme.Posts.Count > max)
+               {
+                   max = theme.Posts.Count;
+                   themeName = theme.Name;
+               }
+           }
        }
 
        public void ShowThemePostByCreationDate(SocketHandler socketHandler)

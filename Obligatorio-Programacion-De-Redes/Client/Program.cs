@@ -28,8 +28,12 @@ namespace Client
             try
             {
 
-                var threadClient = new Thread(x=>new ServerHandler().HandleClientMethod(SocketClient, repository, _exit));
+                var threadClient2 = new Thread(x=>new HomePageClient().Menu(SocketClient, socketHandler));
+                var threadClient = new Thread(x=>new ServerHandler().HandleClientMethod(SocketClient, repository, _exit,socketHandler));
+                threadClient2.Start();
                 threadClient.Start();
+                
+                
                 
             }
             catch (SocketException e)

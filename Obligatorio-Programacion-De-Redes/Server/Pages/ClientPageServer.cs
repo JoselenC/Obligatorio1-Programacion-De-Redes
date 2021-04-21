@@ -10,13 +10,18 @@ namespace Server
         
         public void ShowClientList(SocketHandler socketHandler,Socket socketClient)
         {
-            Console.WriteLine("Name of the post to delete"); 
-            string name = Console.ReadLine();
-            byte[] data = System.Text.Encoding.UTF8.GetBytes(name);
-            byte[] dataLength = BitConverter.GetBytes(data.Length);
-            socketHandler.Send(dataLength);
-            socketHandler.Send(data);
-            Console.WriteLine("Message sent to the server");
+            string[] data = socketHandler.ReceiveMessage();
+            if (data.Length == 1)
+            {
+                Console.WriteLine(data[0]);
+            }
+            else
+            {
+                for (int i = 0; i < data.Length - 3; i = i + 3)
+                {
+                    Console.WriteLine("Client " + i+1 + "Hour of connection: " + data[i] + "Port: " + data[i+1] + "Ip: " + data[i+2] + "\n");
+                }
+            }
         }
 
     }

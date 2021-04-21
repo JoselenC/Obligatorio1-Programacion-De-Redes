@@ -12,7 +12,20 @@ namespace Domain.Services
         }
         public void ClientList(SocketHandler socketHandler)
         {
-            throw new System.NotImplementedException();
+            string data = "";
+            if (Repository.ClientsConnections.Count == 0)
+            {
+                data = "No clients connected";
+            }
+            else
+            {
+                foreach (var clientConnection in Repository.ClientsConnections)
+                {
+                    data += clientConnection.TimeOfConnection + "#" + clientConnection.LocalEndPoint + "#" + 
+                            clientConnection.Ip; 
+                }
+            }
+            socketHandler.SendMessage(data);
         }
     }
 }

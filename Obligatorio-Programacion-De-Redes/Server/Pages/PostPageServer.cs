@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Net.Sockets;
 using BusinessLogic;
-using Client;
 using Domain;
 using DataHandler;
 using Domain.Services;

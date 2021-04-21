@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Net.Sockets;
-using Protocol;
+using ProtocolString;
 using DataHandler;
 
 namespace Server

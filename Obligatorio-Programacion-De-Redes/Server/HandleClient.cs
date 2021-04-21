@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.Net.Sockets;
 using System.Threading;
 using BusinessLogic;
-using Client;
 using DataHandler;
 using Domain.Services;
-using Protocol;
+using ProtocolString;
 
 namespace Server
 {

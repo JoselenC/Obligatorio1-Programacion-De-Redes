@@ -5,8 +5,4 @@
         <RootNamespace>Protocol</RootNamespace>
     </PropertyGroup>
 
-    <ItemGroup>
-      <ProjectReference Include="..\ProtocolString\ProtocolString.csproj" />
-    </ItemGroup>
-
 </Project>

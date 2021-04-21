@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Net.Sockets;
-using Protocol;
+using ProtocolString;
 
 namespace DataHandler
 {
-    public class SocketHandler : ISocketHandler
+    public class SocketHandler 
     {
         private readonly Socket _socket;
 

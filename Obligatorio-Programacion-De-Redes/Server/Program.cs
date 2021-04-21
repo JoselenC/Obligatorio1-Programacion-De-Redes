@@ -5,6 +5,7 @@ using System.Net.Sockets;
 using System.Threading;
 using BusinessLogic;
 using DataHandler;
+using Domain;
 
 namespace Server
 {
@@ -24,7 +25,6 @@ namespace Server
             threadServer.Start();
             foreach (var socketClient in ConnectedClients)
             {
-               
                 try
                 {
                     socketClient.Shutdown(SocketShutdown.Both);
@@ -44,6 +44,13 @@ namespace Server
             {
                 var socketConnected = socketServer.Accept();
                 ConnectedClients.Add(socketConnected);
+                ClientConnection clientConnection = new ClientConnection()
+                {
+                    TimeOfConnection = new DateTime().ToLocalTime().ToString(),
+                    LocalEndPoint = socketConnected.LocalEndPoint.ToString(),
+                    Ip = "127.0.0.1"
+                };
+                repository.ClientsConnections.Add(clientConnection);
                 SocketHandler socketHandler = new SocketHandler(socketConnected);
                 new Thread(a => new HomePageServer().Menu(socketConnected, socketHandler)).Start();
                 new HandleClient().HandleClientMethod(socketConnected, repository, _exit, ConnectedClients,

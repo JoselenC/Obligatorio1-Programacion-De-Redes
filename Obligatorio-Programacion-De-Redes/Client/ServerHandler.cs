@@ -5,7 +5,7 @@ using System.Threading;
 using BusinessLogic;
 using DataHandler;
 using Domain.Services;
-using Protocol;
+using ProtocolString;
 
 namespace Client
 {
@@ -57,7 +57,6 @@ namespace Client
                             break;
                         default:
                             break;
-
                     }
                 }
             }

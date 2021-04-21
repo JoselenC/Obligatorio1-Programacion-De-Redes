@@ -4,7 +4,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading;
 using System.Threading.Tasks;
 using BusinessLogic;
-using Protocol;
+using ProtocolString;
 using DataHandler;
 
 namespace Client

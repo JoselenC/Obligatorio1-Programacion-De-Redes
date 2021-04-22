@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net.Sockets;
+using System.Text.RegularExpressions;
 using Domain;
 using DataHandler;
 
@@ -95,10 +96,10 @@ namespace Client
                 Console.Write("Creation date: ");
                 Console.ForegroundColor = ConsoleColor.Black;
                 string creationDate = Console.ReadLine();
-                if (!GoodFormat(creationDate))
+                while(!GoodFormat(creationDate))
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
-                    Console.Write("The date format must be: \n" +  "MM/dd/yyyy or dd/mm/yyyy or dd/MM/yyyy");
+                    Console.Write("The date format must be: \n" +  "dd/mm/yyyy \n");
                     Console.ForegroundColor = ConsoleColor.Magenta;
                     Console.Write("Creation date: ");
                     Console.ForegroundColor = ConsoleColor.Black;
@@ -116,14 +117,11 @@ namespace Client
 
         private bool GoodFormat(string creationDate)
         {
-            DateTime fechaValidada;
-            var formatos = new[]
-            {
-                "MM/dd/yyyy", "dd/mm/yyyy", "dd/MM/yyyy h:mm:ss", "MM/dd/yyyy hh:mm tt", "yyyy'-'MM'-'dd'T'HH':'mm':'ss"
-            };
-            return DateTime.TryParseExact(creationDate, formatos, System.Globalization.CultureInfo.InvariantCulture,
-                System.Globalization.DateTimeStyles.None, out fechaValidada);
-
+            Regex regex = new Regex(@"\b\d{1,2}(/|-|.|\s)\d{1,2}(/|-|.|\s)(\d{4}|\d{2})");
+             var match = regex.Match(creationDate);
+                if(match.Success)
+                return true;
+                return false;        
         }
 
         public void AddPost(SocketHandler socketHandler,Socket socketClient)
@@ -146,6 +144,15 @@ namespace Client
             Console.Write("Creation date: ");
             Console.ForegroundColor = ConsoleColor.Black;
             string creationDate = Console.ReadLine();
+            while(!GoodFormat(creationDate))
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.Write("The date format must be: \n" +  "MM:dd:yyyy or dd/mm/yyyy \n");
+                Console.ForegroundColor = ConsoleColor.Magenta;
+                Console.Write("Creation date: ");
+                Console.ForegroundColor = ConsoleColor.Black;
+                name = Console.ReadLine();
+            }
             string message = name + "#" + creationDate;
             socketHandler.SendMessage(message);
             var exit = false;

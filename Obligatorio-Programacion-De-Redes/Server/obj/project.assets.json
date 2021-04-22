@@ -42,6 +42,9 @@
       "ProtocolFiles/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v3.1",
+        "dependencies": {
+          "DataHandler": "1.0.0"
+        },
         "compile": {
           "bin/placeholder/ProtocolFiles.dll": {}
         },

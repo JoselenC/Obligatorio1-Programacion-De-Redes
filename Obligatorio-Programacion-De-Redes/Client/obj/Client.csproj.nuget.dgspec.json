@@ -213,7 +213,11 @@
         "frameworks": {
           "netcoreapp3.1": {
             "targetAlias": "netcoreapp3.1",
-            "projectReferences": {}
+            "projectReferences": {
+              "C:\\Users\\Choche\\OneDrive\\Escritorio\\Semestre 6\\Programacion de redes\\Obligatorio1-Programacion-De-Redes\\Obligatorio-Programacion-De-Redes\\DataHandler\\DataHandler.csproj": {
+                "projectPath": "C:\\Users\\Choche\\OneDrive\\Escritorio\\Semestre 6\\Programacion de redes\\Obligatorio1-Programacion-De-Redes\\Obligatorio-Programacion-De-Redes\\DataHandler\\DataHandler.csproj"
+              }
+            }
           }
         },
         "warningProperties": {

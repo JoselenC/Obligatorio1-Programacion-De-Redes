@@ -40,6 +40,9 @@
         }
       },
       "ProtocolFiles/1.0.0": {
+        "dependencies": {
+          "DataHandler": "1.0.0"
+        },
         "runtime": {
           "ProtocolFiles.dll": {}
         }

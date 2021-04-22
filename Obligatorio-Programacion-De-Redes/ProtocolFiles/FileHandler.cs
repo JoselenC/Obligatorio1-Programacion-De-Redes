@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace Common
+namespace ProtocolFiles
 {
     public class FileHandler
     {
@@ -17,17 +17,30 @@ namespace Common
                 return new FileInfo(path).Name;
             }
 
-            throw new Exception("File no existe!");
+            throw new Exception("File not exist");
         }
 
         public long GetFileSize(string path)
         {
-            if (FileExists(path))
+            if (FileExists(path) && IsValidSize(path))
             {
                 return new FileInfo(path).Length;
             }
+            else if(!IsValidSize(path))
+            {
+                throw new Exception("Invalid size");
+            }
+            else{
+                throw new Exception("File not exist");
+            }
+        }
 
-            throw new Exception("File no existe!");
+        private bool IsValidSize(string path)
+        {
+            long length = path.Length;
+            long fileSizeInKB = length / 1024;
+            long fileSizeInMB = fileSizeInKB / 1024;
+            return fileSizeInMB <= 100;
         }
     }
 }

@@ -54,7 +54,7 @@ namespace ClientHandler
                             new ThemeService(repository).DeleteTheme(socketHandler);
                             break;
                         case CommandConstants.CommandUploadFile:
-                            new FileService(repository).UploadFile(socketHandler);
+                            new FileService(repository).UploadFile(socketHandler,clientSocket);
                             break;
                         case CommandConstants.SearchPost:
                             new PostService(repository).SearchPost(socketHandler);

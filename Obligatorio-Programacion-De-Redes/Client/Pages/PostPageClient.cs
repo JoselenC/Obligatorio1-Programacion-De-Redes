@@ -96,7 +96,7 @@ namespace Client
                 Console.Write("Creation date: ");
                 Console.ForegroundColor = ConsoleColor.Black;
                 string creationDate = Console.ReadLine();
-                while(!GoodFormat(creationDate))
+               /* while(!GoodFormat(creationDate))
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.Write("The date format must be: \n" +  "dd/mm/yyyy \n");
@@ -104,7 +104,7 @@ namespace Client
                     Console.Write("Creation date: ");
                     Console.ForegroundColor = ConsoleColor.Black;
                     name = Console.ReadLine();
-                }
+                }*/
 
                 string message = optionSelect + "#" + name + "#" + creationDate;
                 socketHandler.SendMessage(message);
@@ -121,7 +121,7 @@ namespace Client
              var match = regex.Match(creationDate);
                 if(match.Success)
                 return true;
-                return false;        
+                return true;        
         }
 
         public void AddPost(SocketHandler socketHandler,Socket socketClient)

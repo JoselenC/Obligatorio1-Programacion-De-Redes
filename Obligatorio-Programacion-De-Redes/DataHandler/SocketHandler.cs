@@ -56,30 +56,6 @@ namespace DataHandler
             return data;
         }
         
-        public byte[] Receive(int size,Object lockSync)
-        {
-            lock (lockSync)
-            {
-                int totalReceivedBytes = 0;
-                var data = new byte[size];
-                while (totalReceivedBytes < size)
-                {
-                    int receivedBytes = _socket.Receive(
-                        data,
-                        totalReceivedBytes,
-                        size - totalReceivedBytes,
-                        SocketFlags.None);
-                    if (receivedBytes == 0)
-                    {
-                        throw new SocketException();
-                    }
-
-                    totalReceivedBytes += receivedBytes;
-                }
-                return data;
-            }
-        }
-
         public string[] ReceiveMessage()
         {
             var dataLength = Receive(HeaderConstants.DataLength);

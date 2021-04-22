@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Net.Sockets;
 using System.Text;
-using Common;
-using Utils = Microsoft.VisualBasic.CompilerServices.Utils;
+using DataHandler;
 
 namespace ProtocolFiles
 {
@@ -14,41 +13,47 @@ namespace ProtocolFiles
             return parts * ProtocolSpecification.MaxPacketSize == filesize ? parts : parts + 1;
         }
         
-        public void ReceiveFile(TcpClient client)
+        public string[] ReceiveFile(Socket client,SocketHandler socketHandler)
         {
             var fileStreamHandler = new FileStreamHandler();
-            var networkStream = client.GetStream();
-            var header = Read(ProtocolHelper.GetLength(),networkStream);
-            var fileNameSize = BitConverter.ToInt32(header,0);
-            var fileSize = BitConverter.ToInt32(header,ProtocolSpecification.FileNameLength);
 
-            var fileName = Encoding.UTF8.GetString(Read(fileNameSize, networkStream));
-
-            var parts = GetFileParts(fileSize);
-            var offset = 0;
-            var currentPart = 1;
-
-            var rawFileInMemory = new byte[fileSize];
-            
-            while (fileSize > offset)
+            using (var networkStream = new NetworkStream(client))
             {
-                if (currentPart == parts)
-                {
-                    var lastPartSize = fileSize - offset;
-                    var data = Read(lastPartSize, networkStream);
-                    Array.Copy(data,0,rawFileInMemory,offset,lastPartSize);
-                    offset += lastPartSize;
-                }
-                else
-                {
-                    var data = Read(ProtocolSpecification.MaxPacketSize, networkStream);
-                    Array.Copy(data,0,rawFileInMemory,offset,ProtocolSpecification.MaxPacketSize);
-                    offset += ProtocolSpecification.MaxPacketSize;
-                }
-                currentPart++;
-            }
-            fileStreamHandler.WriteFile(fileName,rawFileInMemory);
+                var header = Read(ProtocolHelper.GetLength(), networkStream);
+                var fileNameSize = BitConverter.ToInt32(header, 0);
+                var fileSize = BitConverter.ToInt32(header, ProtocolSpecification.FileNameLength);
 
+                var fileName = Encoding.UTF8.GetString(Read(fileNameSize, networkStream));
+                
+                var parts = GetFileParts(fileSize);
+                var offset = 0;
+                var currentPart = 1;
+
+                var rawFileInMemory = new byte[fileSize];
+
+                while (fileSize > offset)
+                {
+                    if (currentPart == parts)
+                    {
+                        var lastPartSize = fileSize - offset;
+                        var data = Read(lastPartSize, networkStream);
+                        Array.Copy(data, 0, rawFileInMemory, offset, lastPartSize);
+                        offset += lastPartSize;
+                    }
+                    else
+                    {
+                        var data = Read(ProtocolSpecification.MaxPacketSize, networkStream);
+                        Array.Copy(data, 0, rawFileInMemory, offset, ProtocolSpecification.MaxPacketSize);
+                        offset += ProtocolSpecification.MaxPacketSize;
+                    }
+
+                    currentPart++;
+                }
+
+                fileStreamHandler.WriteFile(fileName, rawFileInMemory);
+            }
+
+           return socketHandler.ReceiveMessage();
         }
 
         public byte[] Read(int length, NetworkStream stream)
@@ -68,46 +73,53 @@ namespace ProtocolFiles
             return data;    
         }
         
-        public void SendFile(string path,TcpClient connectedClient)
+        public void SendFile(string path,Socket connectedClient,SocketHandler socketHandler,string postName)
         {
+            
             var fileHandler = new FileHandler();
             var fileStreamHandler = new FileStreamHandler();
             var fileSize = fileHandler.GetFileSize(path);
             var fileName = fileHandler.GetFileName(path);
             var header = ProtocolHelper.CreateHeader(fileName, fileSize);
-            var connectionStream = connectedClient.GetStream();
-            
-            Console.WriteLine($"FileName is: {fileName}, file size is: {fileSize}");
-            
-            connectionStream.Write(header);
-            connectionStream.Write(Encoding.UTF8.GetBytes(fileName));
 
-            var rawFile = fileStreamHandler.ReadFile(path);
-            var parts =GetFileParts(fileSize);
-
-            long offset = 0;
-            long currentPart = 1;
-
-            while (fileSize > offset)
+            using (var connectionStream = new NetworkStream(connectedClient))
             {
-                Console.WriteLine($"Voy a enviar parte {currentPart} de {parts}");
-                if (currentPart == parts)
+                Console.WriteLine($"FileName is: {fileName}, file size is: {fileSize}");
+
+                connectionStream.Write(header);
+                connectionStream.Write(Encoding.UTF8.GetBytes(fileName));
+
+                var rawFile = fileStreamHandler.ReadFile(path);
+                var parts = GetFileParts(fileSize);
+
+                long offset = 0;
+                long currentPart = 1;
+
+                while (fileSize > offset)
                 {
-                    var lastPartSize = fileSize - offset;
-                    var dataToSend = new byte[lastPartSize];
-                    Array.Copy(rawFile,offset,dataToSend,0,lastPartSize);
-                    offset += lastPartSize;
-                    connectionStream.Write(dataToSend);
+                    Console.WriteLine($"Voy a enviar parte {currentPart} de {parts}");
+                    if (currentPart == parts)
+                    {
+                        var lastPartSize = fileSize - offset;
+                        var dataToSend = new byte[lastPartSize];
+                        Array.Copy(rawFile, offset, dataToSend, 0, lastPartSize);
+                        offset += lastPartSize;
+                        connectionStream.Write(dataToSend);
+                    }
+                    else
+                    {
+                        var dataToSend = new byte[ProtocolSpecification.MaxPacketSize];
+                        Array.Copy(rawFile, offset, dataToSend, 0, ProtocolSpecification.MaxPacketSize);
+                        offset += ProtocolSpecification.MaxPacketSize;
+                        connectionStream.Write(dataToSend);
+                    }
+
+                    currentPart++;
                 }
-                else
-                {
-                    var dataToSend = new byte[ProtocolSpecification.MaxPacketSize];
-                    Array.Copy(rawFile, offset, dataToSend, 0, ProtocolSpecification.MaxPacketSize);
-                    offset += ProtocolSpecification.MaxPacketSize;
-                    connectionStream.Write(dataToSend);
-                }
-                currentPart++;
             }
+
+            string message = postName + "#" +fileSize + "#" + fileName;
+            socketHandler.SendMessage(message);
         }
 
     }

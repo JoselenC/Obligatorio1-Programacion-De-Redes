@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace Common
+namespace ProtocolFiles
 {
     public class FileStreamHandler
     {

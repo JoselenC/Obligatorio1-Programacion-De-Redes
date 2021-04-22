@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Net.Sockets;
 using DataHandler;
 using ProtocolFiles;
@@ -31,8 +32,17 @@ namespace Client
             {
                 Console.WriteLine("Path: ");
                 string path= Console.ReadLine();
-                protocolHandler.SendFile(path,new TcpClient());
-                
+                try
+                {
+                    protocolHandler.SendFile(path, SocketClient, socketHandler, optionSelect1);
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine("File was added");
+                }
+                catch (Exception)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Error al agregrar el archivo");
+                }
             }
         }
     }

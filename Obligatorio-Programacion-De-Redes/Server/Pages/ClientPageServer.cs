@@ -1,27 +1,37 @@
 ﻿using System;
 using System.Net.Sockets;
+using BusinessLogic;
 using Domain;
 using DataHandler;
 
-namespace Server
+namespace ClientHandler
 {
     public class ClientPageServer
     {
-        
-        public void ShowClientList(SocketHandler socketHandler,Socket socketClient)
+        public void ShowClientList(MemoryRepository repository,SocketHandler socketHandler,Socket socketClient)
         {
-            string[] data = socketHandler.ReceiveMessage();
-            if (data.Length == 1)
+            Console.Clear();
+            if (repository.ClientsConnections.Count == 0 || repository.ClientsConnections==null)
             {
-                Console.WriteLine(data[0]);
+                Console.WriteLine("No hay clientes conectados");
+                new HomePageServer().Menu(repository,socketClient,socketHandler);
             }
             else
             {
-                for (int i = 0; i < data.Length - 3; i = i + 3)
+                for (int i = 0; i < repository.ClientsConnections.Count; i = i + 1)
                 {
-                    Console.WriteLine("Client " + i+1 + "Hour of connection: " + data[i] + "Port: " + data[i+1] + "Ip: " + data[i+2] + "\n");
+                    int prefix = i + 1;
+                    ClientConnection clientConnection = repository.ClientsConnections[i];
+                    Console.WriteLine("Client " + prefix + ":  " + " Hour of connection: " + 
+                                     clientConnection.TimeOfConnection + "Port: " + 
+                                     clientConnection.LocalEndPoint + "Ip: " + 
+                                     clientConnection.Ip + "\n");
                 }
+                Console.WriteLine(repository.ClientsConnections.Count+1 + "Back");
             }
+
+            Console.ReadLine();
+            new HomePageServer().Menu(repository,socketClient,socketHandler);
         }
 
     }

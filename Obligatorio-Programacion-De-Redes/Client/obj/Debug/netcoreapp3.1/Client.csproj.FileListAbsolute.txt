@@ -63,3 +63,5 @@ C:\Users\Choche\OneDrive\Escritorio\Semestre 6\Diseño de aplicaciones 2\Obligat
 C:\Users\Choche\OneDrive\Escritorio\Semestre 6\Diseño de aplicaciones 2\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\Client\obj\Debug\netcoreapp3.1\Client.dll
 C:\Users\Choche\OneDrive\Escritorio\Semestre 6\Diseño de aplicaciones 2\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\Client\obj\Debug\netcoreapp3.1\Client.pdb
 C:\Users\Choche\OneDrive\Escritorio\Semestre 6\Diseño de aplicaciones 2\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\Client\obj\Debug\netcoreapp3.1\Client.genruntimeconfig.cache
+C:\Users\Choche\OneDrive\Escritorio\Semestre 6\Programacion de redes\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\Client\bin\Debug\netcoreapp3.1\ProtocolFiles.dll
+C:\Users\Choche\OneDrive\Escritorio\Semestre 6\Programacion de redes\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\Client\bin\Debug\netcoreapp3.1\ProtocolFiles.pdb

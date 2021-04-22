@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Net.Sockets;
+using BusinessLogic;
 using DataHandler;
 
-namespace Server
+namespace ClientHandler
 {
     public class FilePageServer
     {
         
-        public void ShowFileList(SocketHandler socketHandler,Socket socketClient)
+        public void ShowFileList(MemoryRepository repository,SocketHandler socketHandler,Socket socketClient)
         {
            
             Console.Clear();
@@ -16,8 +17,8 @@ namespace Server
             Console.WriteLine("----Select filter----");
             for (var i = 0; i < _options.Length; i++)
             {
-                var prefix =i;
                 Console.ForegroundColor = ConsoleColor.DarkCyan;
+                var prefix =i + 1 + ".  ";
                 Console.WriteLine($"{prefix}{_options[i]}");
             }
             Console.ForegroundColor = ConsoleColor.Black;
@@ -26,28 +27,23 @@ namespace Server
             switch (option)
             {
                 case 1:
-                    socketHandler.SendData(14, socketClient);
                     ShowAllFiles(socketClient, socketHandler);
                     break;
                 case 2:
-                    socketHandler.SendData(20, socketClient);
                     ShowTFileByTheme(socketClient, socketHandler);
                     break;
                 case 3:
-                    socketHandler.SendData(21, socketClient);
                     ShowFileByDate(socketClient, socketHandler);
                     break;
                 case 4:
-                    socketHandler.SendData(20, socketClient);
                     ShowFileByName(socketClient, socketHandler);
                     break;
                 case 5:
-                    socketHandler.SendData(21, socketClient);
                     ShowFileBySize(socketClient, socketHandler);
                     break;
                 case 6:
                     exit = true;
-                    new HomePageServer().Menu(socketClient, socketHandler);
+                    new HomePageServer().Menu(repository,socketClient, socketHandler);
                     break;
                 default:
                     Console.WriteLine("Invalid option");

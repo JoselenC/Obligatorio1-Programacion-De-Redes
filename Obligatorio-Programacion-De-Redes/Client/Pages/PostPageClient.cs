@@ -11,16 +11,7 @@ namespace Client
         public void Menu(Socket socketClient,SocketHandler socketHandler,bool exit)
         {
             string[] _options = {"Add post", "Modify post", "Delete post", "Associate theme", "Disassociate theme","Back"};
-            Console.WriteLine("----Menu----");
-            for (var i = 0; i < _options.Length; i++)
-            {
-                var prefix =i;
-                Console.ForegroundColor = ConsoleColor.White;
-                Console.BackgroundColor = ConsoleColor.Black;
-                Console.WriteLine($"{prefix}{_options[i]}");
-            }
-            var var = Console.ReadLine();
-            int option= Int32.Parse(var);
+            int option = new MenuClient().ShowMenu(_options, "Post menu");
                 switch (option)
                 {
                     case 1:
@@ -86,14 +77,34 @@ namespace Client
             }
             else
             {
-                Console.ForegroundColor = ConsoleColor.DarkCyan;
+                Console.ForegroundColor = ConsoleColor.Magenta;
+                Console.Write("-----New data----- \n");
                 Console.Write("Name: ");
                 Console.ForegroundColor = ConsoleColor.Black;
                 string name = Console.ReadLine();
-                Console.ForegroundColor = ConsoleColor.DarkCyan;
+                while (name == "")
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.Write("The name cannot be empty: \n");
+                    Console.ForegroundColor = ConsoleColor.Magenta;
+                    Console.Write("Name: ");
+                    Console.ForegroundColor = ConsoleColor.Black;
+                    name = Console.ReadLine();
+                }
+                Console.ForegroundColor = ConsoleColor.Magenta;
                 Console.Write("Creation date: ");
                 Console.ForegroundColor = ConsoleColor.Black;
                 string creationDate = Console.ReadLine();
+                if (!GoodFormat(creationDate))
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.Write("The date format must be: \n" +  "MM/dd/yyyy or dd/mm/yyyy or dd/MM/yyyy");
+                    Console.ForegroundColor = ConsoleColor.Magenta;
+                    Console.Write("Creation date: ");
+                    Console.ForegroundColor = ConsoleColor.Black;
+                    name = Console.ReadLine();
+                }
+
                 string message = optionSelect + "#" + name + "#" + creationDate;
                 socketHandler.SendMessage(message);
                 string[] messageArray = socketHandler.ReceiveMessage();
@@ -103,41 +114,53 @@ namespace Client
 
         }
 
+        private bool GoodFormat(string creationDate)
+        {
+            DateTime fechaValidada;
+            var formatos = new[]
+            {
+                "MM/dd/yyyy", "dd/mm/yyyy", "dd/MM/yyyy h:mm:ss", "MM/dd/yyyy hh:mm tt", "yyyy'-'MM'-'dd'T'HH':'mm':'ss"
+            };
+            return DateTime.TryParseExact(creationDate, formatos, System.Globalization.CultureInfo.InvariantCulture,
+                System.Globalization.DateTimeStyles.None, out fechaValidada);
+
+        }
+
         public void AddPost(SocketHandler socketHandler,Socket socketClient)
         {
-            Console.ForegroundColor = ConsoleColor.DarkCyan;
-            Console.Write("New post \n");
+            Console.ForegroundColor = ConsoleColor.Magenta;
+            Console.Write("------New post------ \n");
             Console.Write("Name: ");
             Console.ForegroundColor = ConsoleColor.Black;
             string name = Console.ReadLine();
-            Console.ForegroundColor = ConsoleColor.DarkCyan;
+            while (name == "")
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.Write("The name cannot be empty: \n");
+                Console.ForegroundColor = ConsoleColor.Magenta;
+                Console.Write("Name:  \n");
+                Console.ForegroundColor = ConsoleColor.Black;
+                name = Console.ReadLine();
+            }
+            Console.ForegroundColor = ConsoleColor.Magenta;
             Console.Write("Creation date: ");
             Console.ForegroundColor = ConsoleColor.Black;
             string creationDate = Console.ReadLine();
             string message = name + "#" + creationDate;
             socketHandler.SendMessage(message);
             var exit = false;
-            string[] _options = {"Add theme to post", "Back"};
+           
             string[] messageArray = socketHandler.ReceiveMessage();
             Console.WriteLine(messageArray[0]);
-            AssociateThemePost(socketHandler, socketClient, exit, _options, name);
+            AssociateThemePost(socketHandler, socketClient, name);
             Menu(socketClient, socketHandler,false);
            
         }
 
-        private void AssociateThemePost(SocketHandler socketHandler, Socket socketClient, bool exit, string[] _options,
-            string name)
+        private void AssociateThemePost(SocketHandler socketHandler, Socket socketClient, string name)
         {
-                Console.WriteLine("----Menu----");
-                for (var i = 0; i < _options.Length; i++)
-                {
-                    var prefix =i+1;
-                    Console.ForegroundColor = ConsoleColor.White;
-                    Console.BackgroundColor = ConsoleColor.Black;
-                    Console.WriteLine($"{prefix}{_options[i]}");
-                }
-                var var = Console.ReadLine();
-                int option= Int32.Parse(var);
+                  string[] _options = {"Add", "Back"};
+                 int option = new MenuClient().ShowMenu(_options,"Add theme to post");
                 switch (option)
                 {
                     case 1:
@@ -145,11 +168,11 @@ namespace Client
                         AddThemeToPost(socketHandler, name,socketClient);
                         break;
                     case 2:
-                        exit = true;
                         Menu(socketClient, socketHandler,false);
                         break;
-                
-            }
+                    default:
+                        break;
+                }
         }
 
         private void AddThemeToPost(SocketHandler socketHandler,string postName,Socket socketClient)
@@ -159,7 +182,7 @@ namespace Client
             if (optionSelect == "Back")
             {
                 socketHandler.SendMessage(optionSelect);
-                Menu(socketClient, socketHandler,false);
+                AssociateThemePost(socketHandler,socketClient,postName);
             }
             else
             {
@@ -167,7 +190,7 @@ namespace Client
                 socketHandler.SendMessage(message);
                 string[] messageArray = socketHandler.ReceiveMessage();
                 Console.WriteLine(messageArray[0]);
-                Menu(socketClient, socketHandler,false);
+                AssociateThemePost(socketHandler,socketClient,postName);
             }
 
         }
@@ -193,7 +216,7 @@ namespace Client
                 }
                 else
                 {
-                    string title3 = "select theme to associate to the post";
+                    string title3 = "select new theme to associate to the post";
                     var optionSelectThemes2 = ReceiveThemes(socketHandler, title3);
                     string message = optionSelect + "#" + optionSelectThemes + "#" + optionSelectThemes2;
                     socketHandler.SendMessage(message);
@@ -207,41 +230,23 @@ namespace Client
 
         private static string ReceiveThemes(SocketHandler socketHandler,string message)
         {
-            Console.ForegroundColor = ConsoleColor.DarkCyan;
+            Console.ForegroundColor = ConsoleColor.Magenta;
             Console.WriteLine(message+"\n");
             Console.ForegroundColor = ConsoleColor.Black;
             string[] themesNames = socketHandler.ReceiveMessage();
-            Console.WriteLine("----Themes----");
-            for (var i = 0; i < themesNames.Length; i++)
-            {
-                var prefix =i;
-                Console.ForegroundColor = ConsoleColor.White;
-                Console.BackgroundColor = ConsoleColor.Black;
-                Console.WriteLine($"{prefix}{themesNames[i]}");
-            }
-            var var=Console.ReadLine();
-            int indexThemes= Int32.Parse(var);
-            string optionSelectThemes = themesNames[indexThemes-1];
+            int indexThemes = new MenuClient().ShowMenu(themesNames,"Themes");
+           string optionSelectThemes = themesNames[indexThemes-1];
             return optionSelectThemes;
             
         }
 
         private static string ReceiveListPost(SocketHandler socketHandler,string message)
         {
-            Console.ForegroundColor = ConsoleColor.DarkCyan;
+            Console.ForegroundColor = ConsoleColor.Magenta;
             Console.WriteLine(message+"\n");
             Console.ForegroundColor = ConsoleColor.Black;
             string[] postsNAmes = socketHandler.ReceiveMessage();
-            Console.WriteLine("----Themes----");
-            for (var i = 0; i < postsNAmes.Length; i++)
-            {
-                var prefix =i;
-                Console.ForegroundColor = ConsoleColor.White;
-                Console.BackgroundColor = ConsoleColor.Black;
-                Console.WriteLine($"{prefix}{postsNAmes[i]}");
-            }
-            var var=Console.ReadLine();
-            int index= Int32.Parse(var);
+            int index = new MenuClient().ShowMenu(postsNAmes,"Posts");
             string optionSelect = postsNAmes[index-1];
             return optionSelect;
         }
@@ -290,7 +295,7 @@ namespace Client
                 socketHandler.SendMessage(message);
                 string[] messageArray = socketHandler.ReceiveMessage();
                 string name = messageArray[0];
-                Console.WriteLine("name:" + name);
+                Console.WriteLine("Name:" + name);
                 string creationDate = messageArray[1];
                 Console.WriteLine("Creation date:" + creationDate);
                 Menu(SocketClient, socketHandler,false);

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net.Sockets;
-using ProtocolString;
+using Protocol;
+
 
 namespace DataHandler
 {

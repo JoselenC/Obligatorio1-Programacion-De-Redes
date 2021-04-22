@@ -6,7 +6,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\ProtocolString\ProtocolString.csproj" />
+      <ProjectReference Include="..\Protocol\Protocol.csproj" />
     </ItemGroup>
 
 </Project>

@@ -20,7 +20,7 @@
         "framework": ".NETCoreApp,Version=v3.1",
         "dependencies": {
           "DataHandler": "1.0.0",
-          "Protocol": "1.0.0"
+          "ProtocolFiles": "1.0.0"
         },
         "compile": {
           "bin/placeholder/Domain.dll": {}
@@ -37,6 +37,16 @@
         },
         "runtime": {
           "bin/placeholder/Protocol.dll": {}
+        }
+      },
+      "ProtocolFiles/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v3.1",
+        "compile": {
+          "bin/placeholder/ProtocolFiles.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/ProtocolFiles.dll": {}
         }
       }
     }
@@ -56,13 +66,17 @@
       "type": "project",
       "path": "../Protocol/Protocol.csproj",
       "msbuildProject": "../Protocol/Protocol.csproj"
+    },
+    "ProtocolFiles/1.0.0": {
+      "type": "project",
+      "path": "../ProtocolFiles/ProtocolFiles.csproj",
+      "msbuildProject": "../ProtocolFiles/ProtocolFiles.csproj"
     }
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v3.1": [
       "DataHandler >= 1.0.0",
-      "Domain >= 1.0.0",
-      "Protocol >= 1.0.0"
+      "Domain >= 1.0.0"
     ]
   },
   "packageFolders": {
@@ -71,11 +85,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Choche\\OneDrive\\Escritorio\\Semestre 6\\Diseño de aplicaciones 2\\Obligatorio1-Programacion-De-Redes\\Obligatorio-Programacion-De-Redes\\Server\\Server.csproj",
+      "projectUniqueName": "C:\\Users\\Choche\\OneDrive\\Escritorio\\Semestre 6\\Programacion de redes\\Obligatorio1-Programacion-De-Redes\\Obligatorio-Programacion-De-Redes\\Server\\Server.csproj",
       "projectName": "Server",
-      "projectPath": "C:\\Users\\Choche\\OneDrive\\Escritorio\\Semestre 6\\Diseño de aplicaciones 2\\Obligatorio1-Programacion-De-Redes\\Obligatorio-Programacion-De-Redes\\Server\\Server.csproj",
+      "projectPath": "C:\\Users\\Choche\\OneDrive\\Escritorio\\Semestre 6\\Programacion de redes\\Obligatorio1-Programacion-De-Redes\\Obligatorio-Programacion-De-Redes\\Server\\Server.csproj",
       "packagesPath": "C:\\Users\\Choche\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Choche\\OneDrive\\Escritorio\\Semestre 6\\Diseño de aplicaciones 2\\Obligatorio1-Programacion-De-Redes\\Obligatorio-Programacion-De-Redes\\Server\\obj\\",
+      "outputPath": "C:\\Users\\Choche\\OneDrive\\Escritorio\\Semestre 6\\Programacion de redes\\Obligatorio1-Programacion-De-Redes\\Obligatorio-Programacion-De-Redes\\Server\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Choche\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -92,14 +106,11 @@
         "netcoreapp3.1": {
           "targetAlias": "netcoreapp3.1",
           "projectReferences": {
-            "C:\\Users\\Choche\\OneDrive\\Escritorio\\Semestre 6\\Diseño de aplicaciones 2\\Obligatorio1-Programacion-De-Redes\\Obligatorio-Programacion-De-Redes\\DataHandler\\DataHandler.csproj": {
-              "projectPath": "C:\\Users\\Choche\\OneDrive\\Escritorio\\Semestre 6\\Diseño de aplicaciones 2\\Obligatorio1-Programacion-De-Redes\\Obligatorio-Programacion-De-Redes\\DataHandler\\DataHandler.csproj"
+            "C:\\Users\\Choche\\OneDrive\\Escritorio\\Semestre 6\\Programacion de redes\\Obligatorio1-Programacion-De-Redes\\Obligatorio-Programacion-De-Redes\\DataHandler\\DataHandler.csproj": {
+              "projectPath": "C:\\Users\\Choche\\OneDrive\\Escritorio\\Semestre 6\\Programacion de redes\\Obligatorio1-Programacion-De-Redes\\Obligatorio-Programacion-De-Redes\\DataHandler\\DataHandler.csproj"
             },
-            "C:\\Users\\Choche\\OneDrive\\Escritorio\\Semestre 6\\Diseño de aplicaciones 2\\Obligatorio1-Programacion-De-Redes\\Obligatorio-Programacion-De-Redes\\Domain\\Domain.csproj": {
-              "projectPath": "C:\\Users\\Choche\\OneDrive\\Escritorio\\Semestre 6\\Diseño de aplicaciones 2\\Obligatorio1-Programacion-De-Redes\\Obligatorio-Programacion-De-Redes\\Domain\\Domain.csproj"
-            },
-            "C:\\Users\\Choche\\OneDrive\\Escritorio\\Semestre 6\\Diseño de aplicaciones 2\\Obligatorio1-Programacion-De-Redes\\Obligatorio-Programacion-De-Redes\\Protocol\\Protocol.csproj": {
-              "projectPath": "C:\\Users\\Choche\\OneDrive\\Escritorio\\Semestre 6\\Diseño de aplicaciones 2\\Obligatorio1-Programacion-De-Redes\\Obligatorio-Programacion-De-Redes\\Protocol\\Protocol.csproj"
+            "C:\\Users\\Choche\\OneDrive\\Escritorio\\Semestre 6\\Programacion de redes\\Obligatorio1-Programacion-De-Redes\\Obligatorio-Programacion-De-Redes\\Domain\\Domain.csproj": {
+              "projectPath": "C:\\Users\\Choche\\OneDrive\\Escritorio\\Semestre 6\\Programacion de redes\\Obligatorio1-Programacion-De-Redes\\Obligatorio-Programacion-De-Redes\\Domain\\Domain.csproj"
             }
           }
         }

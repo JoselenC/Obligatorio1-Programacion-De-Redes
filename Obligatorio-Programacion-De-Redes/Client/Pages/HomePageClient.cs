@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Net.Sockets;
-using System.Runtime.InteropServices.WindowsRuntime;
-using System.Threading;
-using System.Threading.Tasks;
-using BusinessLogic;
-using ProtocolString;
 using DataHandler;
+using Protocol;
+using SocketHandler = DataHandler.SocketHandler;
 
 namespace Client
 {
@@ -14,20 +11,9 @@ namespace Client
        public void Menu(Socket SocketClient, SocketHandler socketHandler)
         {
                 var exit = false;
-                string[] _options = {"Posts", "Themes", "Files", "Search post", "Exit"};
+                string[] _options = {"Posts", "Themes", "Associate file", "Search post", "Exit"};
 
-                Console.WriteLine("----Menu----");
-                for (var i = 0; i < _options.Length; i++)
-                {
-                    var prefix = i + 1;
-                    Console.ForegroundColor = ConsoleColor.White;
-                    Console.BackgroundColor = ConsoleColor.Black;
-                    Console.WriteLine($"{prefix}{_options[i]}");
-                }
-
-                string var = "0";
-                var = Console.ReadLine();
-                int option = Int32.Parse(var);
+                int option=new MenuClient().ShowMenu(_options,"Menu");
                 switch (option)
                 {
                     case 1:
@@ -37,7 +23,7 @@ namespace Client
                         new ThemePageClient().Menu(SocketClient, socketHandler);
                         break;
                     case 3:
-                        new FilePageClient().UploadFile(socketHandler, SocketClient);
+                        new FilePageClient().AssociateFile(socketHandler, SocketClient);
                         break;
                     case 4:
                         SendData(9, SocketClient);

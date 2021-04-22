@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net.Sockets;
-using System.Threading;
 using BusinessLogic;
 using DataHandler;
 using Domain.Services;
-using ProtocolString;
+using Protocol;
 
-namespace Server
+
+
+namespace ClientHandler
 {
     public class HandleClient
     {
@@ -26,9 +27,8 @@ namespace Server
                     switch (header.Item1)
                     {
                         case CommandConstants.CommandAddPost:
-                            Console.WriteLine("add post");
-                                new PostService(repository).AddPost(socketHandler);
-                                break;
+                            new PostService(repository).AddPost(socketHandler);
+                            break;
                         case CommandConstants.CommandModifyPost:
                             new PostService(repository).ModifyPost(socketHandler);
                             break;

@@ -14,16 +14,7 @@ namespace Client
             Console.Clear();
             var exit = false;
             string[] _options = {"Add theme", "Modify theme", "Delete theme","Back"};
-            Console.WriteLine("----Menu----");
-            for (var i = 0; i < _options.Length; i++)
-            {
-                var prefix =i;
-                Console.ForegroundColor = ConsoleColor.White;
-                Console.BackgroundColor = ConsoleColor.Black;
-                Console.WriteLine($"{prefix}{_options[i]}");
-            }
-            var var = Console.ReadLine();
-            int option= Int32.Parse(var);
+            int option = new MenuClient().ShowMenu(_options,"Theme menu");
             switch (option)
             {
                 case 1:
@@ -72,16 +63,7 @@ namespace Client
             Console.WriteLine(message+"\n");
             Console.ForegroundColor = ConsoleColor.Black;
             string[] postsNAmes = socketHandler.ReceiveMessage();
-            Console.WriteLine("----Themes----");
-            for (var i = 0; i < postsNAmes.Length; i++)
-            {
-                var prefix =i;
-                Console.ForegroundColor = ConsoleColor.White;
-                Console.BackgroundColor = ConsoleColor.Black;
-                Console.WriteLine($"{prefix}{postsNAmes[i]}");
-            }
-            var var=Console.ReadLine();
-            int index= Int32.Parse(var);
+            int index = new MenuClient().ShowMenu(postsNAmes,"Themes");
             string optionSelect = postsNAmes[index-1];
             return optionSelect;
         }

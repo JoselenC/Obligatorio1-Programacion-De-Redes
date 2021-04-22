@@ -3,9 +3,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using BusinessLogic;
-using ProtocolString;
 using DataHandler;
-using Server;
 
 namespace Client
 {
@@ -23,12 +21,9 @@ namespace Client
             SocketClient.Bind(new IPEndPoint(IPAddress.Parse("127.0.0.1"), 0));
             SocketClient.Connect(new IPEndPoint(IPAddress.Parse("127.0.0.1"), 30000));
             SocketHandler socketHandler = new SocketHandler(SocketClient);
-            MemoryRepository repository = new MemoryRepository();
             try
             {
                 new HomePageClient().Menu(SocketClient, socketHandler);
-                var threadClient = new Thread(x=>new ServerHandler().HandleClientMethod(SocketClient, repository, _exit,socketHandler));
-                threadClient.Start();
             }
             catch (SocketException e)
             {

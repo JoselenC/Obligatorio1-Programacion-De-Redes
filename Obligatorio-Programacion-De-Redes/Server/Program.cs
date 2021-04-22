@@ -4,6 +4,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using BusinessLogic;
+using ClientHandler;
 using DataHandler;
 using Domain;
 
@@ -21,8 +22,15 @@ namespace Server
             socketServer.Listen(10);
             SocketHandler socketHandler = new SocketHandler(socketServer);
             MemoryRepository repository = new MemoryRepository();
-            var threadServer = new Thread(() => ListenForConnections(socketServer,repository));
-            threadServer.Start();
+            var thread = new Thread(a => new HomePageServer().Menu(repository,socketServer,socketHandler));
+            thread.Start();
+          
+            while (!_exit)
+            {
+                var threadServer = new Thread(() => ListenForConnections(socketServer, repository));
+                threadServer.Start();
+            }
+
             foreach (var socketClient in ConnectedClients)
             {
                 try
@@ -34,11 +42,12 @@ namespace Server
                 {
                     Console.WriteLine("Socket client is already closed");
                 }
+
                 Console.WriteLine("Saliendo del Main Thread...");
             }
         }
 
-        private static void ListenForConnections(Socket socketServer,MemoryRepository repository)
+        private static void ListenForConnections(Socket socketServer, MemoryRepository repository)
         {
             try
             {
@@ -52,9 +61,8 @@ namespace Server
                 };
                 repository.ClientsConnections.Add(clientConnection);
                 SocketHandler socketHandler = new SocketHandler(socketConnected);
-                new Thread(a => new HomePageServer().Menu(socketConnected, socketHandler)).Start();
                 new HandleClient().HandleClientMethod(socketConnected, repository, _exit, ConnectedClients,
-                    socketHandler);
+                socketHandler);
             }
             catch (SocketException se)
             {
@@ -66,7 +74,6 @@ namespace Server
                 Console.WriteLine(e.Message);
             }
 
-            Console.WriteLine("Saliendo del listen...");
         }
     }
 }

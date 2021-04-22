@@ -1,5 +1,7 @@
-﻿using BusinessLogic;
+﻿using System.Net.Sockets;
+using BusinessLogic;
 using DataHandler;
+using ProtocolFiles;
 
 namespace Domain.Services
 {
@@ -12,7 +14,8 @@ namespace Domain.Services
         }
         public void UploadFile(SocketHandler socketHandler)
         {
-          
+            ProtocolHandler protocolHandler = new ProtocolHandler();
+            protocolHandler.ReceiveFile(new TcpClient());
         }
     }
 }

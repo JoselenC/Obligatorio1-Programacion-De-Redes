@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using BusinessLogic;
 using DataHandler;
+using Protocol;
 
 namespace Domain.Services
 {
@@ -23,7 +24,8 @@ namespace Domain.Services
                 themes +=postByName.Themes[i].Name + "#";
             }
             themes += "Back";
-            socketHandler.SendMessage(themes);
+            Packet packg = new Packet("REQ", "2", themes);
+            socketHandler.SendPackg(packg);
         }
         
         private void SendListPost(SocketHandler socketHandler)
@@ -34,7 +36,8 @@ namespace Domain.Services
                 posts +=repository.Posts[i].Name + "#";
             }
             posts += "Back";
-            socketHandler.SendMessage(posts);
+            Packet packg = new Packet("REQ", "2", posts);
+            socketHandler.SendPackg(packg);
         }
         
         private void SendListThemes(SocketHandler socketHandler)
@@ -45,7 +48,8 @@ namespace Domain.Services
                 posts +=repository.Themes[i].Name + "#";
             }
             posts += "Back";
-            socketHandler.SendMessage(posts);
+            Packet packg = new Packet("REQ", "2", posts);
+            socketHandler.SendPackg(packg);
         }
 
         private bool AlreadyExistTheme(string name)
@@ -58,7 +62,7 @@ namespace Domain.Services
         
         private bool AlreadyExistPost(string name)
         {
-            Post post = repository.Posts.Find(x => x.Name == name);
+            Post post = repository.Posts.Find(x => x.SameName(name));
             if (post == null)
                 return false;
             return true;
@@ -66,7 +70,8 @@ namespace Domain.Services
         
         public void AddPost(SocketHandler socketHandler)
         {
-            var messageArray = socketHandler.ReceiveMessage();
+            var packet = socketHandler.ReceivePackg();
+            String[] messageArray = packet.Data.Split('#');
             string name = messageArray[0];
             string creationDate = messageArray[1];
             string message= "";
@@ -87,13 +92,15 @@ namespace Domain.Services
             {
                 message = "The post name cannot be empty";
             }
-            socketHandler.SendMessage(message);
+            Packet packg = new Packet("REQ", "2", message);
+            socketHandler.SendPackg(packg);
         }
         
         public void ModifyPost(SocketHandler socketHandler)
         {
             SendListPost(socketHandler);
-            string[] messageArray = socketHandler.ReceiveMessage();
+            var packet = socketHandler.ReceivePackg();
+            String[] messageArray = packet.Data.Split('#');
             string oldName = messageArray[0];
             string message;
             if (oldName!= "Back")
@@ -102,7 +109,7 @@ namespace Domain.Services
                 if (name != "")
                 {
                     string newCreationDate = messageArray[2];
-                    if (AlreadyExistPost(oldName))
+                    if (!AlreadyExistPost(name))
                     {
                         Post postByName = repository.Posts.Find(x => x.Name == oldName);
                         repository.Posts.Remove(postByName);
@@ -119,15 +126,16 @@ namespace Domain.Services
                 {
                     message = "The theme name cannot be empty";
                 }
-                socketHandler.SendMessage(message);
+                Packet packg = new Packet("REQ", "2", message);
+                socketHandler.SendPackg(packg);
             }
         }
 
         public void DeletePost(SocketHandler socketHandler)
         {
             SendListPost(socketHandler);
-            string[] messageArray = socketHandler.ReceiveMessage();
-            string name = messageArray[0];
+            var packet = socketHandler.ReceivePackg();
+            string name = packet.Data;
             if (name != "Back")
             {
                 string message;
@@ -135,13 +143,14 @@ namespace Domain.Services
                 {
                     Post postByName = repository.Posts.Find(x => x.Name == name);
                     repository.Posts.Remove(postByName);
-                    message = "The post" + name + "was deleted";
+                    message =  "was deleted";
                 }
                 else
                 {
                     message = "The post" + name + " does not exist";
                 }
-                socketHandler.SendMessage(message);
+                Packet packg = new Packet("REQ", "2", message);
+                socketHandler.SendPackg(packg);
             }
         }
         
@@ -149,7 +158,8 @@ namespace Domain.Services
         {
             SendListPost(socketHandler);
             SendListThemes(socketHandler);
-            string[] messageArray = socketHandler.ReceiveMessage();
+            var packet = socketHandler.ReceivePackg();
+            String[] messageArray = packet.Data.Split('#');
             string namePost = messageArray[0];
             string message = "";
             if (namePost != "Back")
@@ -173,14 +183,16 @@ namespace Domain.Services
                 {
                     message = "The theme " + nameTheme + " does not exist";
                 }
-                socketHandler.SendMessage(message);
+                Packet packg = new Packet("REQ", "2", message);
+                socketHandler.SendPackg(packg);
             }
         }
         
         public void AsociateThemeToPost(SocketHandler socketHandler)
         {
             SendListThemes(socketHandler);
-            string[] messageArray = socketHandler.ReceiveMessage();
+            var packet = socketHandler.ReceivePackg();
+            String[] messageArray = packet.Data.Split('#');
             string namePost = messageArray[0];
             string message = "";
             if (namePost != "Back")
@@ -204,15 +216,16 @@ namespace Domain.Services
                 {
                     message = "The theme " + nameTheme + " does not exist";
                 }
-                socketHandler.SendMessage(message);
+                Packet packg = new Packet("REQ", "2", message);
+                socketHandler.SendPackg(packg);
             }
         }
 
        public void SearchPost(SocketHandler socketHandler)
         {
             SendListPost(socketHandler);
-            string[] messageArray = socketHandler.ReceiveMessage();
-            string namePost = messageArray[0];
+            var packet = socketHandler.ReceivePackg();
+            string namePost = packet.Data;
             if (namePost != "Back")
             {
                 string message;
@@ -226,22 +239,26 @@ namespace Domain.Services
                 {
                     message = "The post " + namePost + " does not exist";
                 } 
-                socketHandler.SendMessage(message);
+                Packet packg = new Packet("REQ", "2", message);
+                socketHandler.SendPackg(packg);
             }
         }
 
         public void DisassociateTheme(SocketHandler socketHandler)
         {
             SendListPost(socketHandler);
-            string[] namePost = socketHandler.ReceiveMessage();
-            SendListThemesPost(socketHandler,namePost[0]);
+            var packet = socketHandler.ReceivePackg();
+            string namePost = packet.Data;
+            SendListThemesPost(socketHandler,namePost);
             string posts = "";
             foreach (var post in repository.Themes)
             {
                 posts += post.Name + "#";
             }
-            socketHandler.SendMessage(posts);
-            string[] messageArray = socketHandler.ReceiveMessage();
+            Packet packg2 = new Packet("REQ", "2", posts);
+            socketHandler.SendPackg(packg2);
+            var packet2 = socketHandler.ReceivePackg();
+            String[] messageArray = packet2.Data.Split('#');
             string postName = messageArray[0];
             if (postName != "Back")
             {
@@ -256,7 +273,8 @@ namespace Domain.Services
                 {
                     message = "The post " + postName + " does not exist";
                 }
-                socketHandler.SendMessage(message);
+                Packet packg = new Packet("REQ", "2", message);
+                socketHandler.SendPackg(packg);
             }
         }
         

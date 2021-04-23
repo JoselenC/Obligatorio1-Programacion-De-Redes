@@ -2,6 +2,7 @@
 using System.Net.Sockets;
 using BusinessLogic;
 using DataHandler;
+using Protocol;
 using ProtocolFiles;
 
 namespace Domain.Services
@@ -22,7 +23,8 @@ namespace Domain.Services
                 posts +=repository.Posts[i].Name + "#";
             }
             posts += "Back";
-            socketHandler.SendMessage(posts);
+            Packet packg = new Packet("REQ", "4", posts);
+            socketHandler.SendPackg(packg);
         }
         
         public void UploadFile(SocketHandler socketHandler,Socket socketClient)

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net.Sockets;
 using BusinessLogic;
 using DataHandler;
+using Domain;
 using Domain.Services;
 using Protocol;
 
@@ -19,12 +20,9 @@ namespace ClientHandler
             {
                 while (!_exit)
                 {
-                    
-                    var headerHandler = new HeaderHandler();
-                    var buffer = new byte[HeaderConstants.CommandLength + HeaderConstants.DataLength];
-                    buffer = socketHandler.Receive(HeaderConstants.CommandLength + HeaderConstants.DataLength);
-                    Tuple<short, int> header = headerHandler.DecodeHeader(buffer);
-                    switch (header.Item1)
+                    var packet = socketHandler.ReceivePackg();
+                    var command= Int32.Parse(packet.Command);
+                    switch (command)
                     {
                         case CommandConstants.CommandAddPost:
                             new PostService(repository).AddPost(socketHandler);
@@ -74,28 +72,34 @@ namespace ClientHandler
                 connectedClients.Remove(clientSocket);
             }
         }
-
-        public void ShowMenu(string[] _options)
+        
+        public void ListenForConnections(Socket socketServer, MemoryRepository repository,bool _exit, List<Socket> ConnectedClients)
         {
-            bool salir = false;
-            int index = 0;
-            Console.WriteLine("----Menu----");
-            for (var i = 0; i < _options.Length; i++)
+            try
             {
-                var prefix = "  ";
-                Console.ForegroundColor = ConsoleColor.White;
-                Console.BackgroundColor = ConsoleColor.Black;
-                if (i == index)
+                var socketConnected = socketServer.Accept();
+                ConnectedClients.Add(socketConnected);
+                ClientConnection clientConnection = new ClientConnection()
                 {
-                    Console.ForegroundColor = ConsoleColor.Black;
-                    Console.BackgroundColor = ConsoleColor.Magenta;
-                    prefix = "> ";
-                }
-
-                Console.WriteLine($"{prefix}{_options[i]}");
+                    TimeOfConnection = new DateTime().ToLocalTime().ToString(),
+                    LocalEndPoint = socketConnected.LocalEndPoint.ToString(),
+                    Ip = "127.0.0.1"
+                };
+                repository.ClientsConnections.Add(clientConnection);
+                SocketHandler socketHandler = new SocketHandler(socketConnected);
+                new HandleClient().HandleClientMethod(socketConnected, repository, _exit, ConnectedClients,
+                    socketHandler);
+            }
+            catch (SocketException se)
+            {
+                Console.WriteLine("El servidor está cerrándose...");
+                _exit = true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
             }
 
         }
-
     }
 }

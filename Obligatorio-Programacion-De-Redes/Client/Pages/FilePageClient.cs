@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Net.Sockets;
 using DataHandler;
+using Protocol;
 using ProtocolFiles;
 
 namespace Client
@@ -9,10 +10,11 @@ namespace Client
     public class FilePageClient
     {
 
-        private static string ReceiveListPost(SocketHandler socketHandler, string message)
+        private string ReceiveListPost(SocketHandler socketHandler, string message)
         {
-            string[] postsNAmes = socketHandler.ReceiveMessage();
-            int index = new MenuClient().ShowMenu(postsNAmes, message);
+            var packet = socketHandler.ReceivePackg();
+            String[] postsNAmes = packet.Data.Split('#');
+            int index = new MenuClient().ShowMenu(postsNAmes,message);
             string optionSelect = postsNAmes[index - 1];
             return optionSelect;
         }
@@ -20,7 +22,8 @@ namespace Client
         public void AssociateFile(SocketHandler socketHandler, Socket SocketClient)
         {
             ProtocolHandler protocolHandler = new ProtocolHandler();
-            socketHandler.SendData(8, SocketClient);
+            Packet packg1 = new Packet("REQ", "8", "Associate file");
+            socketHandler.SendPackg(packg1);
             string title = "Select post to associate file";
             string optionSelect1 = ReceiveListPost(socketHandler, title);
 

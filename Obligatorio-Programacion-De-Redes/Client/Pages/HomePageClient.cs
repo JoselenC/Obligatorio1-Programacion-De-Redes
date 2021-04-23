@@ -41,12 +41,12 @@ namespace Client
                 }
         }
 
-        private static byte[] ConvertDataToHeader(short command, int data)
+        private byte[] ConvertDataToHeader(short command, int data)
         {
             return HeaderHandler.EncodeHeader(command, data);
         }
 
-        private static void SendData(short command,Socket SocketClient)
+        private void SendData(short command,Socket SocketClient)
         {
             if (SocketClient.Send(ConvertDataToHeader(command, new Random().Next())) == 0)
             {

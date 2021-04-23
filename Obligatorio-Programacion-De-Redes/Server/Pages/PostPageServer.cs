@@ -15,8 +15,6 @@ namespace ClientHandler
 
         public void Menu(MemoryRepository repository,Socket socketClient,SocketHandler socketHandler)
         {
-           
-            var exit = false;
             string[] _options = {"Show theme post", "Show post", "Show file post", "Back"};
             int option = new MenuServer().ShowMenu(_options,"Post menu");
                 switch (option)
@@ -60,8 +58,6 @@ namespace ClientHandler
 
        private void MenuShowThemePost(MemoryRepository repository,Socket socketClient, SocketHandler socketHandler)
         { 
-           
-            var exit = false;
             string[] _options = {"By creation date", "By theme", "By both", "Back"};
             int option = new MenuServer().ShowMenu(_options,"Filter");
                 switch (option)
@@ -79,7 +75,6 @@ namespace ClientHandler
                         ShowThemePostByDateAndTheme(repository,socketClient, socketHandler);
                         break;
                     case 4:
-                        exit = true;
                         new HomePageServer().Menu(repository,socketClient, socketHandler);
                         break;
                     default:
@@ -237,7 +232,6 @@ namespace ClientHandler
        }
        public void ShowFilePost(MemoryRepository repository,Socket socketClient,SocketHandler socketHandler)
         {
-            string title = "Select post ";
             var optionSelect = ListPost(repository,"File posts");
             if (optionSelect == "Back")
             {

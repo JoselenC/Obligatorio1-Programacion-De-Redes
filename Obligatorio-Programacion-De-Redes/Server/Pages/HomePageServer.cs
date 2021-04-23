@@ -12,7 +12,6 @@ namespace ClientHandler
         
         public void Menu(MemoryRepository repository,Socket SocketClient, SocketHandler socketHandler)
         {
-            var exit = false;
             string[] _options = {"Client list", "Posts", "Themes", "File", "Exit"};
             int option = new MenuServer().ShowMenu(_options,"Menu");
 
@@ -31,27 +30,12 @@ namespace ClientHandler
                         new FilePageServer().ShowFileList(repository,socketHandler, SocketClient);
                         break;
                     case 5:
-                        exit = true;
                         SocketClient.Shutdown(SocketShutdown.Both);
                         SocketClient.Close();
                         break;
                     default:
                         break;
                 
-            }
-        }
-
-        
-        private static byte[] ConvertDataToHeader(short command, int data)
-        {
-            return HeaderHandler.EncodeHeader(command, data);
-        }
-
-        private static void SendData(short command,Socket SocketClient)
-        {
-            if (SocketClient.Send(ConvertDataToHeader(command, new Random().Next())) == 0)
-            {
-                throw new SocketException();
             }
         }
     }

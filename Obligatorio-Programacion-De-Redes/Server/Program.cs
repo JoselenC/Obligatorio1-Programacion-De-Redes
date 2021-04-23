@@ -27,7 +27,7 @@ namespace Server
           
             while (!_exit)
             {
-                var threadServer = new Thread(() => ListenForConnections(socketServer, repository));
+                var threadServer = new Thread(() => new HandleClient().ListenForConnections(socketServer, repository,_exit,ConnectedClients));
                 threadServer.Start();
             }
 
@@ -35,6 +35,7 @@ namespace Server
             {
                 try
                 {
+                    
                     socketClient.Shutdown(SocketShutdown.Both);
                     socketClient.Close(1);
                 }
@@ -46,34 +47,6 @@ namespace Server
                 Console.WriteLine("Saliendo del Main Thread...");
             }
         }
-
-        private static void ListenForConnections(Socket socketServer, MemoryRepository repository)
-        {
-            try
-            {
-                var socketConnected = socketServer.Accept();
-                ConnectedClients.Add(socketConnected);
-                ClientConnection clientConnection = new ClientConnection()
-                {
-                    TimeOfConnection = new DateTime().ToLocalTime().ToString(),
-                    LocalEndPoint = socketConnected.LocalEndPoint.ToString(),
-                    Ip = "127.0.0.1"
-                };
-                repository.ClientsConnections.Add(clientConnection);
-                SocketHandler socketHandler = new SocketHandler(socketConnected);
-                new HandleClient().HandleClientMethod(socketConnected, repository, _exit, ConnectedClients,
-                socketHandler);
-            }
-            catch (SocketException se)
-            {
-                Console.WriteLine("El servidor está cerrándose...");
-                _exit = true;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-
-        }
+        
     }
 }

@@ -11,7 +11,7 @@ namespace Client
     {
 
 
-        public static bool _exit = false;
+        public bool _exit = false;
 
         private static readonly Socket SocketClient =
             new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);

@@ -4,6 +4,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using Domain;
 using DataHandler;
+using Protocol;
 
 namespace Client
 {
@@ -18,27 +19,32 @@ namespace Client
                 {
                     case 1:
                         Console.Clear();
-                        socketHandler.SendData(1, socketClient);
+                        Packet packg1 = new Packet("REQ", "1", "Add post");
+                        socketHandler.SendPackg(packg1);
                         AddPost(socketHandler, socketClient);
                         break;
                     case 2:
                         Console.Clear();
-                        socketHandler.SendData(2, socketClient);
+                        Packet packg2 = new Packet("REQ", "2", "Modify post");
+                        socketHandler.SendPackg(packg2);
                         ModifyPost(socketHandler, socketClient);
                         break;
                     case 3:
                         Console.Clear();
-                        socketHandler.SendData(3, socketClient);
+                        Packet packg3 = new Packet("REQ", "3", "Delete post");
+                        socketHandler.SendPackg(packg3);
                         DeletePost(socketHandler, socketClient);
                         break;
                     case 4:
                         Console.Clear();
-                        socketHandler.SendData(4, socketClient);
+                        Packet packg4 = new Packet("REQ", "4", "Associate theme");
+                        socketHandler.SendPackg(packg4);
                         AsociateTheme(socketHandler, socketClient);
                         break;
                     case 5:
                         Console.Clear();
-                        socketHandler.SendData(11, socketClient);
+                        Packet packg11 = new Packet("REQ", "11", "Disassociate theme");
+                        socketHandler.SendPackg(packg11);
                         DisassociateTheme(socketHandler, socketClient);
                         break;
                     case 6:
@@ -56,14 +62,17 @@ namespace Client
             string optionSelect = ReceiveListPost(socketHandler,message);
             if (optionSelect == "Back")
             {
-                socketHandler.SendMessage(optionSelect);
+                Packet packg = new Packet("REQ", "3", optionSelect);
+                socketHandler.SendPackg(packg);
                 Menu(socketClient, socketHandler,false);
             }
             else
             {
-                socketHandler.SendMessage(optionSelect);
-                string[] messageArray = socketHandler.ReceiveMessage();
-                Console.WriteLine(messageArray[0]);
+                Packet packg = new Packet("REQ", "3", optionSelect);
+                socketHandler.SendPackg(packg);
+                var packet = socketHandler.ReceivePackg();
+                string messageReceive = packet.Data;
+                Console.WriteLine(messageReceive);
                 Menu(socketClient, socketHandler,false);
             }
         }
@@ -74,7 +83,8 @@ namespace Client
             string optionSelect = ReceiveListPost(socketHandler,title);
             if (optionSelect == "Back")
             {
-                socketHandler.SendMessage(optionSelect);
+                Packet packg = new Packet("REQ", "2", optionSelect);
+                socketHandler.SendPackg(packg);
                 Menu(socketClient, socketHandler,false);
             }
             else
@@ -107,9 +117,11 @@ namespace Client
                     creationDate = Console.ReadLine();
                 }
                 string message = optionSelect + "#" + name + "#" + creationDate;
-                socketHandler.SendMessage(message);
-                string[] messageArray = socketHandler.ReceiveMessage();
-                Console.WriteLine(messageArray[0]);
+                Packet packg = new Packet("REQ", "2", message);
+                socketHandler.SendPackg(packg);
+                var packet = socketHandler.ReceivePackg();
+                string messageReceive = packet.Data;
+                Console.WriteLine(messageReceive);
                 Menu(socketClient, socketHandler,false);
             }
 
@@ -154,11 +166,11 @@ namespace Client
                 creationDate = Console.ReadLine();
             }
             string message = name + "#" + creationDate;
-            socketHandler.SendMessage(message);
-            var exit = false;
-           
-            string[] messageArray = socketHandler.ReceiveMessage();
-            Console.WriteLine(messageArray[0]);
+            Packet packg = new Packet("REQ", "1", message);
+            socketHandler.SendPackg(packg);
+            var packet = socketHandler.ReceivePackg();
+            string messageReceive = packet.Data;
+            Console.WriteLine(messageReceive);
             AssociateThemePost(socketHandler, socketClient, name);
             Menu(socketClient, socketHandler,false);
            
@@ -171,7 +183,8 @@ namespace Client
                 switch (option)
                 {
                     case 1:
-                        socketHandler.SendData(12, socketClient);
+                        Packet packg12 = new Packet("REQ", "12", "Associate theme post");
+                        socketHandler.SendPackg(packg12);
                         AddThemeToPost(socketHandler, name,socketClient);
                         break;
                     case 2:
@@ -188,16 +201,19 @@ namespace Client
             string optionSelect = ReceiveThemes(socketHandler,title);
             if (optionSelect == "Back")
             {
-                socketHandler.SendMessage(optionSelect);
+                Packet packg = new Packet("REQ", "2", optionSelect);
+                socketHandler.SendPackg(packg);
             }
             else
             {
                 string message = postName + "#" + optionSelect;
-                socketHandler.SendMessage(message);
+                Packet packg = new Packet("REQ", "2", message);
+                socketHandler.SendPackg(packg);
                
             }
-            string[] messageArray = socketHandler.ReceiveMessage();
-            Console.WriteLine(messageArray[0]);
+            var packet = socketHandler.ReceivePackg();
+            string messageReceive = packet.Data;
+            Console.WriteLine(messageReceive);
             AssociateThemePost(socketHandler,socketClient,postName);
 
         }
@@ -206,10 +222,12 @@ namespace Client
         {
             string title="Select post to disassociate theme";
            var optionSelect = ReceiveListPost(socketHandler,title);
-            socketHandler.SendMessage(optionSelect);
+           Packet packg = new Packet("REQ", "11", optionSelect);
+           socketHandler.SendPackg(packg);
             if (optionSelect == "Back")
             {
-                socketHandler.SendMessage(optionSelect);
+                Packet packg2 = new Packet("REQ", "11", optionSelect);
+                socketHandler.SendPackg(packg2);
                 Menu(socketClient, socketHandler,false);
             }
             else
@@ -218,7 +236,8 @@ namespace Client
                 var optionSelectThemes = ReceiveThemes(socketHandler,title2);
                 if (optionSelectThemes == "Back")
                 {
-                    socketHandler.SendMessage(optionSelectThemes);
+                    Packet packg3 = new Packet("REQ", "11", optionSelectThemes);
+                    socketHandler.SendPackg(packg3);
                     Menu(socketClient, socketHandler,false);
                 }
                 else
@@ -226,33 +245,38 @@ namespace Client
                     string title3 = "select new theme to associate to the post";
                     var optionSelectThemes2 = ReceiveThemes(socketHandler, title3);
                     string message = optionSelect + "#" + optionSelectThemes + "#" + optionSelectThemes2;
-                    socketHandler.SendMessage(message);
-                    string[] messageArray = socketHandler.ReceiveMessage();
-                    Console.WriteLine(messageArray[0]);
+                    Packet packg4 = new Packet("REQ", "11", message);
+                    socketHandler.SendPackg(packg4);
+                    var packet = socketHandler.ReceivePackg();
+                    string messageReceive = packet.Data;
+                    Console.WriteLine(messageReceive);
                     Menu(socketClient, socketHandler,false);
                 }
                 
             }
         }
 
-        private static string ReceiveThemes(SocketHandler socketHandler,string message)
+        private string ReceiveThemes(SocketHandler socketHandler,string message)
         {
             Console.ForegroundColor = ConsoleColor.Magenta;
             Console.WriteLine("----"+message+"----\n");
             Console.ForegroundColor = ConsoleColor.Black;
-            string[] themesNames = socketHandler.ReceiveMessage();
+            Console.ForegroundColor = ConsoleColor.Black;
+            var packet = socketHandler.ReceivePackg();
+            String[] themesNames= packet.Data.Split('#');
             int indexThemes = new MenuClient().ShowMenu(themesNames,"Themes");
            string optionSelectThemes = themesNames[indexThemes-1];
             return optionSelectThemes;
             
         }
 
-        private static string ReceiveListPost(SocketHandler socketHandler,string message)
+        private string ReceiveListPost(SocketHandler socketHandler,string message)
         {
             Console.ForegroundColor = ConsoleColor.Magenta;
             Console.WriteLine("----"+message+"----\n");
             Console.ForegroundColor = ConsoleColor.Black;
-            string[] postsNAmes = socketHandler.ReceiveMessage();
+            var packet = socketHandler.ReceivePackg();
+            String[] postsNAmes = packet.Data.Split('#');
             int index = new MenuClient().ShowMenu(postsNAmes,"Posts");
             string optionSelect = postsNAmes[index-1];
             return optionSelect;
@@ -264,7 +288,8 @@ namespace Client
             string optionSelect1 = ReceiveListPost(socketHandler,title);
             if (optionSelect1 == "Back")
             {
-                socketHandler.SendMessage(optionSelect1);
+                Packet packg = new Packet("REQ", "4", optionSelect1);
+                socketHandler.SendPackg(packg);
                 new HomePageClient().Menu(SocketClient, socketHandler);
             }
             else
@@ -273,15 +298,18 @@ namespace Client
                 string optionSelect = ReceiveThemes(socketHandler,title2);
                 if (optionSelect == "Back")
                 {
-                    socketHandler.SendMessage(optionSelect);
+                    Packet packg = new Packet("REQ", "4", optionSelect);
+                    socketHandler.SendPackg(packg);
                     new HomePageClient().Menu(SocketClient, socketHandler);
                 }
                 else
                 {
                     string message = optionSelect1 + "#" + optionSelect;
-                    socketHandler.SendMessage(message);
-                    string[] messageArray = socketHandler.ReceiveMessage();
-                    Console.WriteLine(messageArray[0]);
+                    Packet packg = new Packet("REQ", "4", message);
+                    socketHandler.SendPackg(packg);
+                    var packet = socketHandler.ReceivePackg();
+                    string messageReceive = packet.Data;
+                    Console.WriteLine(messageReceive);
                     Menu(SocketClient, socketHandler,false);
                 }
             }
@@ -293,14 +321,16 @@ namespace Client
             var optionSelect = ReceiveListPost(socketHandler,title);
             if (optionSelect == "Back")
             {
-                socketHandler.SendMessage(optionSelect);
+                Packet packg = new Packet("REQ", "2", optionSelect);
+                socketHandler.SendPackg(packg);
                 Menu(SocketClient, socketHandler,false);
             }
             else
             {
-                string message = optionSelect;
-                socketHandler.SendMessage(message);
-                string[] messageArray = socketHandler.ReceiveMessage();
+                Packet packg = new Packet("REQ", "2", optionSelect);
+                socketHandler.SendPackg(packg);
+                var packet = socketHandler.ReceivePackg();
+                String[] messageArray = packet.Data.Split('#');
                 string name = messageArray[0];
                 Console.WriteLine("Name:" + name);
                 string creationDate = messageArray[1];

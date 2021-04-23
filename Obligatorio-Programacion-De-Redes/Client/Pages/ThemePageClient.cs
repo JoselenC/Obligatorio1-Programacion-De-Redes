@@ -4,6 +4,7 @@ using System.Net.Sockets;
 using BusinessLogic;
 using DataHandler;
 using Domain;
+using Protocol;
 
 namespace Client
 {
@@ -11,25 +12,26 @@ namespace Client
     {
         public void Menu(Socket SocketClient,SocketHandler socketHandler)
         {
-            var exit = false;
             string[] _options = {"Add theme", "Modify theme", "Delete theme","Back"};
             int option = new MenuClient().ShowMenu(_options,"Theme menu");
             switch (option)
             {
                 case 1:
-                    socketHandler.SendData(5, SocketClient);
+                    Packet packg1 = new Packet("REQ", "5", "Add post");
+                    socketHandler.SendPackg(packg1);
                     AddTheme(socketHandler,SocketClient);
                     break;
                 case 2:
-                    socketHandler.SendData(6, SocketClient);
+                    Packet packg6 = new Packet("REQ", "6", "Add post");
+                    socketHandler.SendPackg(packg6);
                     ModifyTheme(socketHandler, SocketClient);
                     break;
                 case 3:
-                    socketHandler.SendData(7, SocketClient);
+                    Packet packg7 = new Packet("REQ", "7", "Add post");
+                    socketHandler.SendPackg(packg7);
                     DeleteTheme(socketHandler, SocketClient);
                     break;
                 case 4:
-                    exit = true;
                     new HomePageClient().Menu(SocketClient, socketHandler);
                     break;
                 default:
@@ -44,24 +46,28 @@ namespace Client
             string optionSelect= ReceiveListThemes(socketHandler,"Themes");
             if (optionSelect == "Back")
             {
-                socketHandler.SendMessage(optionSelect);
+                Packet packg = new Packet("REQ", "4", optionSelect);
+                socketHandler.SendPackg(packg);
                 Menu(socketClient, socketHandler);
             }
             else
             {
-                socketHandler.SendMessage(optionSelect);
-                string[] messageArray = socketHandler.ReceiveMessage();
+                Packet packg = new Packet("REQ", "4", optionSelect);
+                socketHandler.SendPackg(packg);
+                var packet = socketHandler.ReceivePackg();
+                String[] messageArray= packet.Data.Split('#');
                 Console.WriteLine(messageArray[0]);
                 Menu(socketClient, socketHandler);
             }
         }
         
-        private static string ReceiveListThemes(SocketHandler socketHandler,string message)
+        private string ReceiveListThemes(SocketHandler socketHandler,string message)
         {
             Console.ForegroundColor = ConsoleColor.Magenta;
             Console.WriteLine(message+"\n");
             Console.ForegroundColor = ConsoleColor.Black;
-            string[] postsNAmes = socketHandler.ReceiveMessage();
+            var packet = socketHandler.ReceivePackg();
+            String[] postsNAmes= packet.Data.Split('#');
             int index = new MenuClient().ShowMenu(postsNAmes,"Themes");
             string optionSelect = postsNAmes[index-1];
             return optionSelect;
@@ -72,7 +78,8 @@ namespace Client
             string optionSelected= ReceiveListThemes(socketHandler,"Themes");
             if (optionSelected == "Back")
             {
-                socketHandler.SendMessage(optionSelected);
+                Packet packg = new Packet("REQ", "4", optionSelected);
+                socketHandler.SendPackg(packg);
                 Menu(socketClient, socketHandler);
             }
             else
@@ -96,8 +103,10 @@ namespace Client
                 Console.ForegroundColor = ConsoleColor.Black;
                 string description = Console.ReadLine();
                 string message = optionSelected + "#" + name + "#" + description;
-                socketHandler.SendMessage(message);
-                string[] messageArray = socketHandler.ReceiveMessage();
+                Packet packg = new Packet("REQ", "4", message);
+                socketHandler.SendPackg(packg);
+                var packet = socketHandler.ReceivePackg();
+                String[] messageArray= packet.Data.Split('#');
                 Console.WriteLine(messageArray[0]);
                 Menu(socketClient, socketHandler);
             }
@@ -124,11 +133,10 @@ namespace Client
             Console.ForegroundColor = ConsoleColor.Black;
             string description = Console.ReadLine();
             string message = name + "#" + description;
-            byte[] data = System.Text.Encoding.UTF8.GetBytes(message);
-            byte[] dataLength = BitConverter.GetBytes(data.Length);
-            socketHandler.Send(dataLength);
-            socketHandler.Send(data);
-            string[] messageArray = socketHandler.ReceiveMessage();
+            Packet packg = new Packet("REQ", "4", message);
+            socketHandler.SendPackg(packg);
+            var packet = socketHandler.ReceivePackg();
+            String[] messageArray= packet.Data.Split('#');
             Console.WriteLine(messageArray[0]);
             Menu(socketClient, socketHandler);
         }

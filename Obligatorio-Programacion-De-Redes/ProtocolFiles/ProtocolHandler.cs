@@ -2,12 +2,13 @@
 using System.Net.Sockets;
 using System.Text;
 using DataHandler;
+using Protocol;
 
 namespace ProtocolFiles
 {
     public class ProtocolHandler
     {
-        public static long GetFileParts(long filesize)
+        public long GetFileParts(long filesize)
         {
             var parts = filesize / ProtocolSpecification.MaxPacketSize;
             return parts * ProtocolSpecification.MaxPacketSize == filesize ? parts : parts + 1;
@@ -53,7 +54,8 @@ namespace ProtocolFiles
                 fileStreamHandler.WriteFile(fileName, rawFileInMemory);
             }
 
-           return socketHandler.ReceiveMessage();
+            var packet = socketHandler.ReceivePackg();
+            return packet.Data.Split('#');
         }
 
         public byte[] Read(int length, NetworkStream stream)
@@ -119,7 +121,8 @@ namespace ProtocolFiles
             }
 
             string message = postName + "#" +fileSize + "#" + fileName;
-            socketHandler.SendMessage(message);
+            Packet packg = new Packet("REQ", "4", message);
+            socketHandler.SendPackg(packg);
         }
 
     }

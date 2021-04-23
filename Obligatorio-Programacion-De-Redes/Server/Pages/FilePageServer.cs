@@ -13,9 +13,6 @@ namespace ClientHandler
         
         public void ShowFileList(MemoryRepository repository,SocketHandler socketHandler,Socket socketClient)
         {
-           
-            Console.Clear();
-            var exit = false;
             string[] _options = {"All files", "By theme", "Order by creation date", "Order by name", "Order by size", "Back"};
             Console.WriteLine("----Select filter----");
             for (var i = 0; i < _options.Length; i++)
@@ -45,7 +42,6 @@ namespace ClientHandler
                     ShowFileBySize(repository,socketClient, socketHandler);
                     break;
                 case 6:
-                    exit = true;
                     new HomePageServer().Menu(repository,socketClient, socketHandler);
                     break;
                 default:

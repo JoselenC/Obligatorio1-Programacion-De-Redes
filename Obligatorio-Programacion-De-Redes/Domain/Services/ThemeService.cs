@@ -1,6 +1,7 @@
 ﻿using System;
 using BusinessLogic;
 using DataHandler;
+using Protocol;
 
 namespace Domain.Services
 {
@@ -14,7 +15,8 @@ namespace Domain.Services
         }
         public void AddTheme(SocketHandler socketHandler)
         {
-            var messageArray = socketHandler.ReceiveMessage();
+            var packet = socketHandler.ReceivePackg();
+            String[] messageArray = packet.Data.Split('#');
             string name = messageArray[0];
             string description = messageArray[1];
             string message;
@@ -35,7 +37,8 @@ namespace Domain.Services
             {
                 message = "The theme name cannot be empty";
             }
-            socketHandler.SendMessage(message);
+            Packet packg = new Packet("REQ", "4", message);
+            socketHandler.SendPackg(packg);
         }
         
         private bool AlreadyExistTheme(string name)
@@ -54,9 +57,11 @@ namespace Domain.Services
                 posts += post.Name + "#";
             }
             posts+="Back";
-            socketHandler.SendMessage(posts);
+            Packet packg = new Packet("REQ", "4", posts);
+            socketHandler.SendPackg(packg);
             string message;
-            string[] messageArray = socketHandler.ReceiveMessage();
+            var packet = socketHandler.ReceivePackg();
+            String[] messageArray = packet.Data.Split('#');
             string option = messageArray[0];
             if (option != "Back")
             {
@@ -70,7 +75,7 @@ namespace Domain.Services
                         Theme themeName = repository.Themes.Find(x => x.Name == option);
                         repository.Themes.Remove(themeName);
                         repository.Themes.Add(theme);
-                        message = "The theme " + option + " was modified";
+                        message = "was modified";
                     }
                     else
                     {
@@ -81,8 +86,8 @@ namespace Domain.Services
                 {
                     message = "The theme name cannot be empty";
                 }
-
-                socketHandler.SendMessage(message);
+                Packet packg2 = new Packet("REQ", "4", message);
+                socketHandler.SendPackg(packg2);
             }
         }
 
@@ -94,10 +99,11 @@ namespace Domain.Services
                 posts += post.Name + "#";
             }
             posts+="Back";
-            socketHandler.SendMessage(posts);
+            Packet packg = new Packet("REQ", "4", posts);
+            socketHandler.SendPackg(packg);
             string message;
-            string[] messageArray = socketHandler.ReceiveMessage();
-            string oldName = messageArray[0];
+            var packet = socketHandler.ReceivePackg();
+            string oldName = packet.Data;
             if (oldName != "Back")
             {
                 if (AlreadyExistTheme(oldName))
@@ -110,15 +116,17 @@ namespace Domain.Services
                     else
                     {
                         message = "The theme " + oldName + " is associated with a post";
-                        socketHandler.SendMessage(message);
+                        Packet packg2 = new Packet("REQ", "4", message);
+                        socketHandler.SendPackg(packg2);
                     }
-                    message = "The theme " + oldName + " was deleted";
+                    message = " was deleted";
                 }
                 else
                 {
                     message = "The theme " + oldName + " not exist";
                 }
-                socketHandler.SendMessage(message);
+                Packet packg3 = new Packet("REQ", "4", message);
+                socketHandler.SendPackg(packg3);
             }
         }
 
@@ -140,12 +148,9 @@ namespace Domain.Services
                 posts +=repository.Themes[i].Name + "#";
             }
             posts += "Back";
-            socketHandler.SendMessage(posts);
+            Packet packg = new Packet("REQ", "4", posts);
+            socketHandler.SendPackg(packg);
         }
         
-        public void ShowThemeList(SocketHandler socketHandler)
-        {
-            SendListThemes(socketHandler);
-        }
     }
 }

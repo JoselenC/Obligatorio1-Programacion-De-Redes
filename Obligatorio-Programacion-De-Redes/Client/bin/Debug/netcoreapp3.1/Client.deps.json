@@ -17,14 +17,6 @@
           "Client.dll": {}
         }
       },
-      "DataHandler/1.0.0": {
-        "dependencies": {
-          "Protocol": "1.0.0"
-        },
-        "runtime": {
-          "DataHandler.dll": {}
-        }
-      },
       "Domain/1.0.0": {
         "dependencies": {
           "DataHandler": "1.0.0",
@@ -60,11 +52,6 @@
   },
   "libraries": {
     "Client/1.0.0": {
-      "type": "project",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "DataHandler/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

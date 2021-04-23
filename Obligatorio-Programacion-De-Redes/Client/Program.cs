@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Configuration;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using BusinessLogic;
 using DataHandler;
+using Server;
 
 namespace Client
 {
@@ -18,8 +20,7 @@ namespace Client
 
         static void Main(string[] args)
         {
-            SocketClient.Bind(new IPEndPoint(IPAddress.Parse("127.0.0.1"), 0));
-            SocketClient.Connect(new IPEndPoint(IPAddress.Parse("127.0.0.1"), 30000));
+            new ConnectionConfig(SocketClient);
             SocketHandler socketHandler = new SocketHandler(SocketClient);
             try
             {

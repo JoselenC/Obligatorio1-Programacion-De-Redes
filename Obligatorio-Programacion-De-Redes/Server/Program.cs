@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
@@ -17,9 +18,7 @@ namespace Server
 
         static void Main(string[] args)
         {
-            var socketServer = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            socketServer.Bind(new IPEndPoint(IPAddress.Parse("127.0.0.1"), 30000));
-            socketServer.Listen(10);
+            Socket socketServer = new ConnectionConfig().Connect();
             SocketHandler socketHandler = new SocketHandler(socketServer);
             MemoryRepository repository = new MemoryRepository();
             var thread = new Thread(a => new HomePageServer().Menu(repository,socketServer,socketHandler));

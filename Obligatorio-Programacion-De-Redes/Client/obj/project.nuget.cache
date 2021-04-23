@@ -1,8 +1,18 @@
 {
   "version": 2,
-  "dgSpecHash": "3aRuE8PuH9inv6lJEK/PzuUByPe9caoDo4sz8DQE6Df1ru6on4O6HdMEFdecLNRJxMfmAr7vPnzGY5aMhUbV6Q==",
+  "dgSpecHash": "9kbFfWIGCFGGgiGBvr9f3o3DeqBZfkBxnVsiZ/EwCkvBO6qzdnzMnnZG+Hy1mdmH/3NC0Vx22IusoOFTVgl8lg==",
   "success": true,
   "projectFilePath": "C:\\Users\\Choche\\OneDrive\\Escritorio\\Semestre 6\\Programacion de redes\\Obligatorio1-Programacion-De-Redes\\Obligatorio-Programacion-De-Redes\\Client\\Client.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\Choche\\.nuget\\packages\\microsoft.netcore.platforms\\6.0.0-preview.3.21201.4\\microsoft.netcore.platforms.6.0.0-preview.3.21201.4.nupkg.sha512",
+    "C:\\Users\\Choche\\.nuget\\packages\\microsoft.win32.systemevents\\6.0.0-preview.3.21201.4\\microsoft.win32.systemevents.6.0.0-preview.3.21201.4.nupkg.sha512",
+    "C:\\Users\\Choche\\.nuget\\packages\\system.configuration.configurationmanager\\6.0.0-preview.3.21201.4\\system.configuration.configurationmanager.6.0.0-preview.3.21201.4.nupkg.sha512",
+    "C:\\Users\\Choche\\.nuget\\packages\\system.drawing.common\\6.0.0-preview.3.21201.4\\system.drawing.common.6.0.0-preview.3.21201.4.nupkg.sha512",
+    "C:\\Users\\Choche\\.nuget\\packages\\system.security.accesscontrol\\6.0.0-preview.3.21201.4\\system.security.accesscontrol.6.0.0-preview.3.21201.4.nupkg.sha512",
+    "C:\\Users\\Choche\\.nuget\\packages\\system.security.cryptography.protecteddata\\6.0.0-preview.3.21201.4\\system.security.cryptography.protecteddata.6.0.0-preview.3.21201.4.nupkg.sha512",
+    "C:\\Users\\Choche\\.nuget\\packages\\system.security.permissions\\6.0.0-preview.3.21201.4\\system.security.permissions.6.0.0-preview.3.21201.4.nupkg.sha512",
+    "C:\\Users\\Choche\\.nuget\\packages\\system.security.principal.windows\\6.0.0-preview.3.21201.4\\system.security.principal.windows.6.0.0-preview.3.21201.4.nupkg.sha512",
+    "C:\\Users\\Choche\\.nuget\\packages\\system.windows.extensions\\6.0.0-preview.3.21201.4\\system.windows.extensions.6.0.0-preview.3.21201.4.nupkg.sha512"
+  ],
   "logs": []
 }

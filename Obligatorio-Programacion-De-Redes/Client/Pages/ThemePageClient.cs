@@ -22,12 +22,12 @@ namespace Client
                     AddTheme(socketHandler,SocketClient);
                     break;
                 case 2:
-                    Packet packg6 = new Packet("REQ", "6", "Add post");
+                    Packet packg6 = new Packet("REQ", "6", "Modify theme");
                     socketHandler.SendPackg(packg6);
                     ModifyTheme(socketHandler, SocketClient);
                     break;
                 case 3:
-                    Packet packg7 = new Packet("REQ", "7", "Add post");
+                    Packet packg7 = new Packet("REQ", "7", "Delete theme");
                     socketHandler.SendPackg(packg7);
                     DeleteTheme(socketHandler, SocketClient);
                     break;

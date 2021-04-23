@@ -126,7 +126,7 @@ namespace Domain.Services
         {
             foreach (var post in repository.Posts)
             {
-                if (post.Theme.Contains(theme))
+                if (post.Themes.Contains(theme))
                     return true;
             }
             return false;

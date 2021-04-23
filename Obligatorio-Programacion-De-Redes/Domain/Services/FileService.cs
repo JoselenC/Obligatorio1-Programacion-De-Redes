@@ -32,12 +32,13 @@ namespace Domain.Services
             string[] fileData=protocolHandler.ReceiveFile(socketClient,socketHandler);
             File file = new File()
             {
-                Name = fileData[0],
+                Name = fileData[2],
                 Size = Double.Parse(fileData[1])
             };
-            Post post=repository.Posts.Find(x => x.Name == fileData[3]);
+            Post post=repository.Posts.Find(x => x.Name == fileData[0]);
             repository.Posts.Remove(post);
             post.File = file;
+            file.Themes = post.Themes;
             repository.Posts.Add(post);
             repository.Files.Add(file);
         }

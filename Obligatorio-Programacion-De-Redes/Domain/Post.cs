@@ -6,7 +6,7 @@ namespace Domain
     public class Post
     {
         public string Name { get; set; }
-        public List<Theme>  Theme { get; set; }
+        public List<Theme>  Themes { get; set; }
         public string CreationDate { get; set; }
         public File File { get; set; }
     }

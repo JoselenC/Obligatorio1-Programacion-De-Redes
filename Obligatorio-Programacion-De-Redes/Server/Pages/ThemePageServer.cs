@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net.Sockets;
 using BusinessLogic;
 using DataHandler;
@@ -12,7 +13,7 @@ namespace ClientHandler
         public void Menu(MemoryRepository repository,Socket SocketClient,SocketHandler socketHandler)
         {
             var exit = false;
-            string[] _options = {"Add theme", "Modify theme", "Delete theme", "Back"};
+            string[] _options = {"Themes list", "Theme with more post", "Back"};
             while (!exit)
             {
                 int option = new MenuServer().ShowMenu(_options,"Menu");
@@ -44,8 +45,8 @@ namespace ClientHandler
             for (var i = 0; i < repository.Themes.Count; i++)
             {
                 Console.ForegroundColor = ConsoleColor.DarkCyan;
-                var prefix = "Theme" +i +1 + ":  ";
-                Console.BackgroundColor = ConsoleColor.Black;
+                var prefix = "Theme" + i+1 + ":  ";
+                Console.ForegroundColor = ConsoleColor.Black;
                Console.WriteLine(prefix + "Name:" + repository.Themes[i].Name + "Description:" + repository.Themes[i].Description);
             }
             Console.WriteLine(repository.Themes.Count+1 +".  Back");
@@ -54,7 +55,6 @@ namespace ClientHandler
             if (indexThemes > repository.Themes.Count)
             {
                 return "Back";
-                
             }
             else
             {
@@ -77,19 +77,27 @@ namespace ClientHandler
             Socket socketClient)
         {
             int max = Int32.MinValue;
-            string themeName = "";
+            List<string> themeNames = new List<string>();
             foreach (var theme in repository.Themes)
             {
-                if (theme.Posts.Count > max)
+                if (theme.Posts.Count == max)
                 {
-                    max = theme.Posts.Count;
-                    themeName = theme.Name;
+                    themeNames.Add(theme.Name); 
+                }
+                else if (theme.Posts.Count > max)
+                {
+                    themeNames = new List<string>();
+                    themeNames.Add(theme.Name); 
                 }
             }
 
-            Theme themeMax = repository.Themes.Find(x => x.Name == themeName);
-            Console.WriteLine("Name:" + themeMax.Name + "Description:" +
-                              themeMax.Description);
+            foreach (var themeName in themeNames)
+            {
+                Theme themeMax = repository.Themes.Find(x => x.Name == themeName);
+                Console.WriteLine("Name:" + themeMax.Name + "Description:" +
+                                  themeMax.Description);
+            }
+           
             Menu(repository, socketClient, socketHandler);
 
         }

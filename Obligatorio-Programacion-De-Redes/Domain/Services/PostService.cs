@@ -18,9 +18,9 @@ namespace Domain.Services
         {
             Post postByName = repository.Posts.Find(x => x.Name == namePost);
             string themes = "";
-            for (int i = 0; i < postByName.Theme.Count; i++)
+            for (int i = 0; i < postByName.Themes.Count; i++)
             {
-                themes +=postByName.Theme[i].Name + "#";
+                themes +=postByName.Themes[i].Name + "#";
             }
             themes += "Back";
             socketHandler.SendMessage(themes);
@@ -159,13 +159,13 @@ namespace Domain.Services
                 {
                     Post postByName = repository.Posts.Find(x => x.Name == namePost);
                     Theme theme = repository.Themes.Find(x => x.Name == nameTheme);
-                    if (postByName.Theme == null)
-                        postByName.Theme = new List<Theme>();
-                    if(postByName.Theme.Contains(theme))
+                    if (postByName.Themes == null)
+                        postByName.Themes = new List<Theme>();
+                    if(postByName.Themes.Contains(theme))
                         message = "The theme " + nameTheme + " already associated";
                     else
                     {
-                        postByName.Theme.Add(theme);
+                        postByName.Themes.Add(theme);
                         message = "The theme " + nameTheme + " was associated";
                     }
                 }
@@ -190,13 +190,13 @@ namespace Domain.Services
                 {
                     Post postByName = repository.Posts.Find(x => x.Name == namePost);
                     Theme theme = repository.Themes.Find(x => x.Name == nameTheme);
-                    if (postByName.Theme == null)
-                        postByName.Theme = new List<Theme>();
-                    if(postByName.Theme.Contains(theme))
+                    if (postByName.Themes == null)
+                        postByName.Themes = new List<Theme>();
+                    if(postByName.Themes.Contains(theme))
                         message = "The theme " + nameTheme + " already associated";
                     else
                     {
-                        postByName.Theme.Add(theme);
+                        postByName.Themes.Add(theme);
                         message = "The theme " + nameTheme + " was associated";
                     }
                 }
@@ -268,10 +268,10 @@ namespace Domain.Services
             {
                 Theme theme = repository.Themes.Find(x => x.Name == nameThemeDisassociate);
                 Theme newTheme = repository.Themes.Find(x => x.Name == nameNewTheme);
-                if (postByName.Theme != null && postByName.Theme.Contains(theme))
+                if (postByName.Themes != null && postByName.Themes.Contains(theme))
                 {
-                    postByName.Theme.Remove(theme);
-                    postByName.Theme.Add(newTheme);
+                    postByName.Themes.Remove(theme);
+                    postByName.Themes.Add(newTheme);
                 }
 
                 message = "The theme " + nameThemeDisassociate + " was disassociate and " + nameNewTheme +

@@ -11,7 +11,6 @@ namespace Client
     {
         public void Menu(Socket SocketClient,SocketHandler socketHandler)
         {
-            Console.Clear();
             var exit = false;
             string[] _options = {"Add theme", "Modify theme", "Delete theme","Back"};
             int option = new MenuClient().ShowMenu(_options,"Theme menu");
@@ -59,7 +58,7 @@ namespace Client
         
         private static string ReceiveListThemes(SocketHandler socketHandler,string message)
         {
-            Console.ForegroundColor = ConsoleColor.DarkCyan;
+            Console.ForegroundColor = ConsoleColor.Magenta;
             Console.WriteLine(message+"\n");
             Console.ForegroundColor = ConsoleColor.Black;
             string[] postsNAmes = socketHandler.ReceiveMessage();
@@ -78,12 +77,21 @@ namespace Client
             }
             else
             {
-                Console.WriteLine("New data theme\n");
-                Console.ForegroundColor = ConsoleColor.DarkCyan;
+                Console.ForegroundColor = ConsoleColor.Magenta;
+                Console.WriteLine("-----New data theme-----\n");
                 Console.Write("Name: ");
                 Console.ForegroundColor = ConsoleColor.Black;
                 string name = Console.ReadLine();
-                Console.ForegroundColor = ConsoleColor.DarkCyan;
+                while (name == "")
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.Write("The name cannot be empty: \n");
+                    Console.ForegroundColor = ConsoleColor.Magenta;
+                    Console.Write("Name:  ");
+                    Console.ForegroundColor = ConsoleColor.Black;
+                    name = Console.ReadLine();
+                }
+                Console.ForegroundColor = ConsoleColor.Magenta;
                 Console.Write("Description: ");
                 Console.ForegroundColor = ConsoleColor.Black;
                 string description = Console.ReadLine();
@@ -97,12 +105,21 @@ namespace Client
 
         public void AddTheme(SocketHandler socketHandler,Socket socketClient)
         {
-            Console.Write("New theme \n");
-            Console.ForegroundColor = ConsoleColor.DarkCyan;
+            Console.ForegroundColor = ConsoleColor.Magenta;
+            Console.Write("-----New theme----- \n");
             Console.Write("Name: ");
             Console.ForegroundColor = ConsoleColor.Black;
             string name = Console.ReadLine();
-            Console.ForegroundColor = ConsoleColor.DarkCyan;
+            while (name == "")
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.Write("The name cannot be empty: \n");
+                Console.ForegroundColor = ConsoleColor.Magenta;
+                Console.Write("Name:  \n");
+                Console.ForegroundColor = ConsoleColor.Black;
+                name = Console.ReadLine();
+            }
+            Console.ForegroundColor = ConsoleColor.Magenta;
             Console.Write("Description: ");
             Console.ForegroundColor = ConsoleColor.Black;
             string description = Console.ReadLine();

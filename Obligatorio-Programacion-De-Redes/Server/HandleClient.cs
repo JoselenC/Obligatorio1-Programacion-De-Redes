@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Net.Sockets;
 using BusinessLogic;
 using DataHandler;
@@ -68,6 +69,9 @@ namespace ClientHandler
             }
             catch (SocketException e)
             {
+                ClientConnection client = repository.ClientsConnections.Find(x =>
+                    x.LocalEndPoint ==clientSocket.RemoteEndPoint.ToString());
+                repository.ClientsConnections.Remove(client);
                 Console.WriteLine("Removing client....");
                 connectedClients.Remove(clientSocket);
             }
@@ -75,15 +79,16 @@ namespace ClientHandler
         
         public void ListenForConnections(Socket socketServer, MemoryRepository repository,bool _exit, List<Socket> ConnectedClients)
         {
+            
             try
             {
                 var socketConnected = socketServer.Accept();
                 ConnectedClients.Add(socketConnected);
                 ClientConnection clientConnection = new ClientConnection()
                 {
-                    TimeOfConnection = new DateTime().ToLocalTime().ToString(),
-                    LocalEndPoint = socketConnected.LocalEndPoint.ToString(),
-                    Ip = "127.0.0.1"
+                    TimeOfConnection = DateTime.Now.ToString(), 
+                    LocalEndPoint = socketConnected.RemoteEndPoint.ToString(),
+                    Ip = ConfigurationManager.AppSettings["ServerIp"]
                 };
                 repository.ClientsConnections.Add(clientConnection);
                 SocketHandler socketHandler = new SocketHandler(socketConnected);
@@ -92,7 +97,7 @@ namespace ClientHandler
             }
             catch (SocketException se)
             {
-                Console.WriteLine("El servidor está cerrándose...");
+              Console.WriteLine("El servidor está cerrándose...");
                 _exit = true;
             }
             catch (Exception e)

@@ -79,7 +79,7 @@ namespace Domain.Services
             {
                 if (!AlreadyExistPost(name))
                 {
-                    Post post = new Post() {Name = name, CreationDate = creationDate};
+                    Post post = new Post() {Name = name, CreationDate = creationDate,InUse = false};
                     repository.Posts.Add(post);
                     message = "The post " + name + " was created";
                 }
@@ -112,10 +112,18 @@ namespace Domain.Services
                     if (!AlreadyExistPost(name))
                     {
                         Post postByName = repository.Posts.Find(x => x.Name == oldName);
-                        repository.Posts.Remove(postByName);
-                        Post newPost = new Post() {Name = name, CreationDate = newCreationDate};
-                        repository.Posts.Add(newPost);
-                        message = "The post " + name + " was modified";
+                        if (!postByName.InUse)
+                        {
+                            repository.Posts.Find(x => x.Name == oldName).InUse = true;
+                            repository.Posts.Remove(postByName);
+                            Post newPost = new Post() {Name = name, CreationDate = newCreationDate, InUse = false};
+                            repository.Posts.Add(newPost);
+                            message = "The post " + oldName + " was modified";
+                        }
+                        else
+                        {
+                            message = "The post " + oldName + "is in use";
+                        }
                     }
                     else
                     {
@@ -142,8 +150,16 @@ namespace Domain.Services
                 if (AlreadyExistPost(name))
                 {
                     Post postByName = repository.Posts.Find(x => x.Name == name);
-                    repository.Posts.Remove(postByName);
-                    message =  "was deleted";
+                    if (!postByName.InUse)
+                    {
+                        repository.Posts.Find(x => x.Name == name).InUse=true;
+                        repository.Posts.Remove(postByName);
+                        message = "was deleted";
+                    }
+                    else
+                    {
+                        message = "The post " + name + "is in use";
+                    }
                 }
                 else
                 {
@@ -175,6 +191,9 @@ namespace Domain.Services
                         message = "The theme " + nameTheme + " already associated";
                     else
                     {
+                        repository.Themes.Remove(theme);
+                        theme.Posts.Add(postByName);
+                        repository.Themes.Add(theme);
                         postByName.Themes.Add(theme);
                         message = "The theme " + nameTheme + " was associated";
                     }

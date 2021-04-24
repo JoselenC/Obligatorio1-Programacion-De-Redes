@@ -24,7 +24,7 @@ namespace Domain.Services
             {
                 if (!AlreadyExistTheme(name))
                 {
-                    Theme theme = new Theme() {Name = name, Description = description};
+                    Theme theme = new Theme() {Name = name, Description = description, InUse = false};
                     repository.Themes.Add(theme);
                     message = "The theme " + name + " was added";
                 }
@@ -69,13 +69,21 @@ namespace Domain.Services
                 if (name != "")
                 {
                     string description = messageArray[2];
-                    Theme theme = new Theme() {Name = name, Description = description};
+                    Theme theme = new Theme() {Name = name, Description = description, InUse =false};
                     if (!AlreadyExistTheme(name))
                     {
                         Theme themeName = repository.Themes.Find(x => x.Name == option);
-                        repository.Themes.Remove(themeName);
-                        repository.Themes.Add(theme);
-                        message = "was modified";
+                        if (!theme.InUse)
+                        {
+                            repository.Themes.Find(x => x.Name == option).InUse=true;
+                            repository.Themes.Remove(themeName);
+                            repository.Themes.Add(theme);
+                            message = "The theme " + option +"was modified";
+                        }
+                        else
+                        {
+                            message = "The theme " + option + "is in use";
+                        }
                     }
                     else
                     {
@@ -109,17 +117,26 @@ namespace Domain.Services
                 if (AlreadyExistTheme(oldName))
                 {
                     Theme themeName = repository.Themes.Find(x => x.Name == oldName);
-                    if (!IsAssociatedAPost(themeName))
+                    if (!themeName.InUse)
                     {
-                        repository.Themes.Remove(themeName);
+                        repository.Themes.Find(x => x.Name == oldName).InUse = true;
+                        if (!IsAssociatedAPost(themeName))
+                        {
+                            repository.Themes.Remove(themeName);
+                            message = "The theme " + oldName + " was deleted";
+                        }
+                        else
+                        {
+                            message = "The theme " + oldName + " is associated with a post";
+                            Packet packg2 = new Packet("REQ", "4", message);
+                            socketHandler.SendPackg(packg2);
+                        }
                     }
                     else
                     {
-                        message = "The theme " + oldName + " is associated with a post";
-                        Packet packg2 = new Packet("REQ", "4", message);
-                        socketHandler.SendPackg(packg2);
+                        message = "The theme " + oldName +" in use";
                     }
-                    message = " was deleted";
+
                 }
                 else
                 {

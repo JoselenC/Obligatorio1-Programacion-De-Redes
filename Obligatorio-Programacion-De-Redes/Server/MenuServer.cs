@@ -10,7 +10,6 @@ namespace Server
             int indexMenu = 0;
             while (!salir)
             {
-                Console.Clear();
                 Console.ForegroundColor = ConsoleColor.DarkCyan;
                 Console.WriteLine("----"+ title+"----");
                 Console.ForegroundColor = ConsoleColor.White;

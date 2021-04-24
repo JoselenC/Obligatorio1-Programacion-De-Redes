@@ -13,7 +13,9 @@ namespace ClientHandler
             Console.Clear();
             if (repository.ClientsConnections.Count == 0 || repository.ClientsConnections==null)
             {
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("No hay clientes conectados");
+                Console.ForegroundColor = ConsoleColor.Black;
                 new HomePageServer().Menu(repository,socketClient,socketHandler);
             }
             else
@@ -22,12 +24,18 @@ namespace ClientHandler
                 {
                     int prefix = i + 1;
                     ClientConnection clientConnection = repository.ClientsConnections[i];
-                    Console.WriteLine("Client " + prefix + ":  " + " Hour of connection: " + 
-                                     clientConnection.TimeOfConnection + "Port: " + 
-                                     clientConnection.LocalEndPoint + "Ip: " + 
+                    Console.ForegroundColor = ConsoleColor.DarkCyan;
+                    Console.WriteLine("Client " + prefix + ":  ");
+                    Console.ForegroundColor = ConsoleColor.Black;
+                    Console.WriteLine(" Hour of connection: " + 
+                                     clientConnection.TimeOfConnection + "  Port: " + 
+                                     clientConnection.LocalEndPoint + "  Ip: " + 
                                      clientConnection.Ip + "\n");
                 }
-                Console.WriteLine(repository.ClientsConnections.Count+1 + "Back");
+
+                Console.ForegroundColor = ConsoleColor.DarkCyan;
+                Console.WriteLine(repository.ClientsConnections.Count+1 + ".  Back");
+                Console.ForegroundColor = ConsoleColor.Black;
             }
 
             Console.ReadLine();

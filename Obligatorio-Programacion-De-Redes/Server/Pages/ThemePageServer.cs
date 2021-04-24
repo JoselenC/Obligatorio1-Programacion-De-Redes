@@ -37,21 +37,25 @@ namespace ClientHandler
                 }
             }
         }
-        
-        private static string ListThemes(MemoryRepository repository,string title)
+
+        private static string ListThemes(MemoryRepository repository, string title)
         {
             Console.ForegroundColor = ConsoleColor.DarkCyan;
-            Console.WriteLine("----"+ title +"----");
+            Console.WriteLine("----" + title + "----");
             for (var i = 0; i < repository.Themes.Count; i++)
             {
                 Console.ForegroundColor = ConsoleColor.DarkCyan;
-                var prefix = "Theme" + i+1 + ":  ";
+                Console.WriteLine("Theme" + (i + 1) + ":  ");
                 Console.ForegroundColor = ConsoleColor.Black;
-               Console.WriteLine(prefix + "Name:" + repository.Themes[i].Name + "Description:" + repository.Themes[i].Description);
+                Console.WriteLine("Name: " + repository.Themes[i].Name + " Description: " +
+                                  repository.Themes[i].Description);
             }
-            Console.WriteLine(repository.Themes.Count+1 +".  Back");
-            var var=Console.ReadLine();
-            int indexThemes= Int32.Parse(var);
+
+            Console.ForegroundColor = ConsoleColor.DarkCyan;
+            Console.WriteLine(repository.Themes.Count + 1 + ".  Back");
+            Console.ForegroundColor = ConsoleColor.Black;
+            var var = Console.ReadLine();
+            int indexThemes = Int32.Parse(var);
             if (indexThemes > repository.Themes.Count)
             {
                 return "Back";
@@ -73,32 +77,57 @@ namespace ClientHandler
             Menu(repository,socketClient, socketHandler);
         }
 
-        private void ShowThemeWithMorePosts(MemoryRepository repository, SocketHandler socketHandler,
-            Socket socketClient)
+        private void ShowThemeWithMorePosts(MemoryRepository repository, SocketHandler socketHandler,Socket socketClient)
         {
             int max = Int32.MinValue;
             List<string> themeNames = new List<string>();
-            foreach (var theme in repository.Themes)
+            int cant = 0;
+            if (repository.Themes != null && repository.Themes.Count!=0)
             {
-                if (theme.Posts.Count == max)
+                foreach (var theme in repository.Themes)
                 {
-                    themeNames.Add(theme.Name); 
-                }
-                else if (theme.Posts.Count > max)
-                {
-                    themeNames = new List<string>();
-                    themeNames.Add(theme.Name); 
-                }
-            }
+                    if (theme.Posts == null)
+                        cant = 0;
+                    else
+                    {
+                        cant = theme.Posts.Count;
+                    }
 
-            foreach (var themeName in themeNames)
-            {
-                Theme themeMax = repository.Themes.Find(x => x.Name == themeName);
-                Console.WriteLine("Name:" + themeMax.Name + "Description:" +
-                                  themeMax.Description);
+                    if (cant == max)
+                    {
+                        themeNames.Add(theme.Name);
+                    }
+                    else if (cant > max)
+                    {
+                        themeNames = new List<string>();
+                        themeNames.Add(theme.Name);
+                    }
+                }
+
+                Console.WriteLine("Cantidad de post: " + max);
+                foreach (var themeName in themeNames)
+                {
+                    Theme themeMax = repository.Themes.Find(x => x.Name == themeName);
+                    Console.WriteLine("Name:" + themeMax.Name + "Description:" +
+                                      themeMax.Description);
+                }
+                Console.ForegroundColor = ConsoleColor.DarkCyan;
+                Console.WriteLine(repository.Themes.Count + 1 + ".  Back");
+                Console.ForegroundColor = ConsoleColor.Black;
+                var var = Console.ReadLine();
+                int indexThemes = Int32.Parse(var);
+                if (indexThemes > repository.Themes.Count)
+                {
+                    Menu(repository,socketClient, socketHandler);
+                }
             }
-           
-            Menu(repository, socketClient, socketHandler);
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("There aren't themes in the system");
+                Console.ForegroundColor = ConsoleColor.Black;
+                Menu(repository, socketClient, socketHandler);
+            }
 
         }
     }

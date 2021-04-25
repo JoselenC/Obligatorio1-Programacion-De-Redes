@@ -1,6 +1,6 @@
 namespace Domain
 {
-    public class ClientConnection
+    public class ClientConnected
     {
         public string TimeOfConnection { get; set; }
         public string LocalEndPoint { get; set; }

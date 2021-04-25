@@ -23,7 +23,7 @@ namespace ClientHandler
                 for (int i = 0; i < repository.ClientsConnections.Count; i = i + 1)
                 {
                     int prefix = i + 1;
-                    ClientConnection clientConnection = repository.ClientsConnections[i];
+                    ClientConnected clientConnection = repository.ClientsConnections[i];
                     Console.ForegroundColor = ConsoleColor.DarkCyan;
                     Console.WriteLine("Client " + prefix + ":  ");
                     Console.ForegroundColor = ConsoleColor.White;

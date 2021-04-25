@@ -69,7 +69,7 @@ namespace ClientHandler
             }
             catch (SocketException e)
             {
-                ClientConnection client = repository.ClientsConnections.Find(x =>
+                ClientConnected client = repository.ClientsConnections.Find(x =>
                     x.LocalEndPoint ==clientSocket.RemoteEndPoint.ToString());
                 repository.ClientsConnections.Remove(client);
                 Console.WriteLine("Removing client....");
@@ -84,7 +84,7 @@ namespace ClientHandler
             {
                 var socketConnected = socketServer.Accept();
                 ConnectedClients.Add(socketConnected);
-                ClientConnection clientConnection = new ClientConnection()
+                ClientConnected clientConnection = new ClientConnected()
                 {
                     TimeOfConnection = DateTime.Now.ToString(), 
                     LocalEndPoint = socketConnected.RemoteEndPoint.ToString(),

@@ -5,6 +5,7 @@ using System.Net.Sockets;
 using BusinessLogic;
 using DataHandler;
 using Domain;
+using Server;
 
 namespace ClientHandler
 {
@@ -14,16 +15,7 @@ namespace ClientHandler
         public void ShowFileList(MemoryRepository repository,SocketHandler socketHandler,Socket socketClient)
         {
             string[] _options = {"All files", "By theme", "Order by creation date", "Order by name", "Order by size", "Back"};
-            Console.WriteLine("----Select filter----");
-            for (var i = 0; i < _options.Length; i++)
-            {
-                Console.ForegroundColor = ConsoleColor.DarkCyan;
-                var prefix =i + 1 + ".  ";
-                Console.WriteLine($"{prefix}{_options[i]}");
-            }
-            Console.ForegroundColor = ConsoleColor.Black;
-            var var = Console.ReadLine();
-            int option= Int32.Parse(var);
+            int option = new MenuServer().ShowMenu(_options, "File menu");
             switch (option)
             {
                 case 1:
@@ -83,9 +75,9 @@ namespace ClientHandler
             var optionSelect = ListFileBySize(repository,"Files by size");
             if (optionSelect == "Back")
             {
-                new HomePageServer().Menu(repository,socketClient, socketHandler);
+                ShowFileList(repository, socketHandler, socketClient);
             }
-            new HomePageServer().Menu(repository,socketClient, socketHandler);
+            ShowFileList(repository, socketHandler, socketClient);
         }
 
         private static string ListFileByName(MemoryRepository repository,string title)
@@ -121,9 +113,9 @@ namespace ClientHandler
             var optionSelect = ListFileByName(repository,"Files by name");
             if (optionSelect == "Back")
             {
-                new HomePageServer().Menu(repository,socketClient, socketHandler);
+                ShowFileList(repository, socketHandler, socketClient);
             }
-            new HomePageServer().Menu(repository,socketClient, socketHandler);
+            ShowFileList(repository, socketHandler, socketClient);
         }
         
         private static string ListFileByDate(MemoryRepository repository,string title)
@@ -160,21 +152,41 @@ namespace ClientHandler
             var optionSelect = ListFileByDate(repository,"Files by date");
             if (optionSelect == "Back")
             {
-                new HomePageServer().Menu(repository,socketClient, socketHandler);
+                ShowFileList(repository, socketHandler, socketClient);
             }
-            new HomePageServer().Menu(repository,socketClient, socketHandler);
+            ShowFileList(repository, socketHandler, socketClient);
         }
+
+        private string ListThemes(MemoryRepository repository,SocketHandler socketHandler)
+        {
+            string [] posts= new string[repository.Themes.Count];
+            for (int i = 0; i < repository.Themes.Count; i++)
+            {
+                posts[i] = repository.Themes[i].Name;
+            }
+            int index = new MenuServer().ShowMenu(posts, "Themes");
+            string optionSelect = posts[index - 1];
+            return optionSelect.Split("\0")[0];
+        }
+
 
         private void ShowFileByTheme(MemoryRepository repository,Socket socketClient, SocketHandler socketHandler)
         {
-            Console.WriteLine("Theme name to filter");
-            string themeName = Console.ReadLine();
-            var optionSelect = ListFileByTheme(repository,"Files by theme name",themeName);
-            if (optionSelect == "Back")
+            if (repository.Themes.Count > 0)
             {
-                new HomePageServer().Menu(repository,socketClient, socketHandler);
+                var themeName = ListThemes(repository, socketHandler);
+                var optionSelect = ListFileByTheme(repository, "Files by theme name", themeName);
+                if (optionSelect == "Back")
+                {
+                    ShowFileList(repository, socketHandler, socketClient);
+                }
+                ShowFileList(repository, socketHandler, socketClient);
             }
-            new HomePageServer().Menu(repository,socketClient, socketHandler);
+            else
+            {
+                Console.WriteLine("There aren't themes to filter");
+                ShowFileList(repository, socketHandler, socketClient);
+            }
         }
         
         private static string ListFileByTheme(MemoryRepository repository,string title,string themeName)
@@ -241,7 +253,7 @@ namespace ClientHandler
             var optionSelect = ListFiles(repository, "File posts");
             if (optionSelect == "Back")
             {
-                new HomePageServer().Menu(repository, socketClient, socketHandler);
+                ShowFileList(repository, socketHandler, socketClient);
             }
             else
             {
@@ -251,7 +263,7 @@ namespace ClientHandler
                                   + "Upload date" + file.UploadDate);
             }
 
-            new HomePageServer().Menu(repository, socketClient, socketHandler);
+            ShowFileList(repository, socketHandler, socketClient);
         }
     }
 }

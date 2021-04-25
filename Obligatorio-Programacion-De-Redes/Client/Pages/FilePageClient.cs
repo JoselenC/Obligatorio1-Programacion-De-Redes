@@ -16,7 +16,7 @@ namespace Client
             String[] postsNAmes = packet.Data.Split('#');
             int index = new MenuClient().ShowMenu(postsNAmes,message);
             string optionSelect = postsNAmes[index - 1];
-            return optionSelect;
+            return optionSelect.Split('\0')[0];
         }
 
         public void AssociateFile(SocketHandler socketHandler, Socket SocketClient)
@@ -26,23 +26,26 @@ namespace Client
             socketHandler.SendPackg(packg1);
             string title = "Select post to associate file";
             string optionSelect1 = ReceiveListPost(socketHandler, title);
-
-            Console.WriteLine("Path: ");
-            string path = Console.ReadLine();
-            try
+            if (optionSelect1 != "Back")
             {
-                protocolHandler.SendFile(path, SocketClient, socketHandler, optionSelect1);
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine("File was added");
-                new HomePageClient().Menu(SocketClient, socketHandler);
+                Console.WriteLine("Path: ");
+                string path = Console.ReadLine();
+                try
+                {
+                    protocolHandler.SendFile(path, SocketClient, socketHandler, optionSelect1);
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine("File was associated");
+                    new HomePageClient().Menu(SocketClient, socketHandler);
+                }
+                catch (Exception)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Error al agregrar el archivo");
+                    protocolHandler.SendFile("", SocketClient, socketHandler, optionSelect1);
+                    new HomePageClient().Menu(SocketClient, socketHandler);
+                }
             }
-            catch (Exception)
-            {
-                protocolHandler.SendFile(path, SocketClient, socketHandler, optionSelect1);
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("Error al agregrar el archivo");
-                new HomePageClient().Menu(SocketClient, socketHandler);
-            }
+            new HomePageClient().Menu(SocketClient, socketHandler);
         }
     
     }

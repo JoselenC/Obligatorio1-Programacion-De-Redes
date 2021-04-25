@@ -59,7 +59,7 @@ namespace Client
        private void DeletePost(SocketHandler socketHandler,Socket socketClient)
        {
             string message = "Posts to delete";
-            string optionSelect = ReceiveListPost(socketHandler,message);
+            string optionSelect = ReceiveListPost(socketHandler,message).Split('\0')[0]; ;
             if (optionSelect == "Back")
             {
                 Packet packg = new Packet("REQ", "3", optionSelect);
@@ -71,7 +71,7 @@ namespace Client
                 Packet packg = new Packet("REQ", "3", optionSelect);
                 socketHandler.SendPackg(packg);
                 var packet = socketHandler.ReceivePackg();
-                string messageReceive = packet.Data;
+                string messageReceive = packet.Data.Split('\0')[0];
                 Console.WriteLine(messageReceive);
                 Menu(socketClient, socketHandler,false);
             }
@@ -80,7 +80,8 @@ namespace Client
         private void ModifyPost(SocketHandler socketHandler,Socket socketClient)
         {
             string title ="Posts to modify";
-            string optionSelect = ReceiveListPost(socketHandler,title);
+            string optionSelect = ReceiveListPost(socketHandler,title).Split('\0')[0];
+            
             if (optionSelect == "Back")
             {
                 Packet packg = new Packet("REQ", "2", optionSelect);
@@ -92,7 +93,7 @@ namespace Client
                 Console.ForegroundColor = ConsoleColor.Magenta;
                 Console.Write("-----New data----- \n");
                 Console.Write("Name: ");
-                Console.ForegroundColor = ConsoleColor.Black;
+                Console.ForegroundColor = ConsoleColor.White;
                 string name = Console.ReadLine();
                 while (name == "")
                 {
@@ -100,27 +101,27 @@ namespace Client
                     Console.Write("The name cannot be empty: \n");
                     Console.ForegroundColor = ConsoleColor.Magenta;
                     Console.Write("Name: ");
-                    Console.ForegroundColor = ConsoleColor.Black;
+                    Console.ForegroundColor = ConsoleColor.White;
                     name = Console.ReadLine();
                 }
                 Console.ForegroundColor = ConsoleColor.Magenta;
                 Console.Write("Creation date: ");
-                Console.ForegroundColor = ConsoleColor.Black;
+                Console.ForegroundColor = ConsoleColor.White;
                 string creationDate = Console.ReadLine();
                 while (!GoodFormat(creationDate))
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
-                    Console.Write("The date format must be: \n" + "dd/mm/yyyy \n");
+                    Console.Write("The date format must be: dd/mm/yyyy \n");
                     Console.ForegroundColor = ConsoleColor.Magenta;
                     Console.Write("Creation date: ");
-                    Console.ForegroundColor = ConsoleColor.Black;
+                    Console.ForegroundColor = ConsoleColor.White;
                     creationDate = Console.ReadLine();
                 }
                 string message = optionSelect + "#" + name + "#" + creationDate;
                 Packet packg = new Packet("REQ", "2", message);
                 socketHandler.SendPackg(packg);
                 var packet = socketHandler.ReceivePackg();
-                string messageReceive = packet.Data;
+                string messageReceive = packet.Data.Split('\0')[0];
                 Console.WriteLine(messageReceive);
                 Menu(socketClient, socketHandler,false);
             }
@@ -129,11 +130,26 @@ namespace Client
 
         private bool GoodFormat(string creationDate)
         {
-            Regex regex = new Regex(@"\b\d{1,2}(/|-|.|\s)\d{1,2}(/|-|.|\s)(\d{4}|\d{2})");
+            bool goodFormat = false;
+            Regex regex = new Regex(@"\b\d{2}(/|-|.|\s)\d{2}(/|-|.|\s)(\d{4})");
             var match = regex.Match(creationDate);
             if (match.Success)
-                return true;
-            return false;
+                goodFormat= true;
+            if (goodFormat)
+            {
+                string[] date = creationDate.Split("/");
+                int day = Int32.Parse(date[0]);
+                int month = Int32.Parse(date[1]);
+                int year = Int32.Parse(date[2]);
+                if ((day>0 && day<32) && (month>0 && month<13) && (year < 2022)){
+                    return true;
+                }
+                return false;
+            }
+            else
+            {
+                return false;
+            }
         } 
 
         public void AddPost(SocketHandler socketHandler,Socket socketClient)
@@ -141,7 +157,7 @@ namespace Client
             Console.ForegroundColor = ConsoleColor.Magenta;
             Console.Write("------New post------ \n");
             Console.Write("Name: ");
-            Console.ForegroundColor = ConsoleColor.Black;
+            Console.ForegroundColor = ConsoleColor.White;
             string name = Console.ReadLine();
             while (name == "")
             {
@@ -149,12 +165,12 @@ namespace Client
                 Console.Write("The name cannot be empty: \n");
                 Console.ForegroundColor = ConsoleColor.Magenta;
                 Console.Write("Name:  \n");
-                Console.ForegroundColor = ConsoleColor.Black;
+                Console.ForegroundColor = ConsoleColor.White;
                 name = Console.ReadLine();
             }
             Console.ForegroundColor = ConsoleColor.Magenta;
             Console.Write("Creation date: ");
-            Console.ForegroundColor = ConsoleColor.Black;
+            Console.ForegroundColor = ConsoleColor.White;
             string creationDate = Console.ReadLine();
             while(!GoodFormat(creationDate))
             {
@@ -162,14 +178,15 @@ namespace Client
                 Console.Write("The date format must be: \n" +  "MM:dd:yyyy or dd/mm/yyyy \n");
                 Console.ForegroundColor = ConsoleColor.Magenta;
                 Console.Write("Creation date: ");
-                Console.ForegroundColor = ConsoleColor.Black;
+                Console.ForegroundColor = ConsoleColor.White;
                 creationDate = Console.ReadLine();
             }
+
             string message = name + "#" + creationDate;
             Packet packg = new Packet("REQ", "1", message);
             socketHandler.SendPackg(packg);
             var packet = socketHandler.ReceivePackg();
-            string messageReceive = packet.Data;
+            string messageReceive = packet.Data.Split('\0')[0];
             Console.WriteLine(messageReceive);
             AssociateThemePost(socketHandler, socketClient, name);
             Menu(socketClient, socketHandler,false);
@@ -195,35 +212,24 @@ namespace Client
                 }
         }
 
-        private void AddThemeToPost(SocketHandler socketHandler,string postName,Socket socketClient)
+        private void AddThemeToPost(SocketHandler socketHandler, string postName, Socket socketClient)
         {
-            string title="Themes to add to the post";
-            string optionSelect = ReceiveThemes(socketHandler,title);
-            if (optionSelect == "Back")
-            {
-                Packet packg = new Packet("REQ", "2", optionSelect);
-                socketHandler.SendPackg(packg);
-            }
-            else
-            {
-                string message = postName + "#" + optionSelect;
-                Packet packg = new Packet("REQ", "2", message);
-                socketHandler.SendPackg(packg);
-               
-            }
+            string title = "Themes to add to the post";
+            string optionSelect = ReceiveThemes(socketHandler, title).Split('\0')[0];
+            string message = postName + "#" + optionSelect;
+            Packet packg = new Packet("REQ", "2", message);
+            socketHandler.SendPackg(packg);
             var packet = socketHandler.ReceivePackg();
-            string messageReceive = packet.Data;
+            string messageReceive = packet.Data.Split('\0')[0];
             Console.WriteLine(messageReceive);
-            AssociateThemePost(socketHandler,socketClient,postName);
+            AssociateThemePost(socketHandler, socketClient, postName);
 
         }
         
         private void DisassociateTheme(SocketHandler socketHandler, Socket socketClient)
         {
             string title="Select post to disassociate theme";
-           var optionSelect = ReceiveListPost(socketHandler,title);
-           Packet packg = new Packet("REQ", "11", optionSelect);
-           socketHandler.SendPackg(packg);
+           var optionSelect = ReceiveListPost(socketHandler,title).Split('\0')[0]; ;
             if (optionSelect == "Back")
             {
                 Packet packg2 = new Packet("REQ", "11", optionSelect);
@@ -232,23 +238,25 @@ namespace Client
             }
             else
             {
+                Packet packg2 = new Packet("REQ", "11", optionSelect);
+                socketHandler.SendPackg(packg2);
                 string title2="Select theme to disassociate to the post";
-                var optionSelectThemes = ReceiveThemes(socketHandler,title2);
+                var optionSelectThemes = ReceiveThemes(socketHandler,title2).Split('\0')[0];
                 if (optionSelectThemes == "Back")
                 {
-                    Packet packg3 = new Packet("REQ", "11", optionSelectThemes);
+                    Packet packg3 = new Packet("REQ", "11", optionSelect);
                     socketHandler.SendPackg(packg3);
                     Menu(socketClient, socketHandler,false);
                 }
                 else
                 {
                     string title3 = "select new theme to associate to the post";
-                    var optionSelectThemes2 = ReceiveThemes(socketHandler, title3);
+                    var optionSelectThemes2 = ReceiveThemes(socketHandler, title3).Split('\0')[0];
                     string message = optionSelect + "#" + optionSelectThemes + "#" + optionSelectThemes2;
                     Packet packg4 = new Packet("REQ", "11", message);
                     socketHandler.SendPackg(packg4);
                     var packet = socketHandler.ReceivePackg();
-                    string messageReceive = packet.Data;
+                    string messageReceive = packet.Data.Split('\0')[0];
                     Console.WriteLine(messageReceive);
                     Menu(socketClient, socketHandler,false);
                 }
@@ -260,12 +268,13 @@ namespace Client
         {
             Console.ForegroundColor = ConsoleColor.Magenta;
             Console.WriteLine("----"+message+"----\n");
-            Console.ForegroundColor = ConsoleColor.Black;
-            Console.ForegroundColor = ConsoleColor.Black;
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.ForegroundColor = ConsoleColor.White;
             var packet = socketHandler.ReceivePackg();
             String[] themesNames= packet.Data.Split('#');
             int indexThemes = new MenuClient().ShowMenu(themesNames,"Themes");
-           string optionSelectThemes = themesNames[indexThemes-1];
+            if (indexThemes == 0) return "Back";
+            string optionSelectThemes = themesNames[indexThemes-1];
             return optionSelectThemes;
             
         }
@@ -274,10 +283,11 @@ namespace Client
         {
             Console.ForegroundColor = ConsoleColor.Magenta;
             Console.WriteLine("----"+message+"----\n");
-            Console.ForegroundColor = ConsoleColor.Black;
+            Console.ForegroundColor = ConsoleColor.White;
             var packet = socketHandler.ReceivePackg();
             String[] postsNAmes = packet.Data.Split('#');
             int index = new MenuClient().ShowMenu(postsNAmes,"Posts");
+            if (index == 0) return "Back";
             string optionSelect = postsNAmes[index-1];
             return optionSelect;
         }
@@ -285,7 +295,7 @@ namespace Client
         public void AsociateTheme(SocketHandler socketHandler,Socket SocketClient)
         {
             string title="Select post to associate theme";
-            string optionSelect1 = ReceiveListPost(socketHandler,title);
+            string optionSelect1 = ReceiveListPost(socketHandler,title).Split('\0')[0]; ;
             if (optionSelect1 == "Back")
             {
                 Packet packg = new Packet("REQ", "4", optionSelect1);
@@ -295,7 +305,7 @@ namespace Client
             else
             {
                 string title2="Select theme to associate the post";
-                string optionSelect = ReceiveThemes(socketHandler,title2);
+                string optionSelect = ReceiveThemes(socketHandler,title2).Split('\0')[0];
                 if (optionSelect == "Back")
                 {
                     Packet packg = new Packet("REQ", "4", optionSelect);
@@ -308,7 +318,7 @@ namespace Client
                     Packet packg = new Packet("REQ", "4", message);
                     socketHandler.SendPackg(packg);
                     var packet = socketHandler.ReceivePackg();
-                    string messageReceive = packet.Data;
+                    string messageReceive = packet.Data.Split('\0')[0];
                     Console.WriteLine(messageReceive);
                     Menu(SocketClient, socketHandler,false);
                 }
@@ -318,12 +328,12 @@ namespace Client
         public void SearchPost(SocketHandler socketHandler,Socket SocketClient)
         {
             string title="Select post";
-            var optionSelect = ReceiveListPost(socketHandler,title);
+            var optionSelect = ReceiveListPost(socketHandler,title).Split('\0')[0]; ;
             if (optionSelect == "Back")
             {
-                Packet packg = new Packet("REQ", "2", optionSelect);
+                Packet packg = new Packet("REQ", "9", optionSelect);
                 socketHandler.SendPackg(packg);
-                Menu(SocketClient, socketHandler,false);
+                new HomePageClient().Menu(SocketClient, socketHandler);
             }
             else
             {
@@ -333,7 +343,7 @@ namespace Client
                 String[] messageArray = packet.Data.Split('#');
                 string name = messageArray[0];
                 Console.WriteLine("Name:" + name);
-                string creationDate = messageArray[1];
+                string creationDate = messageArray[1].Split('\0')[0];
                 Console.WriteLine("Creation date:" + creationDate);
                 Menu(SocketClient, socketHandler,false);
             }

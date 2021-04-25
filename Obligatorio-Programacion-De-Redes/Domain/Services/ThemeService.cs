@@ -18,27 +18,31 @@ namespace Domain.Services
             var packet = socketHandler.ReceivePackg();
             String[] messageArray = packet.Data.Split('#');
             string name = messageArray[0];
-            string description = messageArray[1];
-            string message;
-            if (name != "")
+            if (name != "Back")
             {
-                if (!AlreadyExistTheme(name))
+                string description = messageArray[1].Split('\0')[0]; ;
+                string message;
+
+                if (name != "")
                 {
-                    Theme theme = new Theme() {Name = name, Description = description, InUse = false};
-                    repository.Themes.Add(theme);
-                    message = "The theme " + name + " was added";
+                    if (!AlreadyExistTheme(name))
+                    {
+                        Theme theme = new Theme() { Name = name, Description = description, InUse = false };
+                        repository.Themes.Add(theme);
+                        message = "The theme " + name + " was added";
+                    }
+                    else
+                    {
+                        message = "The theme " + name + " already exist";
+                    }
                 }
                 else
                 {
-                    message = "The theme " + name + " already exist";
+                    message = "The theme name cannot be empty";
                 }
+                Packet packg = new Packet("REQ", "4", message);
+                socketHandler.SendPackg(packg);
             }
-            else
-            {
-                message = "The theme name cannot be empty";
-            }
-            Packet packg = new Packet("REQ", "4", message);
-            socketHandler.SendPackg(packg);
         }
         
         private bool AlreadyExistTheme(string name)
@@ -51,34 +55,34 @@ namespace Domain.Services
 
         public void ModifyTheme(SocketHandler socketHandler)
         {
-            string posts="";
+            string posts = "";
             foreach (var post in repository.Themes)
             {
                 posts += post.Name + "#";
             }
-            posts+="Back";
+            posts += "Back";
             Packet packg = new Packet("REQ", "4", posts);
             socketHandler.SendPackg(packg);
             string message;
             var packet = socketHandler.ReceivePackg();
-            String[] messageArray = packet.Data.Split('#');
-            string option = messageArray[0];
+            string[] messageArray = packet.Data.Split('#');
+            string option = messageArray[0].Split("\0")[0];
             if (option != "Back")
             {
                 string name = messageArray[1];
                 if (name != "")
                 {
-                    string description = messageArray[2];
-                    Theme theme = new Theme() {Name = name, Description = description, InUse =false};
+                    string description = messageArray[2].Split("\0")[0];
+                    Theme theme = new Theme() { Name = name, Description = description, InUse = false };
                     if (!AlreadyExistTheme(name))
                     {
                         Theme themeName = repository.Themes.Find(x => x.Name == option);
                         if (!theme.InUse)
                         {
-                            repository.Themes.Find(x => x.Name == option).InUse=true;
+                            repository.Themes.Find(x => x.Name == option).InUse = true;
                             repository.Themes.Remove(themeName);
                             repository.Themes.Add(theme);
-                            message = "The theme " + option +"was modified";
+                            message = "The theme " + option + "was modified";
                         }
                         else
                         {
@@ -101,17 +105,17 @@ namespace Domain.Services
 
         public void DeleteTheme(SocketHandler socketHandler)
         {
-            string posts="";
+            string posts = "";
             foreach (var post in repository.Themes)
             {
                 posts += post.Name + "#";
             }
-            posts+="Back";
+            posts += "Back";
             Packet packg = new Packet("REQ", "4", posts);
             socketHandler.SendPackg(packg);
             string message;
             var packet = socketHandler.ReceivePackg();
-            string oldName = packet.Data;
+            string oldName = packet.Data.Split('\0')[0];
             if (oldName != "Back")
             {
                 if (AlreadyExistTheme(oldName))
@@ -134,7 +138,7 @@ namespace Domain.Services
                     }
                     else
                     {
-                        message = "The theme " + oldName +" in use";
+                        message = "The theme " + oldName + " in use";
                     }
 
                 }

@@ -43,7 +43,7 @@ namespace Client
 
         private void DeleteTheme(SocketHandler socketHandler, Socket socketClient)
         {
-            string optionSelect= ReceiveListThemes(socketHandler,"Themes");
+            string optionSelect= ReceiveListThemes(socketHandler,"Themes").Split('\0')[0]; ;
             if (optionSelect == "Back")
             {
                 Packet packg = new Packet("REQ", "4", optionSelect);
@@ -55,8 +55,7 @@ namespace Client
                 Packet packg = new Packet("REQ", "4", optionSelect);
                 socketHandler.SendPackg(packg);
                 var packet = socketHandler.ReceivePackg();
-                String[] messageArray= packet.Data.Split('#');
-                Console.WriteLine(messageArray[0]);
+                Console.WriteLine(packet.Data.Split('\0')[0]);
                 Menu(socketClient, socketHandler);
             }
         }
@@ -65,7 +64,7 @@ namespace Client
         {
             Console.ForegroundColor = ConsoleColor.Magenta;
             Console.WriteLine(message+"\n");
-            Console.ForegroundColor = ConsoleColor.Black;
+            Console.ForegroundColor = ConsoleColor.White;
             var packet = socketHandler.ReceivePackg();
             String[] postsNAmes= packet.Data.Split('#');
             int index = new MenuClient().ShowMenu(postsNAmes,"Themes");
@@ -75,7 +74,7 @@ namespace Client
 
         private void ModifyTheme(SocketHandler socketHandler,Socket socketClient)
         {
-            string optionSelected= ReceiveListThemes(socketHandler,"Themes");
+            string optionSelected= ReceiveListThemes(socketHandler,"Themes").Split('\0')[0]; ;
             if (optionSelected == "Back")
             {
                 Packet packg = new Packet("REQ", "4", optionSelected);
@@ -87,7 +86,7 @@ namespace Client
                 Console.ForegroundColor = ConsoleColor.Magenta;
                 Console.WriteLine("-----New data theme-----\n");
                 Console.Write("Name: ");
-                Console.ForegroundColor = ConsoleColor.Black;
+                Console.ForegroundColor = ConsoleColor.White;
                 string name = Console.ReadLine();
                 while (name == "")
                 {
@@ -95,19 +94,18 @@ namespace Client
                     Console.Write("The name cannot be empty: \n");
                     Console.ForegroundColor = ConsoleColor.Magenta;
                     Console.Write("Name:  ");
-                    Console.ForegroundColor = ConsoleColor.Black;
+                    Console.ForegroundColor = ConsoleColor.White;
                     name = Console.ReadLine();
                 }
                 Console.ForegroundColor = ConsoleColor.Magenta;
                 Console.Write("Description: ");
-                Console.ForegroundColor = ConsoleColor.Black;
+                Console.ForegroundColor = ConsoleColor.White;
                 string description = Console.ReadLine();
                 string message = optionSelected + "#" + name + "#" + description;
                 Packet packg = new Packet("REQ", "4", message);
                 socketHandler.SendPackg(packg);
                 var packet = socketHandler.ReceivePackg();
-                String[] messageArray= packet.Data.Split('#');
-                Console.WriteLine(messageArray[0]);
+                Console.WriteLine(packet.Data.Split('\0')[0]);
                 Menu(socketClient, socketHandler);
             }
         }
@@ -117,7 +115,7 @@ namespace Client
             Console.ForegroundColor = ConsoleColor.Magenta;
             Console.Write("-----New theme----- \n");
             Console.Write("Name: ");
-            Console.ForegroundColor = ConsoleColor.Black;
+            Console.ForegroundColor = ConsoleColor.White;
             string name = Console.ReadLine();
             while (name == "")
             {
@@ -125,19 +123,18 @@ namespace Client
                 Console.Write("The name cannot be empty: \n");
                 Console.ForegroundColor = ConsoleColor.Magenta;
                 Console.Write("Name:  \n");
-                Console.ForegroundColor = ConsoleColor.Black;
+                Console.ForegroundColor = ConsoleColor.White;
                 name = Console.ReadLine();
             }
             Console.ForegroundColor = ConsoleColor.Magenta;
             Console.Write("Description: ");
-            Console.ForegroundColor = ConsoleColor.Black;
+            Console.ForegroundColor = ConsoleColor.White;
             string description = Console.ReadLine();
             string message = name + "#" + description;
             Packet packg = new Packet("REQ", "4", message);
             socketHandler.SendPackg(packg);
             var packet = socketHandler.ReceivePackg();
-            String[] messageArray= packet.Data.Split('#');
-            Console.WriteLine(messageArray[0]);
+            Console.WriteLine(packet.Data.Split('\0')[0]);
             Menu(socketClient, socketHandler);
         }
 

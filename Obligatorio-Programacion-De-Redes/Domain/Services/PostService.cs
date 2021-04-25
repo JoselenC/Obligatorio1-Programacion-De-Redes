@@ -19,9 +19,15 @@ namespace Domain.Services
         {
             Post postByName = repository.Posts.Find(x => x.Name == namePost);
             string themes = "";
-            for (int i = 0; i < postByName.Themes.Count; i++)
+            if (postByName!=null)
             {
-                themes +=postByName.Themes[i].Name + "#";
+                if (postByName.Themes != null)
+                {
+                    for (int i = 0; i < postByName.Themes.Count; i++)
+                    {
+                        themes += postByName.Themes[i].Name + "#";
+                    }
+                }
             }
             themes += "Back";
             Packet packg = new Packet("REQ", "2", themes);
@@ -31,9 +37,12 @@ namespace Domain.Services
         private void SendListPost(SocketHandler socketHandler)
         {
             string posts = "";
-            for (int i = 0; i < repository.Posts.Count; i++)
+            if (repository.Posts != null && repository.Posts.Count!=0)
             {
-                posts +=repository.Posts[i].Name + "#";
+                for (int i = 0; i < repository.Posts.Count; i++)
+                {
+                    posts += repository.Posts[i].Name + "#";
+                }
             }
             posts += "Back";
             Packet packg = new Packet("REQ", "2", posts);
@@ -43,14 +52,18 @@ namespace Domain.Services
         private void SendListThemes(SocketHandler socketHandler)
         {
             string posts = "";
-            for (int i = 0; i < repository.Themes.Count; i++)
+            if (repository.Themes != null)
             {
-                posts +=repository.Themes[i].Name + "#";
+                for (int i = 0; i < repository.Themes.Count; i++)
+                {
+                    posts += repository.Themes[i].Name + "#";
+                }
             }
             posts += "Back";
             Packet packg = new Packet("REQ", "2", posts);
             socketHandler.SendPackg(packg);
         }
+
 
         private bool AlreadyExistTheme(string name)
         {
@@ -73,7 +86,7 @@ namespace Domain.Services
             var packet = socketHandler.ReceivePackg();
             String[] messageArray = packet.Data.Split('#');
             string name = messageArray[0];
-            string creationDate = messageArray[1];
+            string creationDate = messageArray[1].Split('\0')[0];
             string message= "";
             if (name != "")
             {
@@ -100,15 +113,15 @@ namespace Domain.Services
         {
             SendListPost(socketHandler);
             var packet = socketHandler.ReceivePackg();
-            String[] messageArray = packet.Data.Split('#');
-            string oldName = messageArray[0];
+            string[] messageArray = packet.Data.Split('#');
+            string oldName = messageArray[0].Split('\0')[0];
             string message;
             if (oldName!= "Back")
             {
                 string name = messageArray[1];
                 if (name != "")
                 {
-                    string newCreationDate = messageArray[2];
+                    string newCreationDate = messageArray[2].Split('\0')[0];
                     if (!AlreadyExistPost(name))
                     {
                         Post postByName = repository.Posts.Find(x => x.Name == oldName);
@@ -143,7 +156,7 @@ namespace Domain.Services
         {
             SendListPost(socketHandler);
             var packet = socketHandler.ReceivePackg();
-            string name = packet.Data;
+            string name = packet.Data.Split('\0')[0];
             if (name != "Back")
             {
                 string message;
@@ -176,11 +189,11 @@ namespace Domain.Services
             SendListThemes(socketHandler);
             var packet = socketHandler.ReceivePackg();
             String[] messageArray = packet.Data.Split('#');
-            string namePost = messageArray[0];
+            string namePost = messageArray[0].Split('\0')[0];
             string message = "";
             if (namePost != "Back")
             {
-                string nameTheme = messageArray[1];
+                string nameTheme = messageArray[1].Split('\0')[0]; ;
                 if (AlreadyExistTheme(nameTheme))
                 {
                     Post postByName = repository.Posts.Find(x => x.Name == namePost);
@@ -192,6 +205,7 @@ namespace Domain.Services
                     else
                     {
                         repository.Themes.Remove(theme);
+                        if (theme.Posts == null) theme.Posts = new List<Post>();
                         theme.Posts.Add(postByName);
                         repository.Themes.Add(theme);
                         postByName.Themes.Add(theme);
@@ -206,45 +220,56 @@ namespace Domain.Services
                 socketHandler.SendPackg(packg);
             }
         }
-        
+
+        private void SendListThemesToPost(SocketHandler socketHandler)
+        {
+            string posts = "";
+            if (repository.Themes != null)
+            {
+                for (int i = 0; i < repository.Themes.Count; i++)
+                {
+                    posts += repository.Themes[i].Name + "#";
+                }
+                Packet packg = new Packet("REQ", "2", posts);
+                socketHandler.SendPackg(packg);
+            }         
+        }
+
         public void AsociateThemeToPost(SocketHandler socketHandler)
         {
-            SendListThemes(socketHandler);
+            SendListThemesToPost(socketHandler);
             var packet = socketHandler.ReceivePackg();
             String[] messageArray = packet.Data.Split('#');
             string namePost = messageArray[0];
             string message = "";
-            if (namePost != "Back")
+            string nameTheme = messageArray[1].Split('\0')[0];
+            if (AlreadyExistTheme(nameTheme))
             {
-                string nameTheme = messageArray[1];
-                if (AlreadyExistTheme(nameTheme))
-                {
-                    Post postByName = repository.Posts.Find(x => x.Name == namePost);
-                    Theme theme = repository.Themes.Find(x => x.Name == nameTheme);
-                    if (postByName.Themes == null)
-                        postByName.Themes = new List<Theme>();
-                    if(postByName.Themes.Contains(theme))
-                        message = "The theme " + nameTheme + " already associated";
-                    else
-                    {
-                        postByName.Themes.Add(theme);
-                        message = "The theme " + nameTheme + " was associated";
-                    }
-                }
+                Post postByName = repository.Posts.Find(x => x.Name == namePost);
+                Theme theme = repository.Themes.Find(x => x.Name == nameTheme);
+                if (postByName.Themes == null)
+                    postByName.Themes = new List<Theme>();
+                if (postByName.Themes.Contains(theme))
+                    message = "The theme " + nameTheme + " already associated";
                 else
                 {
-                    message = "The theme " + nameTheme + " does not exist";
+                    postByName.Themes.Add(theme);
+                    message = "The theme " + nameTheme + " was associated";
                 }
-                Packet packg = new Packet("REQ", "2", message);
-                socketHandler.SendPackg(packg);
             }
+            else
+            {
+                message = "The theme " + nameTheme + " does not exist";
+            }
+            Packet packg = new Packet("REQ", "2", message);
+            socketHandler.SendPackg(packg);
         }
 
        public void SearchPost(SocketHandler socketHandler)
         {
             SendListPost(socketHandler);
             var packet = socketHandler.ReceivePackg();
-            string namePost = packet.Data;
+            string namePost = packet.Data.Split('\0')[0];
             if (namePost != "Back")
             {
                 string message;
@@ -267,22 +292,22 @@ namespace Domain.Services
         {
             SendListPost(socketHandler);
             var packet = socketHandler.ReceivePackg();
-            string namePost = packet.Data;
+            string namePost = packet.Data.Split('\0')[0];
             SendListThemesPost(socketHandler,namePost);
-            string posts = "";
-            foreach (var post in repository.Themes)
+            string themes = "";
+            foreach (var theme in repository.Themes)
             {
-                posts += post.Name + "#";
+                themes += theme.Name + "#";
             }
-            Packet packg2 = new Packet("REQ", "2", posts);
+            Packet packg2 = new Packet("REQ", "2", themes);
             socketHandler.SendPackg(packg2);
             var packet2 = socketHandler.ReceivePackg();
             String[] messageArray = packet2.Data.Split('#');
-            string postName = messageArray[0];
+            string postName = messageArray[0].Split('\0')[0];
             if (postName != "Back")
             {
                 string nameThemeDisassociate = messageArray[1];
-                string nameNewTheme = messageArray[2];
+                string nameNewTheme = messageArray[2].Split('\0')[0]; ;
                 string message = "";
                 if (AlreadyExistPost(postName))
                 {

@@ -85,8 +85,11 @@ namespace ClientHandler
        
      private static string ListPostOrder(MemoryRepository repository,string title)
        {
-           IOrderedEnumerable<Post> orderedEnumerable= repository.Posts.OrderBy(x=>DateTime.Parse(x.CreationDate));
-           List<Post>orderList=orderedEnumerable.ToList();
+           
+           
+           IOrderedEnumerable<Post> orderedEnumerable= repository.Posts.OrderBy(x=> new DateTime(Convert.ToInt32(x.CreationDate.Substring(6, 4)), Convert.ToInt32(x.CreationDate.Substring(3, 2)), // Month
+                                    Convert.ToInt32(x.CreationDate.Substring(0, 2))));
+            List<Post>orderList=orderedEnumerable.ToList();
            Console.ForegroundColor = ConsoleColor.DarkCyan;
            Console.WriteLine("----"+ title +"----");
            for (var i = 0; i < orderList.Count; i++)
@@ -116,48 +119,84 @@ namespace ClientHandler
            Console.ForegroundColor = ConsoleColor.DarkCyan;
            Console.WriteLine("----"+ title +"----");
            int cant = 0;
-           Theme theme = repository.Themes.Find(x => x.Name == themeName);
-           for (var i = 0; i < repository.Posts.Count; i++)
-           {
+            if (themeName != "Back")
+            {
+                Theme theme = repository.Themes.Find(x => x.Name == themeName);
 
-               if (repository.Posts[i].Themes.Contains(theme))
-               {
-                   cant++;
-                   Console.ForegroundColor = ConsoleColor.DarkCyan;
-                   var prefix = "Post" + i + 1 + ":  ";
-                   Console.BackgroundColor = ConsoleColor.Black;
-                   Console.WriteLine(prefix + "Name:" + repository.Posts[i].Name + "Creation date:" +
-                                     repository.Posts[i].CreationDate);
-               }
-           }
+                for (var i = 0; i < repository.Posts.Count; i++)
+                {
 
-           if (cant == 0)
-           {
-               return "0";
-           }
-           else
-           {
-               Console.WriteLine(cant + 1 + ".  Back");
-               var var = Console.ReadLine();
-               int indexPost = Int32.Parse(var);
-               if (indexPost > cant)
-               {
-                   return "Back";
+                    if (repository.Posts[i].Themes.Contains(theme))
+                    {
+                        cant++;
+                        Console.ForegroundColor = ConsoleColor.DarkCyan;
+                        var prefix = "Post" + i + 1 + ":  ";
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.WriteLine(prefix + "Name:" + repository.Posts[i].Name + "Creation date:" +
+                                          repository.Posts[i].CreationDate);
+                    }
+                }
 
-               }
-               else
-               {
-                   string optionSelectedPosts = repository.Posts[indexPost - 1].Name;
-                   return optionSelectedPosts;
-               }
-           }
+                if (cant == 0)
+                {
+                    return "0";
+                }
+                else
+                {
+                    Console.WriteLine(cant + 1 + ".  Back");
+                    var var = Console.ReadLine();
+                    int indexPost = Int32.Parse(var);
+                    if (indexPost > cant)
+                    {
+                        return "Back";
+
+                    }
+                    else
+                    {
+                        string optionSelectedPosts = repository.Posts[indexPost - 1].Name;
+                        return optionSelectedPosts;
+                    }
+                }
+            }
+            else
+            {
+                return "Back";
+            }
        }
-       
-       public void ShowPostByTheme(MemoryRepository repository,Socket socketClient,SocketHandler socketHandler)
+
+        private static string ListThemes(MemoryRepository repository, string title)
+        {
+            Console.ForegroundColor = ConsoleColor.DarkCyan;
+            Console.WriteLine("----" + title + "----");
+            for (var i = 0; i < repository.Themes.Count; i++)
+            {
+                Console.ForegroundColor = ConsoleColor.DarkCyan;
+                Console.WriteLine("Theme" + (i + 1) + ":  ");
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine("Name: " + repository.Themes[i].Name + " Description: " +
+                                  repository.Themes[i].Description);
+            }
+
+            Console.ForegroundColor = ConsoleColor.DarkCyan;
+            Console.WriteLine(repository.Themes.Count + 1 + ".  Back");
+            Console.ForegroundColor = ConsoleColor.White;
+            var var = Console.ReadLine();
+            int indexThemes = Int32.Parse(var);
+            if (indexThemes > repository.Themes.Count)
+            {
+                return "Back";
+            }
+            else
+            {
+                string optionSelectThemes = repository.Themes[indexThemes - 1].Name;
+                return optionSelectThemes;
+            }
+        }
+
+        public void ShowPostByTheme(MemoryRepository repository,Socket socketClient,SocketHandler socketHandler)
        {
-           Console.WriteLine("Theme name to filter");
-           string themeName = Console.ReadLine();
-           var optionSelect = ListPostByTheme(repository,"Posts by theme name",themeName);
+            var optionTheme = ListThemes(repository, "Select theme to filter");
+           var optionSelect = ListPostByTheme(repository,"Posts by theme name", optionTheme);
            if (optionSelect == "Back")
            {
                MenuShowThemePost(repository,socketClient, socketHandler);
@@ -176,46 +215,54 @@ namespace ClientHandler
 
        private static string ListPostByThemeAndCreationDate(MemoryRepository repository,string title,string themeName)
        {
-           IOrderedEnumerable<Post> orderedEnumerable= repository.Posts.OrderBy(x=>DateTime.Parse(x.CreationDate));
-           List<Post>orderList=orderedEnumerable.ToList();
+            IOrderedEnumerable<Post> orderedEnumerable = repository.Posts.OrderBy(x => new DateTime(Convert.ToInt32(x.CreationDate.Substring(6, 4)), Convert.ToInt32(x.CreationDate.Substring(3, 2)), // Month
+                                     Convert.ToInt32(x.CreationDate.Substring(0, 2))));
+            List<Post>orderList=orderedEnumerable.ToList();
            Console.ForegroundColor = ConsoleColor.DarkCyan;
            Console.WriteLine("----"+ title +"----");
            int cant = 0;
-           Theme theme = repository.Themes.Find(x => x.Name == themeName);
-           for (var i = 0; i < orderList.Count; i++)
-           {
+            if (themeName != "Back")
+            {
+                Theme theme = repository.Themes.Find(x => x.Name == themeName);
+                for (var i = 0; i < orderList.Count; i++)
+                {
 
-               if (orderList[i].Themes.Contains(theme))
-               {
-                   cant++;
-                   Console.ForegroundColor = ConsoleColor.DarkCyan;
-                   var prefix = "Post" + i + 1 + ":  ";
-                   Console.BackgroundColor = ConsoleColor.Black;
-                   Console.WriteLine(prefix + "Name:" + orderList[i].Name + "Creation date:" +
-                                     orderList[i].CreationDate);
-               }
-           }
+                    if (orderList[i].Themes.Contains(theme))
+                    {
+                        cant++;
+                        Console.ForegroundColor = ConsoleColor.DarkCyan;
+                        var prefix = "Post" + i + 1 + ":  ";
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.WriteLine(prefix + "Name:" + orderList[i].Name + "Creation date:" +
+                                          orderList[i].CreationDate);
+                    }
+                }
 
-           if (cant == 0)
-           {
-               return "0";
-           }
-           else
-           {
-               Console.WriteLine(orderList.Count + 1 + ".  Back");
-               var var = Console.ReadLine();
-               int indexPost = Int32.Parse(var);
-               if (indexPost > orderList.Count)
-               {
-                   return "Back";
+                if (cant == 0)
+                {
+                    return "0";
+                }
+                else
+                {
+                    Console.WriteLine(orderList.Count + 1 + ".  Back");
+                    var var = Console.ReadLine();
+                    int indexPost = Int32.Parse(var);
+                    if (indexPost > orderList.Count)
+                    {
+                        return "Back";
 
-               }
-               else
-               {
-                   string optionSelectedPosts = orderList[indexPost - 1].Name;
-                   return optionSelectedPosts;
-               }
-           }
+                    }
+                    else
+                    {
+                        string optionSelectedPosts = orderList[indexPost - 1].Name;
+                        return optionSelectedPosts;
+                    }
+                }
+            }
+            else
+            {
+                return "Back";
+            }
        }
        private void ShowThemePostByCreationDate(MemoryRepository repository,Socket socketClient, SocketHandler socketHandler)
        {
@@ -237,15 +284,15 @@ namespace ClientHandler
        
        public void ShowThemePostByDateAndTheme(MemoryRepository repository,Socket socketClient,SocketHandler socketHandler)
        {
-           Console.WriteLine("Theme name to filter");
-           string themeName = Console.ReadLine();
-           var optionSelect = ListPostByThemeAndCreationDate(repository,"Posts by theme name",themeName);
+            var optionTheme = ListThemes(repository, "Select theme to filter");
+            var optionSelect = ListPostByThemeAndCreationDate(repository,"Posts by theme name", optionTheme);
            if (optionSelect == "Back")
            {
                MenuShowThemePost(repository,socketClient, socketHandler);
            }
            MenuShowThemePost(repository,socketClient, socketHandler);
        }
+
        private static string ListPost(MemoryRepository repository)
        {
            string[] postNames = GetPostNames(repository);
@@ -276,8 +323,16 @@ namespace ClientHandler
             {
                 Post post = repository.Posts.Find(x => x.Name == optionSelect);
                 File file = post.File;
-                Console.WriteLine("File\n" + "Name:" + file.Name + "Size:" + file.Size 
-                                  + "Upload date" +file.UploadDate);
+                if (file != null)
+                {
+                    Console.WriteLine("File\n" + "Name:" + file.Name + "Size:" + file.Size
+                                      + "Upload date" + file.UploadDate);
+                }
+                else
+                {
+                    Console.WriteLine("There aren't file to this post");
+                }
+                Menu(repository, socketClient, socketHandler);
             }
 
         }

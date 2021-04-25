@@ -46,14 +46,14 @@ namespace ClientHandler
             {
                 Console.ForegroundColor = ConsoleColor.DarkCyan;
                 Console.WriteLine("Theme" + (i + 1) + ":  ");
-                Console.ForegroundColor = ConsoleColor.Black;
+                Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine("Name: " + repository.Themes[i].Name + " Description: " +
                                   repository.Themes[i].Description);
             }
 
             Console.ForegroundColor = ConsoleColor.DarkCyan;
             Console.WriteLine(repository.Themes.Count + 1 + ".  Back");
-            Console.ForegroundColor = ConsoleColor.Black;
+            Console.ForegroundColor = ConsoleColor.White;
             var var = Console.ReadLine();
             int indexThemes = Int32.Parse(var);
             if (indexThemes > repository.Themes.Count)
@@ -79,7 +79,7 @@ namespace ClientHandler
 
         private void ShowThemeWithMorePosts(MemoryRepository repository, SocketHandler socketHandler,Socket socketClient)
         {
-            int max = Int32.MinValue;
+            int max = 0;
             List<string> themeNames = new List<string>();
             int cant = 0;
             if (repository.Themes != null && repository.Themes.Count!=0)
@@ -87,7 +87,9 @@ namespace ClientHandler
                 foreach (var theme in repository.Themes)
                 {
                     if (theme.Posts == null)
+                    {
                         cant = 0;
+                    }
                     else
                     {
                         cant = theme.Posts.Count;
@@ -113,7 +115,7 @@ namespace ClientHandler
                 }
                 Console.ForegroundColor = ConsoleColor.DarkCyan;
                 Console.WriteLine(repository.Themes.Count + 1 + ".  Back");
-                Console.ForegroundColor = ConsoleColor.Black;
+                Console.ForegroundColor = ConsoleColor.White;
                 var var = Console.ReadLine();
                 int indexThemes = Int32.Parse(var);
                 if (indexThemes > repository.Themes.Count)
@@ -125,7 +127,7 @@ namespace ClientHandler
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("There aren't themes in the system");
-                Console.ForegroundColor = ConsoleColor.Black;
+                Console.ForegroundColor = ConsoleColor.White;
                 Menu(repository, socketClient, socketHandler);
             }
 

@@ -20,7 +20,7 @@ namespace Server
                     Console.BackgroundColor = ConsoleColor.Black;
                     if (i == indexMenu)
                     {
-                        Console.ForegroundColor = ConsoleColor.Black;
+                        Console.ForegroundColor = ConsoleColor.White;
                         Console.BackgroundColor = ConsoleColor.DarkCyan;
                         prefix = "> ";
                     }

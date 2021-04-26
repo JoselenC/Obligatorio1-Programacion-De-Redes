@@ -51,7 +51,22 @@ namespace ClientHandler
             else
             {
                 Post post = repository.Posts.Find(a => a.Name==optionSelect);
-                Console.WriteLine("Post\n" + "Name:" + post.Name + "Creation date:" + post.CreationDate);
+                Console.WriteLine("Post\n" + "Name: " + post.Name + "Creation date: " + post.CreationDate);
+              
+                if (post.Themes != null)
+                {
+                    Console.WriteLine("Themes");
+                    foreach (var theme in post.Themes)
+                    {
+                        Console.WriteLine("Name:  " + theme.Name);
+                    }
+                }
+
+                if (post.File != null)
+                {
+                  Console.WriteLine("Name: " + post.File.Name);                    
+                }
+
             }
             Menu(repository,socketClient, socketHandler);
         }
@@ -325,8 +340,16 @@ namespace ClientHandler
                 File file = post.File;
                 if (file != null)
                 {
-                    Console.WriteLine("File\n" + "Name:" + file.Name + "Size:" + file.Size
-                                      + "Upload date" + file.UploadDate);
+                    Console.WriteLine("File\n" + " Name: " + file.Name + "Size: " + file.Size.ToString()
+                                      + " Upload date " + file.UploadDate.ToString());
+                    if (file.Themes != null)
+                    {
+                        Console.WriteLine("Themes");
+                        foreach (var theme in file.Themes)
+                        {
+                            Console.WriteLine("Name: " + theme.Name);
+                        }
+                    }
                 }
                 else
                 {

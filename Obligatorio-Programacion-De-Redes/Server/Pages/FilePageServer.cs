@@ -19,21 +19,27 @@ namespace ClientHandler
             switch (option)
             {
                 case 1:
+                    Console.Clear();
                     ShowAllFiles(repository,socketClient, socketHandler);
                     break;
                 case 2:
+                    Console.Clear();
                     ShowFileByTheme(repository,socketClient, socketHandler);
                     break;
                 case 3:
+                    Console.Clear();
                     ShowFileByDate(repository,socketClient, socketHandler);
                     break;
                 case 4:
+                    Console.Clear();
                     ShowFileByName(repository,socketClient, socketHandler);
                     break;
                 case 5:
+                    Console.Clear();
                     ShowFileBySize(repository,socketClient, socketHandler);
                     break;
                 case 6:
+                    Console.Clear();  
                     new HomePageServer().Menu(repository,socketClient, socketHandler);
                     break;
                 default:
@@ -92,7 +98,21 @@ namespace ClientHandler
                 var prefix = "File" + i + 1 + ":  ";
                 Console.BackgroundColor = ConsoleColor.Black;
                 Console.WriteLine(prefix + "Name: " + orderList[i].Name + "Size: " +
-                                  orderList[i].Size + "Upload date: " + orderList[i].UploadDate);
+                                  orderList[i].Size.ToString() + "Upload date: " + orderList[i].UploadDate.ToString());
+                if (repository.Files[i].Themes != null)
+                {
+                    Console.WriteLine("Themes");
+                    foreach (var theme in repository.Files[i].Themes)
+                    {
+                        Console.WriteLine("Name: " + theme.Name);
+                    }
+                }
+                if (repository.Files[i].Post != null)
+                {
+                    Console.WriteLine("File: ");
+                    Console.WriteLine("Name: " + repository.Files[i].Post.Name);
+                }
+
             }
             Console.WriteLine(orderList.Count+1 +".  Back");
             var var=Console.ReadLine();
@@ -131,6 +151,20 @@ namespace ClientHandler
                 Console.BackgroundColor = ConsoleColor.Black;
                 Console.WriteLine(prefix + "Name: " + orderList[i].Name + "Size: " +
                                   orderList[i].Size + "Upload date: " + orderList[i].UploadDate);
+                if (repository.Files[i].Themes != null)
+                {
+                    Console.WriteLine("Themes");
+                    foreach (var theme in repository.Files[i].Themes)
+                    {
+                        Console.WriteLine("Name: " + theme.Name);
+                    }
+                }
+                if (repository.Files[i].Post != null)
+                {
+                    Console.WriteLine("File: ");
+                    Console.WriteLine("Name: " + repository.Files[i].Post.Name);
+                }
+
             }
             Console.WriteLine(orderList.Count+1 +".  Back");
             var var=Console.ReadLine();
@@ -196,14 +230,29 @@ namespace ClientHandler
             Theme theme = repository.Themes.Find(x => x.Name == themeName);
             for (var i = 0; i < repository.Files.Count; i++)
             {
-
-                if (repository.Files[i].Themes.Contains(theme))
+                if (repository.Files[i].Themes != null)
                 {
-                    Console.ForegroundColor = ConsoleColor.DarkCyan;
-                    var prefix = "File" + i + 1 + ":  ";
-                    Console.BackgroundColor = ConsoleColor.Black;
-                    Console.WriteLine(prefix + "Name: " + repository.Files[i].Name + "Size: " +
-                                      repository.Files[i].Size + "Upload date: "+ repository.Files[i].UploadDate);
+                    if (repository.Files[i].Themes.Contains(theme))
+                    {
+                        Console.ForegroundColor = ConsoleColor.DarkCyan;
+                        var prefix = "File" + i + 1 + ":  ";
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.WriteLine(prefix + "Name: " + repository.Files[i].Name + "Size: " +
+                                          repository.Files[i].Size + "Upload date: " + repository.Files[i].UploadDate);
+
+
+                        Console.WriteLine("Themes");
+                        foreach (var themef in repository.Files[i].Themes)
+                        {
+                            Console.WriteLine("Name: " + themef.Name);
+                        }
+
+                        if (repository.Files[i].Post != null)
+                        {
+                            Console.WriteLine("File: ");
+                            Console.WriteLine("Name: " + repository.Files[i].Post.Name);
+                        }
+                    }
                 }
             }
             Console.WriteLine(repository.Files.Count+1 +".  Back");
@@ -232,6 +281,19 @@ namespace ClientHandler
                 Console.BackgroundColor = ConsoleColor.Black;
                 Console.WriteLine(prefix + "Name: " + repository.Files[i].Name + "Size: " +
                                   repository.Files[i].Size + "Upload date: " + repository.Files[i].UploadDate);
+                if (repository.Files[i].Themes != null)
+                {
+                    Console.WriteLine("Themes");
+                    foreach (var theme in repository.Files[i].Themes)
+                    {
+                        Console.WriteLine("Name: " + theme.Name);
+                    }
+                }
+                if (repository.Files[i].Post != null)
+                {
+                    Console.WriteLine("File: ");
+                    Console.WriteLine("Name: " + repository.Files[i].Post.Name);
+                }
             }
             Console.WriteLine(repository.Files.Count+1 +".  Back");
             var var=Console.ReadLine();
@@ -261,6 +323,19 @@ namespace ClientHandler
                 File file = post.File;
                 Console.WriteLine("File\n" + "Name:" + file.Name + "Size:" + file.Size
                                   + "Upload date" + file.UploadDate);
+                if (file.Themes != null)
+                {
+                    Console.WriteLine("Themes");
+                    foreach (var theme in file.Themes)
+                    {
+                        Console.WriteLine("Name: " + theme.Name);
+                    }
+                }
+                if (file.Post != null)
+                {
+                    Console.WriteLine("File: ");
+                    Console.WriteLine("Name: " + file.Post.Name);
+                }
             }
 
             ShowFileList(repository, socketHandler, socketClient);

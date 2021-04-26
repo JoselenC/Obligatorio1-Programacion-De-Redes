@@ -23,8 +23,8 @@ namespace Domain.Services
             {
                 posts +=repository.Posts[i].Name+"#";
             }
-            posts += "Back";
-            Packet packg = new Packet("REQ", "4", posts);
+            posts += "Back" + "#";
+            Packet packg = new Packet("RES", "4", posts);
             socketHandler.SendPackg(packg);
         }
 
@@ -35,13 +35,15 @@ namespace Domain.Services
                 SendListPost(socketHandler);
                 ProtocolHandler protocolHandler = new ProtocolHandler();
                 string[] fileData = protocolHandler.ReceiveFile(socketClient, socketHandler);
-                string option = fileData[0].Split("\0")[0];
+                string option = fileData[0];
                 if (option != "Back")
                 {
                     File file = new File()
                     {
                         Name = fileData[2],
-                        Size = Double.Parse(fileData[1])
+                        Size = Double.Parse(fileData[1]),
+                        UploadDate = DateTime.Now
+                      
                     };
                     Post post = repository.Posts.Find(x => x.Name == fileData[0]);
                     repository.Posts.Remove(post);
@@ -49,6 +51,8 @@ namespace Domain.Services
                     post.File = file;
                     if (file.Themes == null) file.Themes = new List<Theme>();
                     file.Themes = post.Themes;
+                    if (file.Post == null) file.Post = new Post();
+                    file.Post = post;
                     repository.Posts.Add(post);
                     repository.Files.Add(file);
                 }

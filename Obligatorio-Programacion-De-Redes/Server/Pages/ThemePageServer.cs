@@ -45,10 +45,20 @@ namespace ClientHandler
             for (var i = 0; i < repository.Themes.Count; i++)
             {
                 Console.ForegroundColor = ConsoleColor.DarkCyan;
-                Console.WriteLine("Theme" + (i + 1) + ":  ");
+                Console.WriteLine((i+1) + ".  Theme" + (i + 1) + ":  ");
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine("Name: " + repository.Themes[i].Name + " Description: " +
                                   repository.Themes[i].Description);
+                Console.WriteLine("Posts: ");
+                if (repository.Themes[i].Posts != null)
+                {
+                    List<Post> posts = repository.Themes[i].Posts;
+                    foreach (var post in posts)
+                    {
+                        Console.WriteLine("Name: " + post.Name);
+                    }
+
+                }
             }
 
             Console.ForegroundColor = ConsoleColor.DarkCyan;

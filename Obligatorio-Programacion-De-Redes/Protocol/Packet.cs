@@ -7,13 +7,15 @@
         public string Length { get; set; }
         public string Data { get; set; }
 
-        public Packet(string head, string cmd, string data )
+        public Packet() { }
+
+        public Packet(string head, string command, string data )
         {
             this.Header = head;
-            this.Command = cmd;
+            this.Command = command;
             this.Data = data;
             this.Length = (data.Length + 105).ToString().PadLeft(100, '0');
         }
-        public Packet() { }
+        
     }
 }

@@ -6,7 +6,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\DataHandler\DataHandler.csproj" />
+      <ProjectReference Include="..\Protocol\Protocol.csproj" />
     </ItemGroup>
 
 </Project>

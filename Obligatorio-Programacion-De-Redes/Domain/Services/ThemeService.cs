@@ -20,7 +20,7 @@ namespace Domain.Services
             string name = messageArray[0];
             if (name != "Back")
             {
-                string description = messageArray[1].Split('\0')[0]; ;
+                string description = messageArray[1];
                 string message;
 
                 if (name != "")
@@ -33,14 +33,14 @@ namespace Domain.Services
                     }
                     else
                     {
-                        message = "The theme " + name + " already exist";
+                        message = "Not add, the theme " + name + " already exist";
                     }
                 }
                 else
                 {
                     message = "The theme name cannot be empty";
                 }
-                Packet packg = new Packet("REQ", "4", message);
+                Packet packg = new Packet("RES", "4", message);
                 socketHandler.SendPackg(packg);
             }
         }
@@ -60,19 +60,19 @@ namespace Domain.Services
             {
                 posts += post.Name + "#";
             }
-            posts += "Back";
-            Packet packg = new Packet("REQ", "4", posts);
+            posts += "Back" + "#";
+            Packet packg = new Packet("RES", "4", posts);
             socketHandler.SendPackg(packg);
             string message;
             var packet = socketHandler.ReceivePackg();
             string[] messageArray = packet.Data.Split('#');
-            string option = messageArray[0].Split("\0")[0];
+            string option = messageArray[0];
             if (option != "Back")
             {
                 string name = messageArray[1];
                 if (name != "")
                 {
-                    string description = messageArray[2].Split("\0")[0];
+                    string description = messageArray[2];
                     Theme theme = new Theme() { Name = name, Description = description, InUse = false };
                     if (!AlreadyExistTheme(name))
                     {
@@ -82,23 +82,23 @@ namespace Domain.Services
                             repository.Themes.Find(x => x.Name == option).InUse = true;
                             repository.Themes.Remove(themeName);
                             repository.Themes.Add(theme);
-                            message = "The theme " + option + "was modified";
+                            message = "The theme " + option + " was modified" ;
                         }
                         else
                         {
-                            message = "The theme " + option + "is in use";
+                            message = "The theme " + option + " is in use";
                         }
                     }
                     else
                     {
-                        message = "The theme " + name + " already exist";
+                        message = "Not modify, the theme " + name + " already exist";
                     }
                 }
                 else
                 {
                     message = "The theme name cannot be empty";
                 }
-                Packet packg2 = new Packet("REQ", "4", message);
+                Packet packg2 = new Packet("RES", "4", message);
                 socketHandler.SendPackg(packg2);
             }
         }
@@ -110,12 +110,12 @@ namespace Domain.Services
             {
                 posts += post.Name + "#";
             }
-            posts += "Back";
-            Packet packg = new Packet("REQ", "4", posts);
+            posts += "Back" + "#";
+            Packet packg = new Packet("RES", "4", posts);
             socketHandler.SendPackg(packg);
             string message;
             var packet = socketHandler.ReceivePackg();
-            string oldName = packet.Data.Split('\0')[0];
+            string oldName = packet.Data;
             if (oldName != "Back")
             {
                 if (AlreadyExistTheme(oldName))
@@ -131,22 +131,20 @@ namespace Domain.Services
                         }
                         else
                         {
-                            message = "The theme " + oldName + " is associated with a post";
-                            Packet packg2 = new Packet("REQ", "4", message);
-                            socketHandler.SendPackg(packg2);
+                            message = "Not delete, the theme " + oldName + " is associated with a post";
                         }
                     }
                     else
                     {
-                        message = "The theme " + oldName + " in use";
+                        message = "Not delete, the theme  " + oldName + " in use";
                     }
 
                 }
                 else
                 {
-                    message = "The theme " + oldName + " not exist";
+                    message = "Not delete, the theme " + oldName + " not exist";
                 }
-                Packet packg3 = new Packet("REQ", "4", message);
+                Packet packg3 = new Packet("RES", "4", message);
                 socketHandler.SendPackg(packg3);
             }
         }
@@ -155,23 +153,15 @@ namespace Domain.Services
         {
             foreach (var post in repository.Posts)
             {
-                if (post.Themes.Contains(theme))
-                    return true;
+                if (post.Themes != null)
+                {
+                    if (post.Themes.Contains(theme))
+                        return true;
+                }
             }
             return false;
         }
 
-        private void SendListThemes(SocketHandler socketHandler)
-        {
-            string posts = "";
-            for (int i = 0; i < repository.Themes.Count; i++)
-            {
-                posts +=repository.Themes[i].Name + "#";
-            }
-            posts += "Back";
-            Packet packg = new Packet("REQ", "4", posts);
-            socketHandler.SendPackg(packg);
-        }
-        
+       
     }
 }

@@ -1,8 +1,8 @@
-﻿using System;
+﻿using DataHandler;
+using Protocol;
+using System;
 using System.Net.Sockets;
 using System.Text;
-using DataHandler;
-using Protocol;
 
 namespace ProtocolFiles
 {
@@ -10,8 +10,8 @@ namespace ProtocolFiles
     {
         public long GetFileParts(long filesize)
         {
-            var parts = filesize / ProtocolSpecification.MaxPacketSize;
-            return parts * ProtocolSpecification.MaxPacketSize == filesize ? parts : parts + 1;
+            var parts = filesize / ProtocolConstant.MaxPacketSize;
+            return parts * ProtocolConstant.MaxPacketSize == filesize ? parts : parts + 1;
         }
         
         public string[] ReceiveFile(Socket client,SocketHandler socketHandler)
@@ -22,7 +22,7 @@ namespace ProtocolFiles
             {
                 var header = Read(ProtocolHelper.GetLength(), networkStream);
                 var fileNameSize = BitConverter.ToInt32(header, 0);
-                var fileSize = BitConverter.ToInt32(header, ProtocolSpecification.FileNameLength);
+                var fileSize = BitConverter.ToInt32(header, ProtocolConstant.FileNameLength);
                
                 var fileName = Encoding.UTF8.GetString(Read(fileNameSize, networkStream));
                 
@@ -43,9 +43,9 @@ namespace ProtocolFiles
                     }
                     else
                     {
-                        var data = Read(ProtocolSpecification.MaxPacketSize, networkStream);
-                        Array.Copy(data, 0, rawFileInMemory, offset, ProtocolSpecification.MaxPacketSize);
-                        offset += ProtocolSpecification.MaxPacketSize;
+                        var data = Read(ProtocolConstant.MaxPacketSize, networkStream);
+                        Array.Copy(data, 0, rawFileInMemory, offset, ProtocolConstant.MaxPacketSize);
+                        offset += ProtocolConstant.MaxPacketSize;
                     }
 
                     currentPart++;
@@ -111,9 +111,9 @@ namespace ProtocolFiles
                         }
                         else
                         {
-                            var dataToSend = new byte[ProtocolSpecification.MaxPacketSize];
-                            Array.Copy(rawFile, offset, dataToSend, 0, ProtocolSpecification.MaxPacketSize);
-                            offset += ProtocolSpecification.MaxPacketSize;
+                            var dataToSend = new byte[ProtocolConstant.MaxPacketSize];
+                            Array.Copy(rawFile, offset, dataToSend, 0, ProtocolConstant.MaxPacketSize);
+                            offset += ProtocolConstant.MaxPacketSize;
                             connectionStream.Write(dataToSend);
                         }
 
@@ -127,7 +127,7 @@ namespace ProtocolFiles
             }
             else
             {
-                string message = postName;
+                string message = "Not associated";
                 Packet packg = new Packet("REQ", "4", message);
                 socketHandler.SendPackg(packg);
             }

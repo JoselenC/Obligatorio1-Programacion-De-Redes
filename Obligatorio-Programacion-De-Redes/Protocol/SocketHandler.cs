@@ -46,7 +46,7 @@ namespace DataHandler
                     received += receivedBytes;
                 }
                 result = Encoding.Default.GetString(dataBuffer);
-                packet.Data = result;
+                packet.Data = result.Split("\0")[0];
                 return packet;
             
         }

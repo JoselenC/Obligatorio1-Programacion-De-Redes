@@ -43,7 +43,7 @@ namespace Client
 
         private void DeleteTheme(SocketHandler socketHandler, Socket socketClient)
         {
-            string optionSelect= ReceiveListThemes(socketHandler,"Themes").Split('\0')[0]; ;
+            string optionSelect= ReceiveListThemes(socketHandler,"Themes");
             if (optionSelect == "Back")
             {
                 Packet packg = new Packet("REQ", "4", optionSelect);
@@ -55,7 +55,7 @@ namespace Client
                 Packet packg = new Packet("REQ", "4", optionSelect);
                 socketHandler.SendPackg(packg);
                 var packet = socketHandler.ReceivePackg();
-                Console.WriteLine(packet.Data.Split('\0')[0]);
+                Console.WriteLine(packet.Data);
                 Menu(socketClient, socketHandler);
             }
         }
@@ -74,7 +74,7 @@ namespace Client
 
         private void ModifyTheme(SocketHandler socketHandler,Socket socketClient)
         {
-            string optionSelected= ReceiveListThemes(socketHandler,"Themes").Split('\0')[0]; ;
+            string optionSelected= ReceiveListThemes(socketHandler,"Themes");
             if (optionSelected == "Back")
             {
                 Packet packg = new Packet("REQ", "4", optionSelected);
@@ -105,7 +105,7 @@ namespace Client
                 Packet packg = new Packet("REQ", "4", message);
                 socketHandler.SendPackg(packg);
                 var packet = socketHandler.ReceivePackg();
-                Console.WriteLine(packet.Data.Split('\0')[0]);
+                Console.WriteLine(packet.Data);
                 Menu(socketClient, socketHandler);
             }
         }
@@ -134,7 +134,7 @@ namespace Client
             Packet packg = new Packet("REQ", "4", message);
             socketHandler.SendPackg(packg);
             var packet = socketHandler.ReceivePackg();
-            Console.WriteLine(packet.Data.Split('\0')[0]);
+            Console.WriteLine(packet.Data);
             Menu(socketClient, socketHandler);
         }
 

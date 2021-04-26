@@ -111,6 +111,7 @@ namespace ClientHandler
                     }
                     else if (cant > max)
                     {
+                        max = cant;
                         themeNames = new List<string>();
                         themeNames.Add(theme.Name);
                     }
@@ -124,7 +125,7 @@ namespace ClientHandler
                                       themeMax.Description);
                 }
                 Console.ForegroundColor = ConsoleColor.DarkCyan;
-                Console.WriteLine(repository.Themes.Count + 1 + ".  Back");
+                Console.WriteLine( "2.  Back");
                 Console.ForegroundColor = ConsoleColor.White;
                 var var = Console.ReadLine();
                 int indexThemes = Int32.Parse(var);

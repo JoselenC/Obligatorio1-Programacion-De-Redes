@@ -64,7 +64,7 @@ namespace ClientHandler
 
                 if (post.File != null)
                 {
-                  Console.WriteLine("Name: " + post.File.Name);                    
+                  Console.WriteLine("File\n" + "Name: " + post.File.Name);                    
                 }
 
             }

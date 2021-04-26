@@ -5,9 +5,15 @@ namespace Domain
 {
     public class Post
     {
-        private string name;
-        private List<Theme> theme;
-        private DateTime creationDate;
-        private Archive archive;
+        public string Name { get; set; }
+        public List<Theme>  Themes { get; set; }
+        public string CreationDate { get; set; }
+        public File File { get; set; }
+
+        public bool InUse { get; set; }
+        public bool SameName(string name)
+        {
+            return Name == name;
+        }
     }
 }

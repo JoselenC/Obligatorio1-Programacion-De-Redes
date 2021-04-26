@@ -11,3 +11,73 @@ C:\Users\Choche\OneDrive\Escritorio\Semestre 6\Programacion de redes\Obligatorio
 C:\Users\Choche\OneDrive\Escritorio\Semestre 6\Programacion de redes\Obligatorio-Programacion-De-Redes\Client\obj\Debug\netcoreapp3.1\Client.dll
 C:\Users\Choche\OneDrive\Escritorio\Semestre 6\Programacion de redes\Obligatorio-Programacion-De-Redes\Client\obj\Debug\netcoreapp3.1\Client.pdb
 C:\Users\Choche\OneDrive\Escritorio\Semestre 6\Programacion de redes\Obligatorio-Programacion-De-Redes\Client\obj\Debug\netcoreapp3.1\Client.genruntimeconfig.cache
+C:\Users\Choche\OneDrive\Escritorio\Semestre 6\Programacion de redes\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\Client\bin\Debug\netcoreapp3.1\Client.exe
+C:\Users\Choche\OneDrive\Escritorio\Semestre 6\Programacion de redes\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\Client\bin\Debug\netcoreapp3.1\Client.deps.json
+C:\Users\Choche\OneDrive\Escritorio\Semestre 6\Programacion de redes\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\Client\bin\Debug\netcoreapp3.1\Client.runtimeconfig.json
+C:\Users\Choche\OneDrive\Escritorio\Semestre 6\Programacion de redes\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\Client\bin\Debug\netcoreapp3.1\Client.runtimeconfig.dev.json
+C:\Users\Choche\OneDrive\Escritorio\Semestre 6\Programacion de redes\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\Client\bin\Debug\netcoreapp3.1\Client.dll
+C:\Users\Choche\OneDrive\Escritorio\Semestre 6\Programacion de redes\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\Client\bin\Debug\netcoreapp3.1\Client.pdb
+C:\Users\Choche\OneDrive\Escritorio\Semestre 6\Programacion de redes\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\Client\obj\Debug\netcoreapp3.1\Client.csprojAssemblyReference.cache
+C:\Users\Choche\OneDrive\Escritorio\Semestre 6\Programacion de redes\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\Client\obj\Debug\netcoreapp3.1\Client.AssemblyInfoInputs.cache
+C:\Users\Choche\OneDrive\Escritorio\Semestre 6\Programacion de redes\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\Client\obj\Debug\netcoreapp3.1\Client.AssemblyInfo.cs
+C:\Users\Choche\OneDrive\Escritorio\Semestre 6\Programacion de redes\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\Client\obj\Debug\netcoreapp3.1\Client.csproj.CoreCompileInputs.cache
+C:\Users\Choche\OneDrive\Escritorio\Semestre 6\Programacion de redes\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\Client\obj\Debug\netcoreapp3.1\Client.csproj.CopyComplete
+C:\Users\Choche\OneDrive\Escritorio\Semestre 6\Programacion de redes\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\Client\obj\Debug\netcoreapp3.1\Client.dll
+C:\Users\Choche\OneDrive\Escritorio\Semestre 6\Programacion de redes\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\Client\obj\Debug\netcoreapp3.1\Client.pdb
+C:\Users\Choche\OneDrive\Escritorio\Semestre 6\Programacion de redes\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\Client\obj\Debug\netcoreapp3.1\Client.genruntimeconfig.cache
+C:\Users\Choche\OneDrive\Escritorio\Semestre 6\Programacion de redes\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\Client\bin\Debug\netcoreapp3.1\Domain.dll
+C:\Users\Choche\OneDrive\Escritorio\Semestre 6\Programacion de redes\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\Client\bin\Debug\netcoreapp3.1\Protocol.dll
+C:\Users\Choche\OneDrive\Escritorio\Semestre 6\Programacion de redes\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\Client\bin\Debug\netcoreapp3.1\Domain.pdb
+C:\Users\Choche\OneDrive\Escritorio\Semestre 6\Programacion de redes\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\Client\bin\Debug\netcoreapp3.1\Protocol.pdb
+C:\Users\Choche\OneDrive\Escritorio\Semestre 6\Programacion de redes\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\Client\bin\Debug\netcoreapp3.1\Server.deps.json
+C:\Users\Choche\OneDrive\Escritorio\Semestre 6\Programacion de redes\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\Client\bin\Debug\netcoreapp3.1\Server.runtimeconfig.json
+C:\Users\Choche\OneDrive\Escritorio\Semestre 6\Programacion de redes\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\Client\bin\Debug\netcoreapp3.1\Server.runtimeconfig.dev.json
+C:\Users\Choche\OneDrive\Escritorio\Semestre 6\Programacion de redes\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\Client\bin\Debug\netcoreapp3.1\Server.exe
+C:\Users\Choche\OneDrive\Escritorio\Semestre 6\Programacion de redes\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\Client\bin\Debug\netcoreapp3.1\Server.dll
+C:\Users\Choche\OneDrive\Escritorio\Semestre 6\Programacion de redes\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\Client\bin\Debug\netcoreapp3.1\Server.pdb
+C:\Users\Choche\OneDrive\Escritorio\Semestre 6\Diseño de aplicaciones 2\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\Client\bin\Debug\netcoreapp3.1\Server.deps.json
+C:\Users\Choche\OneDrive\Escritorio\Semestre 6\Diseño de aplicaciones 2\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\Client\bin\Debug\netcoreapp3.1\Server.runtimeconfig.json
+C:\Users\Choche\OneDrive\Escritorio\Semestre 6\Diseño de aplicaciones 2\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\Client\bin\Debug\netcoreapp3.1\Server.runtimeconfig.dev.json
+C:\Users\Choche\OneDrive\Escritorio\Semestre 6\Diseño de aplicaciones 2\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\Client\bin\Debug\netcoreapp3.1\Server.exe
+C:\Users\Choche\OneDrive\Escritorio\Semestre 6\Diseño de aplicaciones 2\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\Client\bin\Debug\netcoreapp3.1\Client.exe
+C:\Users\Choche\OneDrive\Escritorio\Semestre 6\Diseño de aplicaciones 2\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\Client\bin\Debug\netcoreapp3.1\Client.deps.json
+C:\Users\Choche\OneDrive\Escritorio\Semestre 6\Diseño de aplicaciones 2\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\Client\bin\Debug\netcoreapp3.1\Client.runtimeconfig.json
+C:\Users\Choche\OneDrive\Escritorio\Semestre 6\Diseño de aplicaciones 2\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\Client\bin\Debug\netcoreapp3.1\Client.runtimeconfig.dev.json
+C:\Users\Choche\OneDrive\Escritorio\Semestre 6\Diseño de aplicaciones 2\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\Client\bin\Debug\netcoreapp3.1\Client.dll
+C:\Users\Choche\OneDrive\Escritorio\Semestre 6\Diseño de aplicaciones 2\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\Client\bin\Debug\netcoreapp3.1\Client.pdb
+C:\Users\Choche\OneDrive\Escritorio\Semestre 6\Diseño de aplicaciones 2\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\Client\bin\Debug\netcoreapp3.1\DataHandler.dll
+C:\Users\Choche\OneDrive\Escritorio\Semestre 6\Diseño de aplicaciones 2\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\Client\bin\Debug\netcoreapp3.1\Domain.dll
+C:\Users\Choche\OneDrive\Escritorio\Semestre 6\Diseño de aplicaciones 2\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\Client\bin\Debug\netcoreapp3.1\Protocol.dll
+C:\Users\Choche\OneDrive\Escritorio\Semestre 6\Diseño de aplicaciones 2\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\Client\bin\Debug\netcoreapp3.1\Server.dll
+C:\Users\Choche\OneDrive\Escritorio\Semestre 6\Diseño de aplicaciones 2\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\Client\bin\Debug\netcoreapp3.1\DataHandler.pdb
+C:\Users\Choche\OneDrive\Escritorio\Semestre 6\Diseño de aplicaciones 2\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\Client\bin\Debug\netcoreapp3.1\Domain.pdb
+C:\Users\Choche\OneDrive\Escritorio\Semestre 6\Diseño de aplicaciones 2\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\Client\bin\Debug\netcoreapp3.1\Protocol.pdb
+C:\Users\Choche\OneDrive\Escritorio\Semestre 6\Diseño de aplicaciones 2\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\Client\bin\Debug\netcoreapp3.1\Server.pdb
+C:\Users\Choche\OneDrive\Escritorio\Semestre 6\Diseño de aplicaciones 2\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\Client\obj\Debug\netcoreapp3.1\Client.csprojAssemblyReference.cache
+C:\Users\Choche\OneDrive\Escritorio\Semestre 6\Diseño de aplicaciones 2\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\Client\obj\Debug\netcoreapp3.1\Client.AssemblyInfoInputs.cache
+C:\Users\Choche\OneDrive\Escritorio\Semestre 6\Diseño de aplicaciones 2\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\Client\obj\Debug\netcoreapp3.1\Client.AssemblyInfo.cs
+C:\Users\Choche\OneDrive\Escritorio\Semestre 6\Diseño de aplicaciones 2\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\Client\obj\Debug\netcoreapp3.1\Client.csproj.CoreCompileInputs.cache
+C:\Users\Choche\OneDrive\Escritorio\Semestre 6\Diseño de aplicaciones 2\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\Client\obj\Debug\netcoreapp3.1\Client.csproj.CopyComplete
+C:\Users\Choche\OneDrive\Escritorio\Semestre 6\Diseño de aplicaciones 2\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\Client\obj\Debug\netcoreapp3.1\Client.dll
+C:\Users\Choche\OneDrive\Escritorio\Semestre 6\Diseño de aplicaciones 2\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\Client\obj\Debug\netcoreapp3.1\Client.pdb
+C:\Users\Choche\OneDrive\Escritorio\Semestre 6\Diseño de aplicaciones 2\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\Client\obj\Debug\netcoreapp3.1\Client.genruntimeconfig.cache
+C:\Users\Choche\OneDrive\Escritorio\Semestre 6\Programacion de redes\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\Client\bin\Debug\netcoreapp3.1\ProtocolFiles.dll
+C:\Users\Choche\OneDrive\Escritorio\Semestre 6\Programacion de redes\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\Client\bin\Debug\netcoreapp3.1\ProtocolFiles.pdb
+C:\Users\Choche\OneDrive\Escritorio\Semestre 6\Programacion de redes\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\Client\bin\Debug\netcoreapp3.1\Client.dll.config
+C:\Users\Choche\OneDrive\Escritorio\Semestre 6\Programacion de redes\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\Client\bin\Debug\netcoreapp3.1\Microsoft.Win32.SystemEvents.dll
+C:\Users\Choche\OneDrive\Escritorio\Semestre 6\Programacion de redes\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\Client\bin\Debug\netcoreapp3.1\System.Configuration.ConfigurationManager.dll
+C:\Users\Choche\OneDrive\Escritorio\Semestre 6\Programacion de redes\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\Client\bin\Debug\netcoreapp3.1\System.Drawing.Common.dll
+C:\Users\Choche\OneDrive\Escritorio\Semestre 6\Programacion de redes\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\Client\bin\Debug\netcoreapp3.1\System.Security.AccessControl.dll
+C:\Users\Choche\OneDrive\Escritorio\Semestre 6\Programacion de redes\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\Client\bin\Debug\netcoreapp3.1\System.Security.Cryptography.ProtectedData.dll
+C:\Users\Choche\OneDrive\Escritorio\Semestre 6\Programacion de redes\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\Client\bin\Debug\netcoreapp3.1\System.Security.Permissions.dll
+C:\Users\Choche\OneDrive\Escritorio\Semestre 6\Programacion de redes\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\Client\bin\Debug\netcoreapp3.1\System.Security.Principal.Windows.dll
+C:\Users\Choche\OneDrive\Escritorio\Semestre 6\Programacion de redes\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\Client\bin\Debug\netcoreapp3.1\System.Windows.Extensions.dll
+C:\Users\Choche\OneDrive\Escritorio\Semestre 6\Programacion de redes\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\Client\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp3.0\Microsoft.Win32.SystemEvents.dll
+C:\Users\Choche\OneDrive\Escritorio\Semestre 6\Programacion de redes\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\Client\bin\Debug\netcoreapp3.1\runtimes\unix\lib\netcoreapp3.0\System.Drawing.Common.dll
+C:\Users\Choche\OneDrive\Escritorio\Semestre 6\Programacion de redes\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\Client\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp3.0\System.Drawing.Common.dll
+C:\Users\Choche\OneDrive\Escritorio\Semestre 6\Programacion de redes\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\Client\bin\Debug\netcoreapp3.1\runtimes\win\lib\netstandard2.0\System.Security.AccessControl.dll
+C:\Users\Choche\OneDrive\Escritorio\Semestre 6\Programacion de redes\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\Client\bin\Debug\netcoreapp3.1\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll
+C:\Users\Choche\OneDrive\Escritorio\Semestre 6\Programacion de redes\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\Client\bin\Debug\netcoreapp3.1\runtimes\unix\lib\netcoreapp2.1\System.Security.Principal.Windows.dll
+C:\Users\Choche\OneDrive\Escritorio\Semestre 6\Programacion de redes\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\Client\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp2.1\System.Security.Principal.Windows.dll
+C:\Users\Choche\OneDrive\Escritorio\Semestre 6\Programacion de redes\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\Client\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp3.0\System.Windows.Extensions.dll
+C:\Users\Choche\OneDrive\Escritorio\Semestre 6\Programacion de redes\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\Client\bin\Debug\netcoreapp3.1\Server.dll.config

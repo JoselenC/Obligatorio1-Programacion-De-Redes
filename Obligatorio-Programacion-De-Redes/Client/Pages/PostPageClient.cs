@@ -155,7 +155,7 @@ namespace Client
         public void AddPost(SocketHandler socketHandler,Socket socketClient)
         {
             var packetCantPost = socketHandler.ReceivePackg();
-            string cantPost = packetCantPost.Data.Split("#")[0];
+            string cantPost = packetCantPost.Data;
             if (Int32.Parse(cantPost) > 0)
             {
                 Console.ForegroundColor = ConsoleColor.Magenta;

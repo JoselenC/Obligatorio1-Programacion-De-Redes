@@ -83,7 +83,7 @@ namespace Domain.Services
         
         public void AddPost(SocketHandler socketHandler)
         {
-            Packet packg = new Packet("RES", "2", repository.Themes.Count.ToString()+"#");
+            Packet packg = new Packet("RES", "2", repository.Themes.Count.ToString());
             socketHandler.SendPackg(packg);
             string message = "";
             if (repository.Themes.Count > 0)

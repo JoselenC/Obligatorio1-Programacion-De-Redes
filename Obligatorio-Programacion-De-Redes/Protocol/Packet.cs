@@ -12,9 +12,9 @@
         public Packet(string head, string command, string data )
         {
             this.Header = head;
-            this.Command = command;
+            this.Command = command.ToString().PadLeft(2, '0');
             this.Data = data;
-            this.Length = (data.Length + 105).ToString().PadLeft(100, '0');
+            this.Length = (data.Length+5).ToString().PadLeft(4, '0');
         }
         
     }

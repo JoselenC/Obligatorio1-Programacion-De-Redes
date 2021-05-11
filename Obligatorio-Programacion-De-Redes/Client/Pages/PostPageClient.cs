@@ -155,7 +155,7 @@ namespace Client
         public void AddPost(SocketHandler socketHandler,Socket socketClient)
         {
             var packetCantPost = socketHandler.ReceivePackg();
-            string cantPost = packetCantPost.Data.Split("#")[0];
+            string cantPost = packetCantPost.Data;
             if (Int32.Parse(cantPost) > 0)
             {
                 Console.ForegroundColor = ConsoleColor.Magenta;
@@ -286,6 +286,8 @@ namespace Client
             string optionSelect1 = ReceiveListPost(socketHandler,title);
             if (optionSelect1 == "Back")
             {
+                var packet = socketHandler.ReceivePackg();
+                String[] themesNames = packet.Data.Split('#');
                 Packet packg = new Packet("REQ", "4", optionSelect1);
                 socketHandler.SendPackg(packg);
                 new HomePageClient().Menu(SocketClient, socketHandler);

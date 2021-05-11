@@ -18,10 +18,10 @@ namespace DataHandler
         
        public Packet ReceivePackg()
         {
-                byte[] data = new byte[105];
+                byte[] data = new byte[9];
                 Packet packet = new Packet();
                 int received = 0;
-                while (received < 105)
+                while (received < 9)
                 {
                     int receivedBytes = _socket.Receive(data);
                     if (receivedBytes==0)
@@ -33,10 +33,10 @@ namespace DataHandler
                 String result = Encoding.Default.GetString(data);
                 packet.Header = result.Substring(0, HeaderConstants.HeaderLength);
                 packet.Command = result.Substring(3, HeaderConstants.CommandLength);
-                packet.Length = result.Substring(5, HeaderConstants.PacketLength);
-                int length = Int32.Parse(packet.Length);
+                packet.Length = result.Substring(5, HeaderConstants.Length);
+                int length = Int32.Parse(packet.Length)-5;
                 byte[] dataBuffer = new byte[length];
-                while (received < length)
+                while (received < length+9)
                 {
                     int receivedBytes = _socket.Receive(dataBuffer);
                     if (receivedBytes==0)
@@ -46,7 +46,7 @@ namespace DataHandler
                     received += receivedBytes;
                 }
                 result = Encoding.Default.GetString(dataBuffer);
-                packet.Data = result.Split("\0")[0];
+                packet.Data = result;
                 return packet;
             
         }
@@ -56,10 +56,10 @@ namespace DataHandler
         {
             try
             {
-                String fullCommand = pack.Header;
-                fullCommand += pack.Command.ToString().PadLeft(HeaderConstants.CommandLength, '0');
-                fullCommand += pack.Length.ToString().PadLeft(HeaderConstants.PacketLength, '0');
-                fullCommand += pack.Data;
+                String fullCommand = pack.Header.ToString();
+                fullCommand += pack.Command.ToString();
+                fullCommand += pack.Length.ToString();
+                fullCommand += pack.Data.ToString();
                 byte[] send = Encoding.UTF8.GetBytes(fullCommand);
                 _socket.Send(send);
             }

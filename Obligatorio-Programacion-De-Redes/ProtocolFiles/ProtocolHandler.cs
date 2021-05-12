@@ -3,6 +3,7 @@ using Protocol;
 using System;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace ProtocolFiles
 {
@@ -13,110 +14,81 @@ namespace ProtocolFiles
             var parts = filesize / ProtocolConstant.MaxPacketSize;
             return parts * ProtocolConstant.MaxPacketSize == filesize ? parts : parts + 1;
         }
-        
-        public string[] ReceiveFile(Socket client,SocketHandler socketHandler)
+
+        public async Task<string[]> ReceiveFileAsync(Socket client, SocketHandler socketHandler)
         {
             var fileStreamHandler = new FileStreamHandler();
-
             using (var networkStream = new NetworkStream(client))
             {
-                var header = Read(ProtocolHelper.GetLength(), networkStream);
+                NetworkStreamHandler networkStreamHandler = new NetworkStreamHandler(networkStream);
+                var header = await networkStreamHandler.ReadAsync(new ProtocolHelper().GetLength());
                 var fileNameSize = BitConverter.ToInt32(header, 0);
-                var fileSize = BitConverter.ToInt32(header, ProtocolConstant.FileNameLength);
-               
-                var fileName = Encoding.UTF8.GetString(Read(fileNameSize, networkStream));
-                
+                var fileSize = BitConverter.ToInt64(header, ProtocolConstant.FileNameLength);
+
+                var fileName = Encoding.UTF8.GetString(await networkStreamHandler.ReadAsync(fileNameSize));
                 var parts = GetFileParts(fileSize);
                 var offset = 0;
                 var currentPart = 1;
-
-                var rawFileInMemory = new byte[fileSize];
-
                 while (fileSize > offset)
                 {
+                    byte[] data;
                     if (currentPart == parts)
                     {
-                        var lastPartSize = fileSize - offset;
-                        var data = Read(lastPartSize, networkStream);
-                        Array.Copy(data, 0, rawFileInMemory, offset, lastPartSize);
+                        var lastPartSize = (int) (fileSize - offset);
+                        data = await networkStreamHandler.ReadAsync(lastPartSize);
                         offset += lastPartSize;
                     }
                     else
                     {
-                        var data = Read(ProtocolConstant.MaxPacketSize, networkStream);
-                        Array.Copy(data, 0, rawFileInMemory, offset, ProtocolConstant.MaxPacketSize);
+                        data = await networkStreamHandler.ReadAsync(ProtocolConstant.MaxPacketSize);
                         offset += ProtocolConstant.MaxPacketSize;
                     }
 
+                    await fileStreamHandler.WriteAsync(fileName, data);
                     currentPart++;
                 }
-
-                fileStreamHandler.WriteFile(fileName, rawFileInMemory);
             }
-
             var packet = socketHandler.ReceivePackg();
             return packet.Data.Split('#');
         }
 
-        public byte[] Read(int length, NetworkStream stream)
-        {
-            int dataReceived = 0;
-            var data = new byte[length];
-            while (dataReceived < length)
-            {
-                var received = stream.Read(data, dataReceived, length - dataReceived);
-                if (received == 0)
-                {
-                    throw new Exception("The connection was lost");
-                }
-
-                dataReceived += received;
-            }
-            return data;    
-        }
         
-        public void SendFile(string path,Socket connectedClient,SocketHandler socketHandler,string postName)
+        public async Task SendFileAsync(string path,Socket connectedClient,SocketHandler socketHandler,string postName)
         {
+            
             if (path != "")
             {
                 var fileHandler = new FileHandler();
                 var fileStreamHandler = new FileStreamHandler();
                 var fileSize = fileHandler.GetFileSize(path);
                 var fileName = fileHandler.GetFileName(path);
-                var header = ProtocolHelper.CreateHeader(fileName, fileSize);
-
+                var header = new ProtocolHelper().CreateHeader(fileName, fileSize);
                 using (var connectionStream = new NetworkStream(connectedClient))
                 {
-                    Console.WriteLine($"FileName is: {fileName}, file size is: {fileSize}");
-
-                    connectionStream.Write(header);
-                    connectionStream.Write(Encoding.UTF8.GetBytes(fileName));
-
-                    var rawFile = fileStreamHandler.ReadFile(path);
-                    var parts = GetFileParts(fileSize);
-
+                    NetworkStreamHandler networkStreamHandler = new NetworkStreamHandler(connectionStream);
+                    await networkStreamHandler.WriteAsync(header);
+                    var fileNameByte = Encoding.UTF8.GetBytes(fileName);
+                    await networkStreamHandler.WriteAsync(fileNameByte);
+                    long parts = GetFileParts(fileSize);
+                    Console.WriteLine("Will Send {0} parts",parts);
                     long offset = 0;
                     long currentPart = 1;
 
                     while (fileSize > offset)
                     {
-                        Console.WriteLine($"Sending part {currentPart} of {parts}");
+                        byte[] data;
                         if (currentPart == parts)
                         {
-                            var lastPartSize = fileSize - offset;
-                            var dataToSend = new byte[lastPartSize];
-                            Array.Copy(rawFile, offset, dataToSend, 0, lastPartSize);
+                            var lastPartSize = (int)(fileSize - offset);
+                            data = await fileStreamHandler.ReadAsync(path, offset, lastPartSize);
                             offset += lastPartSize;
-                            connectionStream.Write(dataToSend);
                         }
                         else
                         {
-                            var dataToSend = new byte[ProtocolConstant.MaxPacketSize];
-                            Array.Copy(rawFile, offset, dataToSend, 0, ProtocolConstant.MaxPacketSize);
+                            data = await fileStreamHandler.ReadAsync(path, offset, ProtocolConstant.MaxPacketSize);
                             offset += ProtocolConstant.MaxPacketSize;
-                            connectionStream.Write(dataToSend);
                         }
-
+                        await networkStreamHandler.WriteAsync(data);
                         currentPart++;
                     }
                 }

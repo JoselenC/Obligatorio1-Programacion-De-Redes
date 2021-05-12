@@ -14,7 +14,7 @@ namespace ClientHandler
 {
     public class HandleClient
     {
-        public void HandleClientMethod(Socket clientSocket,MemoryRepository repository,bool _exit, List<Socket> connectedClients,SocketHandler socketHandler)
+        public async void HandleClientMethod(Socket clientSocket,MemoryRepository repository,bool _exit, List<Socket> connectedClients,SocketHandler socketHandler)
         { 
             
             try
@@ -53,7 +53,7 @@ namespace ClientHandler
                             new ThemeService(repository).DeleteTheme(socketHandler);
                             break;
                         case CommandConstants.CommandUploadFile:
-                            new FileService(repository).UploadFile(socketHandler,clientSocket);
+                            await new FileService(repository).UploadFile(socketHandler,clientSocket);
                             break;
                         case CommandConstants.SearchPost:
                             new PostService(repository).SearchPost(socketHandler);

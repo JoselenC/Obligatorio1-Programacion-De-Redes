@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net.Sockets;
+using System.Threading.Tasks;
 using BusinessLogic;
 using DataHandler;
 using Protocol;
@@ -28,13 +29,13 @@ namespace Domain.Services
             socketHandler.SendPackg(packg);
         }
 
-        public void UploadFile(SocketHandler socketHandler, Socket socketClient)
+        public async Task UploadFile(SocketHandler socketHandler, Socket socketClient)
         {
             if (repository.Posts.Count != 0)
             {
                 SendListPost(socketHandler);
                 ProtocolHandler protocolHandler = new ProtocolHandler();
-                string[] fileData = protocolHandler.ReceiveFile(socketClient, socketHandler);
+                string[] fileData = await protocolHandler.ReceiveFileAsync(socketClient, socketHandler);
                 string option = fileData[0];
                 if (option != "Back")
                 {

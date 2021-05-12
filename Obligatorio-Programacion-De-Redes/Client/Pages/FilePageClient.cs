@@ -45,7 +45,7 @@ namespace Client
                     }
                     try
                     {
-                        protocolHandler.SendFile(path, SocketClient, socketHandler, optionSelect1);
+                        protocolHandler.SendFileAsync(path, SocketClient, socketHandler, optionSelect1);
                         Console.ForegroundColor = ConsoleColor.Green;
                         Console.WriteLine("File was associated");
                         new HomePageClient().Menu(SocketClient, socketHandler);

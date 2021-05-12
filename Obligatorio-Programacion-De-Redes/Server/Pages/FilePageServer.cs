@@ -40,7 +40,7 @@ namespace ClientHandler
                     break;
                 case 6:
                     Console.Clear();  
-                    new HomePageServer().Menu(repository,socketClient, socketHandler);
+                    new HomePageServer().MenuAsync(repository,socketClient, socketHandler);
                     break;
                 default:
                     Console.WriteLine("Invalid option");

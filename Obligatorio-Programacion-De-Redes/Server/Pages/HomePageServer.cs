@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net.Sockets;
+using System.Threading.Tasks;
 using BusinessLogic;
 using DataHandler;
 using Protocol;
@@ -10,10 +11,10 @@ namespace ClientHandler
     public class HomePageServer
     {
         
-        public void Menu(MemoryRepository repository,Socket SocketClient, SocketHandler socketHandler)
+        public async Task MenuAsync(MemoryRepository repository,Socket SocketClient, SocketHandler socketHandler)
         {
             string[] _options = {"Client list", "Posts", "Themes", "File", "Exit"};
-            int option = new MenuServer().ShowMenu(_options,"Menu");
+            int option = new MenuServer().ShowMenu(_options,"MenuAsync");
 
                 switch (option)
                 {

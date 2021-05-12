@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net.Sockets;
+using System.Threading.Tasks;
 using BusinessLogic;
 using DataHandler;
 using Domain;
@@ -10,29 +11,29 @@ namespace Client
 {
     public class ThemePageClient
     {
-        public void Menu(Socket SocketClient,SocketHandler socketHandler)
+        public async Task MenuAsync(Socket SocketClient,SocketHandler socketHandler)
         {
             string[] _options = {"Add theme", "Modify theme", "Delete theme","Back"};
-            int option = new MenuClient().ShowMenu(_options,"Theme menu");
+            int option = await new MenuClient().ShowMenuAsync(_options,"Theme menu");
             switch (option)
             {
                 case 1:
                     Packet packg1 = new Packet("REQ", "5", "Add post");
-                    socketHandler.SendPackg(packg1);
-                    AddTheme(socketHandler,SocketClient);
+                    await socketHandler.SendPackgAsync(packg1);
+                    await AddThemeAsync(socketHandler,SocketClient);
                     break;
                 case 2:
                     Packet packg6 = new Packet("REQ", "6", "Modify theme");
-                    socketHandler.SendPackg(packg6);
-                    ModifyTheme(socketHandler, SocketClient);
+                    await socketHandler.SendPackgAsync(packg6);
+                    await ModifyThemeAsync(socketHandler, SocketClient);
                     break;
                 case 3:
                     Packet packg7 = new Packet("REQ", "7", "Delete theme");
-                    socketHandler.SendPackg(packg7);
+                    await socketHandler.SendPackgAsync(packg7);
                     DeleteTheme(socketHandler, SocketClient);
                     break;
                 case 4:
-                    new HomePageClient().Menu(SocketClient, socketHandler);
+                    new HomePageClient().MenuAsync(SocketClient, socketHandler);
                     break;
                 default:
                     Console.WriteLine("Invalid option");
@@ -41,45 +42,45 @@ namespace Client
             }
         }
 
-        private void DeleteTheme(SocketHandler socketHandler, Socket socketClient)
+        private async Task DeleteTheme(SocketHandler socketHandler, Socket socketClient)
         {
-            string optionSelect= ReceiveListThemes(socketHandler,"Themes");
+            string optionSelect = await ReceiveListThemesAsync(socketHandler,"Themes");
             if (optionSelect == "Back")
             {
                 Packet packg = new Packet("REQ", "4", optionSelect);
-                socketHandler.SendPackg(packg);
-                Menu(socketClient, socketHandler);
+                await socketHandler.SendPackgAsync(packg);
+                await MenuAsync(socketClient, socketHandler);
             }
             else
             {
                 Packet packg = new Packet("REQ", "4", optionSelect);
-                socketHandler.SendPackg(packg);
-                var packet = socketHandler.ReceivePackg();
+                await socketHandler.SendPackgAsync(packg);
+                var packet = await socketHandler.ReceivePackgAsync();
                 Console.WriteLine(packet.Data);
-                Menu(socketClient, socketHandler);
+                await MenuAsync(socketClient, socketHandler);
             }
         }
         
-        private string ReceiveListThemes(SocketHandler socketHandler,string message)
+        private async Task<string> ReceiveListThemesAsync(SocketHandler socketHandler,string message)
         {
             Console.ForegroundColor = ConsoleColor.Magenta;
             Console.WriteLine(message+"\n");
             Console.ForegroundColor = ConsoleColor.White;
-            var packet = socketHandler.ReceivePackg();
+            var packet = await socketHandler.ReceivePackgAsync();
             String[] postsNAmes= packet.Data.Split('#');
-            int index = new MenuClient().ShowMenu(postsNAmes,"Themes");
+            int index = await new MenuClient().ShowMenuAsync(postsNAmes,"Themes");
             string optionSelect = postsNAmes[index-1];
             return optionSelect;
         }
 
-        private void ModifyTheme(SocketHandler socketHandler,Socket socketClient)
+        private async Task ModifyThemeAsync(SocketHandler socketHandler,Socket socketClient)
         {
-            string optionSelected= ReceiveListThemes(socketHandler,"Themes");
+            string optionSelected = await ReceiveListThemesAsync(socketHandler,"Themes");
             if (optionSelected == "Back")
             {
                 Packet packg = new Packet("REQ", "4", optionSelected);
-                socketHandler.SendPackg(packg);
-                Menu(socketClient, socketHandler);
+                await socketHandler.SendPackgAsync(packg);
+                await MenuAsync(socketClient, socketHandler);
             }
             else
             {
@@ -103,14 +104,14 @@ namespace Client
                 string description = Console.ReadLine();
                 string message = optionSelected + "#" + name + "#" + description;
                 Packet packg = new Packet("REQ", "4", message);
-                socketHandler.SendPackg(packg);
-                var packet = socketHandler.ReceivePackg();
+                await socketHandler.SendPackgAsync(packg);
+                var packet = await socketHandler.ReceivePackgAsync();
                 Console.WriteLine(packet.Data);
-                Menu(socketClient, socketHandler);
+                await MenuAsync(socketClient, socketHandler);
             }
         }
 
-        public void AddTheme(SocketHandler socketHandler,Socket socketClient)
+        public async Task AddThemeAsync(SocketHandler socketHandler,Socket socketClient)
         {
             Console.ForegroundColor = ConsoleColor.Magenta;
             Console.Write("-----New theme----- \n");
@@ -132,10 +133,10 @@ namespace Client
             string description = Console.ReadLine();
             string message = name + "#" + description;
             Packet packg = new Packet("REQ", "4", message);
-            socketHandler.SendPackg(packg);
-            var packet = socketHandler.ReceivePackg();
+            await socketHandler.SendPackgAsync(packg);
+            var packet = await socketHandler.ReceivePackgAsync();
             Console.WriteLine(packet.Data);
-            Menu(socketClient, socketHandler);
+            await MenuAsync(socketClient, socketHandler);
         }
 
         

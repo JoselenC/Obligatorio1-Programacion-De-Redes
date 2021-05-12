@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace Client
 {
     public class MenuClient
     {
-        public int ShowMenu( string[] _options, string title)
+        public async Task<int> ShowMenuAsync( string[] _options, string title)
         {
             bool salir = false;
             int indexMenu = 0;

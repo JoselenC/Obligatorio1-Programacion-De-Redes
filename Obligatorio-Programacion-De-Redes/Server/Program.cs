@@ -4,6 +4,7 @@ using System.Configuration;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
+using System.Threading.Tasks;
 using BusinessLogic;
 using ClientHandler;
 using DataHandler;
@@ -16,25 +17,22 @@ namespace Server
         public static bool _exit = false;
         public static readonly List<Socket> ConnectedClients = new List<Socket>();
 
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
             Socket socketServer = new ConnectionConfig().Connect();
             SocketHandler socketHandler = new SocketHandler(socketServer);
             MemoryRepository repository = new MemoryRepository();
-            var thread = new Thread(a => new HomePageServer().Menu(repository,socketServer,socketHandler));
-            thread.Start();
+            await new HomePageServer().MenuAsync(repository,socketServer,socketHandler);
           
             while (!_exit)
             {
-                var threadServer = new Thread(() => new HandleClient().ListenForConnections(socketServer, repository,_exit,ConnectedClients));
-                threadServer.Start();
+                await new HandleClient().ListenForConnectionsAsync(socketServer, repository,_exit,ConnectedClients);
             }
 
             foreach (var socketClient in ConnectedClients)
             {
                 try
                 {
-                    
                     socketClient.Shutdown(SocketShutdown.Both);
                     socketClient.Close(1);
                 }

@@ -48,14 +48,13 @@ namespace ProtocolFiles
                     currentPart++;
                 }
             }
-            var packet = socketHandler.ReceivePackg();
+            var packet = await socketHandler.ReceivePackgAsync();
             return packet.Data.Split('#');
         }
 
         
         public async Task SendFileAsync(string path,Socket connectedClient,SocketHandler socketHandler,string postName)
         {
-            
             if (path != "")
             {
                 var fileHandler = new FileHandler();
@@ -95,13 +94,13 @@ namespace ProtocolFiles
 
                 string message = postName + "#" + fileSize + "#" + fileName;
                 Packet packg = new Packet("REQ", "4", message);
-                socketHandler.SendPackg(packg);
+                await socketHandler.SendPackgAsync(packg);
             }
             else
             {
                 string message = "Not associated";
                 Packet packg = new Packet("REQ", "4", message);
-                socketHandler.SendPackg(packg);
+                await socketHandler.SendPackgAsync(packg);
             }
         }
 

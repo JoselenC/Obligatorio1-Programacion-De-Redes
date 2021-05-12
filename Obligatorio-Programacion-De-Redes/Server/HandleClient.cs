@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Net.Sockets;
+using System.Threading.Tasks;
 using BusinessLogic;
 using DataHandler;
 using Domain;
@@ -14,49 +15,48 @@ namespace ClientHandler
 {
     public class HandleClient
     {
-        public async void HandleClientMethod(Socket clientSocket,MemoryRepository repository,bool _exit, List<Socket> connectedClients,SocketHandler socketHandler)
-        { 
-            
+        public async Task HandleClientMethodAsync(Socket clientSocket,MemoryRepository repository,bool _exit, List<Socket> connectedClients,SocketHandler socketHandler)
+        {
             try
             {
                 while (!_exit)
                 {
-                    var packet = socketHandler.ReceivePackg();
+                    var packet = await socketHandler.ReceivePackgAsync();
                     var command= Int32.Parse(packet.Command);
                     switch (command)
                     {
                         case CommandConstants.CommandAddPost:
-                            new PostService(repository).AddPost(socketHandler);
+                            await new PostService(repository).AddPostAsync(socketHandler);
                             break;
                         case CommandConstants.CommandModifyPost:
-                            new PostService(repository).ModifyPost(socketHandler);
+                            await new PostService(repository).ModifyPostAsync(socketHandler);
                             break;
                         case CommandConstants.CommandDeletePost:
-                            new PostService(repository).DeletePost(socketHandler);
+                            await new PostService(repository).DeletePostAsync(socketHandler);
                             break;
                         case CommandConstants.CommandAsociateTheme:
-                            new PostService(repository).AsociateTheme(socketHandler);
+                            await new PostService(repository).AsociateThemeAsync(socketHandler);
                             break;
                         case CommandConstants.CommandAsociateThemeToPost:
-                            new PostService(repository).AsociateThemeToPost(socketHandler);
+                            await new PostService(repository).AsociateThemeToPostAsync(socketHandler);
                             break;
                         case CommandConstants.CommandDisassociateTheme:
-                            new PostService(repository).DisassociateTheme(socketHandler);
+                            await new PostService(repository).DisassociateThemeAsync(socketHandler);
                             break;
                         case CommandConstants.CommandAddTheme:
-                            new ThemeService(repository).AddTheme(socketHandler);
+                            await new ThemeService(repository).AddThemeAsync(socketHandler);
                             break;
                         case CommandConstants.CommandModifyTheme:
-                            new ThemeService(repository).ModifyTheme(socketHandler);
+                            await new ThemeService(repository).ModifyThemeAsync(socketHandler);
                             break;
                         case CommandConstants.CommandDeleteTheme:
-                            new ThemeService(repository).DeleteTheme(socketHandler);
+                            await new ThemeService(repository).DeleteThemeAsync(socketHandler);
                             break;
                         case CommandConstants.CommandUploadFile:
                             await new FileService(repository).UploadFile(socketHandler,clientSocket);
                             break;
                         case CommandConstants.SearchPost:
-                            new PostService(repository).SearchPost(socketHandler);
+                            await new PostService(repository).SearchPostAsync(socketHandler);
                             break;
                         case CommandConstants.CommandBack:
                             Console.WriteLine("The client logged out");
@@ -77,9 +77,8 @@ namespace ClientHandler
             }
         }
         
-        public void ListenForConnections(Socket socketServer, MemoryRepository repository,bool _exit, List<Socket> ConnectedClients)
+        public async Task ListenForConnectionsAsync(Socket socketServer, MemoryRepository repository,bool _exit, List<Socket> ConnectedClients)
         {
-            
             try
             {
                 var socketConnected = socketServer.Accept();
@@ -92,7 +91,7 @@ namespace ClientHandler
                 };
                 repository.ClientsConnections.Add(clientConnection);
                 SocketHandler socketHandler = new SocketHandler(socketConnected);
-                new HandleClient().HandleClientMethod(socketConnected, repository, _exit, ConnectedClients,
+                await new HandleClient().HandleClientMethodAsync(socketConnected, repository, _exit, ConnectedClients,
                     socketHandler);
             }
             catch (SocketException se)
@@ -104,7 +103,6 @@ namespace ClientHandler
             {
                 Console.WriteLine(e.Message);
             }
-
         }
     }
 }

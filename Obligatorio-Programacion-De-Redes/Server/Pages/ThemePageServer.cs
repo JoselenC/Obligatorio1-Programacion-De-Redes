@@ -16,7 +16,7 @@ namespace ClientHandler
             string[] _options = {"Themes list", "Theme with more post", "Back"};
             while (!exit)
             {
-                int option = new MenuServer().ShowMenu(_options,"Menu");
+                int option = new MenuServer().ShowMenu(_options,"MenuAsync");
                 switch (option)
                 {
                     case 1:
@@ -30,7 +30,7 @@ namespace ClientHandler
                     case 3:
                         Console.Clear();
                         exit = true;
-                        new HomePageServer().Menu(repository,SocketClient, socketHandler);
+                        new HomePageServer().MenuAsync(repository,SocketClient, socketHandler);
                         break;
                     default:
                        break;

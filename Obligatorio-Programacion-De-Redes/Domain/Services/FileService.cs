@@ -17,7 +17,7 @@ namespace Domain.Services
             this.repository = repository;
         }
         
-        private void SendListPost(SocketHandler socketHandler)
+        private async Task SendListPostAsync(SocketHandler socketHandler)
         {
             string posts = "";
             for (int i = 0; i < repository.Posts.Count; i++)
@@ -26,14 +26,14 @@ namespace Domain.Services
             }
             posts += "Back" + "#";
             Packet packg = new Packet("RES", "4", posts);
-            socketHandler.SendPackg(packg);
+            await socketHandler.SendPackgAsync(packg);
         }
 
         public async Task UploadFile(SocketHandler socketHandler, Socket socketClient)
         {
             if (repository.Posts.Count != 0)
             {
-                SendListPost(socketHandler);
+                await SendListPostAsync(socketHandler);
                 ProtocolHandler protocolHandler = new ProtocolHandler();
                 string[] fileData = await protocolHandler.ReceiveFileAsync(socketClient, socketHandler);
                 string option = fileData[0];
@@ -60,7 +60,7 @@ namespace Domain.Services
             }
             else
             {
-                SendListPost(socketHandler);
+                await SendListPostAsync(socketHandler);
             }
         }
     }

@@ -16,7 +16,7 @@ namespace ClientHandler
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("No hay clientes conectados");
                 Console.ForegroundColor = ConsoleColor.White;
-                new HomePageServer().Menu(repository,socketClient,socketHandler);
+                new HomePageServer().MenuAsync(repository,socketClient,socketHandler);
             }
             else
             {
@@ -39,7 +39,7 @@ namespace ClientHandler
             }
 
             Console.ReadLine();
-            new HomePageServer().Menu(repository,socketClient,socketHandler);
+            new HomePageServer().MenuAsync(repository,socketClient,socketHandler);
         }
 
     }

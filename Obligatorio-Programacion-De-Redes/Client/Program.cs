@@ -3,6 +3,7 @@ using System.Configuration;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
+using System.Threading.Tasks;
 using BusinessLogic;
 using DataHandler;
 using Server;
@@ -18,13 +19,13 @@ namespace Client
         private static readonly Socket SocketClient =
             new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
             new ConnectionConfig(SocketClient);
             SocketHandler socketHandler = new SocketHandler(SocketClient);
             try
             {
-                new HomePageClient().Menu(SocketClient, socketHandler);
+                await new HomePageClient().MenuAsync(SocketClient, socketHandler);
             }
             catch (SocketException e)
             {

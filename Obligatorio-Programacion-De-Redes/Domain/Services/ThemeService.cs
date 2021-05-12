@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using BusinessLogic;
 using DataHandler;
 using Protocol;
@@ -7,15 +8,14 @@ namespace Domain.Services
 {
     public class ThemeService
     {
-        
         private MemoryRepository repository;
         public ThemeService(MemoryRepository repository)
         {
             this.repository = repository;
         }
-        public void AddTheme(SocketHandler socketHandler)
+        public async Task AddThemeAsync(SocketHandler socketHandler)
         {
-            var packet = socketHandler.ReceivePackg();
+            var packet = await socketHandler.ReceivePackgAsync();
             String[] messageArray = packet.Data.Split('#');
             string name = messageArray[0];
             if (name != "Back")
@@ -41,7 +41,7 @@ namespace Domain.Services
                     message = "The theme name cannot be empty";
                 }
                 Packet packg = new Packet("RES", "4", message);
-                socketHandler.SendPackg(packg);
+                await socketHandler.SendPackgAsync(packg);
             }
         }
         
@@ -53,7 +53,7 @@ namespace Domain.Services
             return true;
         }
 
-        public void ModifyTheme(SocketHandler socketHandler)
+        public async Task ModifyThemeAsync(SocketHandler socketHandler)
         {
             string posts = "";
             foreach (var post in repository.Themes)
@@ -62,9 +62,9 @@ namespace Domain.Services
             }
             posts += "Back" + "#";
             Packet packg = new Packet("RES", "4", posts);
-            socketHandler.SendPackg(packg);
+            await socketHandler.SendPackgAsync(packg);
             string message;
-            var packet = socketHandler.ReceivePackg();
+            var packet = await socketHandler.ReceivePackgAsync();
             string[] messageArray = packet.Data.Split('#');
             string option = messageArray[0];
             if (option != "Back")
@@ -99,11 +99,11 @@ namespace Domain.Services
                     message = "The theme name cannot be empty";
                 }
                 Packet packg2 = new Packet("RES", "4", message);
-                socketHandler.SendPackg(packg2);
+                await socketHandler.SendPackgAsync(packg2);
             }
         }
 
-        public void DeleteTheme(SocketHandler socketHandler)
+        public async Task DeleteThemeAsync(SocketHandler socketHandler)
         {
             string posts = "";
             foreach (var post in repository.Themes)
@@ -112,9 +112,9 @@ namespace Domain.Services
             }
             posts += "Back" + "#";
             Packet packg = new Packet("RES", "4", posts);
-            socketHandler.SendPackg(packg);
+            await socketHandler.SendPackgAsync(packg);
             string message;
-            var packet = socketHandler.ReceivePackg();
+            var packet = await socketHandler.ReceivePackgAsync();
             string oldName = packet.Data;
             if (oldName != "Back")
             {
@@ -138,14 +138,13 @@ namespace Domain.Services
                     {
                         message = "Not delete, the theme  " + oldName + " in use";
                     }
-
                 }
                 else
                 {
                     message = "Not delete, the theme " + oldName + " not exist";
                 }
                 Packet packg3 = new Packet("RES", "4", message);
-                socketHandler.SendPackg(packg3);
+                await socketHandler.SendPackgAsync(packg3);
             }
         }
 
@@ -161,7 +160,5 @@ namespace Domain.Services
             }
             return false;
         }
-
-       
     }
 }

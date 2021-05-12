@@ -33,7 +33,7 @@ namespace ClientHandler
                         break;
                     case 4:
                         Console.Clear();
-                        new HomePageServer().Menu(repository,socketClient,socketHandler);
+                        new HomePageServer().MenuAsync(repository,socketClient,socketHandler);
                         break;
                     default:
                         break;
@@ -90,7 +90,7 @@ namespace ClientHandler
                         ShowThemePostByDateAndTheme(repository,socketClient, socketHandler);
                         break;
                     case 4:
-                        new HomePageServer().Menu(repository,socketClient, socketHandler);
+                        new HomePageServer().MenuAsync(repository,socketClient, socketHandler);
                         break;
                     default:
                         Console.WriteLine("Invalid option");

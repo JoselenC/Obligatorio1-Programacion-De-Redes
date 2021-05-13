@@ -8,7 +8,7 @@ namespace ClientHandler
 {
     public class ClientPageServer
     {
-        public void ShowClientList(MemoryRepository repository,SocketHandler socketHandler)
+        public void ShowClientList(MemoryRepository repository)
         {
             Console.Clear();
             if (repository.ClientsConnections.Count == 0 || repository.ClientsConnections==null)
@@ -16,7 +16,7 @@ namespace ClientHandler
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("No hay clientes conectados");
                 Console.ForegroundColor = ConsoleColor.White;
-                new HomePageServer().MenuAsync(repository,socketHandler);
+                new HomePageServer().MenuAsync(repository);
             }
             else
             {
@@ -39,7 +39,7 @@ namespace ClientHandler
             }
 
             Console.ReadLine();
-            new HomePageServer().MenuAsync(repository,socketHandler);
+            new HomePageServer().MenuAsync(repository);
         }
 
     }

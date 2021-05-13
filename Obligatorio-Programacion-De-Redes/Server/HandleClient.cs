@@ -32,13 +32,11 @@ namespace ClientHandler
 
         public async Task StartServerAsync()
         {
+            MemoryRepository repository = new MemoryRepository();
+            new HomePageServer().MenuAsync(repository);
             _tcpListener.Start(1);
             _tcpClient = await _tcpListener.AcceptTcpClientAsync();
             _tcpListener.Stop();
-            SocketHandler socketHandler = new SocketHandler(_tcpClient.GetStream());
-            MemoryRepository repository = new MemoryRepository();
-            
-            await new HomePageServer().MenuAsync(repository,socketHandler);
             await ListenForConnectionsAsync(false,repository,ConnectedClients);
           
             foreach (var socketClient in ConnectedClients)

@@ -11,7 +11,7 @@ namespace ClientHandler
     public class HomePageServer
     {
         
-        public async Task MenuAsync(MemoryRepository repository,SocketHandler socketHandler)
+        public void  MenuAsync(MemoryRepository repository)
         {
             string[] _options = {"Client list", "Posts", "Themes", "File", "Exit"};
             int option = new MenuServer().ShowMenu(_options,"MenuAsync");
@@ -19,16 +19,16 @@ namespace ClientHandler
                 switch (option)
                 {
                     case 1:
-                        new ClientPageServer().ShowClientList(repository,socketHandler);
+                        new ClientPageServer().ShowClientList(repository);
                         break;
                     case 2:
-                        new PostPageServer().Menu(repository,socketHandler);
+                        new PostPageServer().Menu(repository);
                         break;
                     case 3:
-                        new ThemePageServer().Menu(repository, socketHandler);
+                        new ThemePageServer().Menu(repository);
                         break;
                     case 4:
-                        new FilePageServer().ShowFileList(repository,socketHandler);
+                        new FilePageServer().ShowFileList(repository);
                         break;
                     case 5:
                         //SocketClient.Shutdown(SocketShutdown.Both);

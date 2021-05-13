@@ -38,8 +38,8 @@ namespace ClientHandler
             SocketHandler socketHandler = new SocketHandler(_tcpClient.GetStream());
             MemoryRepository repository = new MemoryRepository();
             
-            await ListenForConnectionsAsync(false,repository,ConnectedClients);
             await new HomePageServer().MenuAsync(repository,socketHandler);
+            await ListenForConnectionsAsync(false,repository,ConnectedClients);
           
             foreach (var socketClient in ConnectedClients)
             {

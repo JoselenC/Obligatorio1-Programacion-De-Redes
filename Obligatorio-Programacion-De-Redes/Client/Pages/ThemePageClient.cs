@@ -30,10 +30,10 @@ namespace Client
                 case 3:
                     Packet packg7 = new Packet("REQ", "7", "Delete theme");
                     await socketHandler.SendPackgAsync(packg7);
-                    DeleteTheme(socketHandler);
+                    await DeleteThemeAsync(socketHandler);
                     break;
                 case 4:
-                    new HomePageClient().MenuAsync(socketHandler);
+                    await new HomePageClient().MenuAsync(socketHandler);
                     break;
                 default:
                     Console.WriteLine("Invalid option");
@@ -42,7 +42,7 @@ namespace Client
             }
         }
 
-        private async Task DeleteTheme(SocketHandler socketHandler)
+        private async Task DeleteThemeAsync(SocketHandler socketHandler)
         {
             string optionSelect = await ReceiveListThemesAsync(socketHandler,"Themes");
             if (optionSelect == "Back")

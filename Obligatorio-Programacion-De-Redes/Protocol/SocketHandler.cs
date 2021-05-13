@@ -10,25 +10,21 @@ namespace DataHandler
 {
     public class SocketHandler 
     {
-        private readonly Socket _socket;
-
-        public SocketHandler(Socket socket)
+        public NetworkStream networkStream { get; set; }
+        public SocketHandler(NetworkStream vNetworkStream)
         {
-            _socket = socket;
+            networkStream = vNetworkStream;
         }
-        
-       public async Task<Packet> ReceivePackgAsync()
+
+        public async Task<Packet> ReceivePackgAsync()
         {
-            
             byte[] data = new byte[9];
-            // SocketAsyncEventArgs receive = new SocketAsyncEventArgs();
-            // receive.SetBuffer(data);
             Packet packet = new Packet();
             int received = 0;
             while (received < 9)
             {
-                int receivedBytes = _socket.Receive(data);
-                if (receivedBytes==0)
+                int receivedBytes = await networkStream.ReadAsync(data);
+                if (receivedBytes == 0)
                 {
                     throw new SocketException();
                 }
@@ -38,22 +34,23 @@ namespace DataHandler
             packet.Header = result.Substring(0, HeaderConstants.HeaderLength);
             packet.Command = result.Substring(3, HeaderConstants.CommandLength);
             packet.Length = result.Substring(5, HeaderConstants.Length);
-            int length = Int32.Parse(packet.Length)-5;
+            int length = Int32.Parse(packet.Length) - 5;
             byte[] dataBuffer = new byte[length];
-            while (received < length+9)
+            while (received < length + 9)
             {
-                int receivedBytes = _socket.Receive(dataBuffer);
-                if (receivedBytes==0)
+                int receivedBytes = await networkStream.ReadAsync(dataBuffer);
+                if (receivedBytes == 0)
                 {
                     throw new SocketException();
                 }
+
                 received += receivedBytes;
             }
             result = Encoding.Default.GetString(dataBuffer);
             packet.Data = result;
             return packet;
         }
-       
+
         public async Task SendPackgAsync(Packet pack)
         {
             try
@@ -63,7 +60,7 @@ namespace DataHandler
                 fullCommand += pack.Length.ToString();
                 fullCommand += pack.Data.ToString();
                 byte[] send = Encoding.UTF8.GetBytes(fullCommand);
-                _socket.Send(send);
+                await networkStream.WriteAsync(send);
             }
             catch (Exception e)
             {

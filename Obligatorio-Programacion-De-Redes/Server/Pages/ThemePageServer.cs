@@ -10,7 +10,7 @@ namespace ClientHandler
 {
     public class ThemePageServer
     {
-        public void Menu(MemoryRepository repository,Socket SocketClient,SocketHandler socketHandler)
+        public void Menu(MemoryRepository repository,SocketHandler socketHandler)
         {
             var exit = false;
             string[] _options = {"Themes list", "Theme with more post", "Back"};
@@ -21,16 +21,16 @@ namespace ClientHandler
                 {
                     case 1:
                         Console.Clear();
-                        ShowThemeList(repository,socketHandler,SocketClient);
+                        ShowThemeList(repository,socketHandler);
                         break;
                     case 2:
                         Console.Clear();
-                        ShowThemeWithMorePosts(repository,socketHandler,SocketClient);
+                        ShowThemeWithMorePosts(repository,socketHandler);
                         break;
                     case 3:
                         Console.Clear();
                         exit = true;
-                        new HomePageServer().MenuAsync(repository,SocketClient, socketHandler);
+                        new HomePageServer().MenuAsync(repository,socketHandler);
                         break;
                     default:
                        break;
@@ -77,17 +77,17 @@ namespace ClientHandler
             }
         }
 
-        private void ShowThemeList(MemoryRepository repository,SocketHandler socketHandler,Socket socketClient)
+        private void ShowThemeList(MemoryRepository repository,SocketHandler socketHandler)
         {
             string optionSelected = ListThemes(repository,"Themes");
             if (optionSelected == "Back")
             {
-                Menu(repository,socketClient, socketHandler);
+                Menu(repository,socketHandler);
             }
-            Menu(repository,socketClient, socketHandler);
+            Menu(repository,socketHandler);
         }
 
-        private void ShowThemeWithMorePosts(MemoryRepository repository, SocketHandler socketHandler,Socket socketClient)
+        private void ShowThemeWithMorePosts(MemoryRepository repository, SocketHandler socketHandler)
         {
             int max = 0;
             List<string> themeNames = new List<string>();
@@ -131,7 +131,7 @@ namespace ClientHandler
                 int indexThemes = Int32.Parse(var);
                 if (indexThemes > repository.Themes.Count)
                 {
-                    Menu(repository,socketClient, socketHandler);
+                    Menu(repository,socketHandler);
                 }
             }
             else
@@ -139,7 +139,7 @@ namespace ClientHandler
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("There aren't themes in the system");
                 Console.ForegroundColor = ConsoleColor.White;
-                Menu(repository, socketClient, socketHandler);
+                Menu(repository,socketHandler);
             }
 
         }

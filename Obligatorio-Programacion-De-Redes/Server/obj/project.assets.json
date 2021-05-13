@@ -499,36 +499,34 @@
     ]
   },
   "packageFolders": {
-    "/Users/jimesanguinetti/.nuget/packages/": {},
-    "/usr/local/share/dotnet/sdk/NuGetFallbackFolder": {}
+    "C:\\Users\\Choche\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/jimesanguinetti/Documents/IngEnSistemas/Semestre 6/Programacion de redes/Obligatorio-redes/Obligatorio1-Programacion-De-Redes/Obligatorio-Programacion-De-Redes/Server/Server.csproj",
+      "projectUniqueName": "C:\\Users\\Choche\\OneDrive\\Escritorio\\Semestre 6\\Programacion de redes\\Obligatorio1-Programacion-De-Redes\\Obligatorio-Programacion-De-Redes\\Server\\Server.csproj",
       "projectName": "Server",
-      "projectPath": "/Users/jimesanguinetti/Documents/IngEnSistemas/Semestre 6/Programacion de redes/Obligatorio-redes/Obligatorio1-Programacion-De-Redes/Obligatorio-Programacion-De-Redes/Server/Server.csproj",
-      "packagesPath": "/Users/jimesanguinetti/.nuget/packages/",
-      "outputPath": "/Users/jimesanguinetti/Documents/IngEnSistemas/Semestre 6/Programacion de redes/Obligatorio-redes/Obligatorio1-Programacion-De-Redes/Obligatorio-Programacion-De-Redes/Server/obj/",
+      "projectPath": "C:\\Users\\Choche\\OneDrive\\Escritorio\\Semestre 6\\Programacion de redes\\Obligatorio1-Programacion-De-Redes\\Obligatorio-Programacion-De-Redes\\Server\\Server.csproj",
+      "packagesPath": "C:\\Users\\Choche\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Choche\\OneDrive\\Escritorio\\Semestre 6\\Programacion de redes\\Obligatorio1-Programacion-De-Redes\\Obligatorio-Programacion-De-Redes\\Server\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "/usr/local/share/dotnet/sdk/NuGetFallbackFolder"
-      ],
       "configFilePaths": [
-        "/Users/jimesanguinetti/.nuget/NuGet/NuGet.Config"
+        "C:\\Users\\Choche\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "netcoreapp3.1"
       ],
       "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "netcoreapp3.1": {
           "targetAlias": "netcoreapp3.1",
           "projectReferences": {
-            "/Users/jimesanguinetti/Documents/IngEnSistemas/Semestre 6/Programacion de redes/Obligatorio-redes/Obligatorio1-Programacion-De-Redes/Obligatorio-Programacion-De-Redes/Domain/Domain.csproj": {
-              "projectPath": "/Users/jimesanguinetti/Documents/IngEnSistemas/Semestre 6/Programacion de redes/Obligatorio-redes/Obligatorio1-Programacion-De-Redes/Obligatorio-Programacion-De-Redes/Domain/Domain.csproj"
+            "C:\\Users\\Choche\\OneDrive\\Escritorio\\Semestre 6\\Programacion de redes\\Obligatorio1-Programacion-De-Redes\\Obligatorio-Programacion-De-Redes\\Domain\\Domain.csproj": {
+              "projectPath": "C:\\Users\\Choche\\OneDrive\\Escritorio\\Semestre 6\\Programacion de redes\\Obligatorio1-Programacion-De-Redes\\Obligatorio-Programacion-De-Redes\\Domain\\Domain.csproj"
             }
           }
         }
@@ -563,7 +561,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/5.0.103/RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.202\\RuntimeIdentifierGraph.json"
       }
     }
   }

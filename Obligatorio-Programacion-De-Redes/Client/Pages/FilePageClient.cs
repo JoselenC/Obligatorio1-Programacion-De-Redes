@@ -20,7 +20,7 @@ namespace Client
             return optionSelect;
         }
 
-        public async Task AssociateFileAsync(SocketHandler socketHandler, Socket SocketClient)
+        public async Task AssociateFileAsync(SocketHandler socketHandler)
         {
             ProtocolHandler protocolHandler = new ProtocolHandler();
             Packet packg1 = new Packet("REQ", "8", "Associate file");
@@ -44,10 +44,10 @@ namespace Client
                     }
                     try
                     {
-                        await protocolHandler.SendFileAsync(path, SocketClient, socketHandler, optionSelect1);
+                        await protocolHandler.SendFileAsync(path, socketHandler, optionSelect1);
                         Console.ForegroundColor = ConsoleColor.Green;
                         Console.WriteLine("File was associated");
-                        await new HomePageClient().MenuAsync(SocketClient, socketHandler);
+                        await new HomePageClient().MenuAsync(socketHandler);
                         correctPath = true;
                     }
                     catch (Exception)
@@ -60,7 +60,7 @@ namespace Client
                     }
                 }
             }
-            await new HomePageClient().MenuAsync(SocketClient, socketHandler);
+            await new HomePageClient().MenuAsync(socketHandler);
         }
     
     }

@@ -12,7 +12,7 @@ namespace ClientHandler
     public class FilePageServer
     {
         
-        public void ShowFileList(MemoryRepository repository,SocketHandler socketHandler,Socket socketClient)
+        public void ShowFileList(MemoryRepository repository,SocketHandler socketHandler)
         {
             string[] _options = {"All files", "By theme", "Order by creation date", "Order by name", "Order by size", "Back"};
             int option = new MenuServer().ShowMenu(_options, "File menu");
@@ -20,27 +20,27 @@ namespace ClientHandler
             {
                 case 1:
                     Console.Clear();
-                    ShowAllFiles(repository,socketClient, socketHandler);
+                    ShowAllFiles(repository, socketHandler);
                     break;
                 case 2:
                     Console.Clear();
-                    ShowFileByTheme(repository,socketClient, socketHandler);
+                    ShowFileByTheme(repository, socketHandler);
                     break;
                 case 3:
                     Console.Clear();
-                    ShowFileByDate(repository,socketClient, socketHandler);
+                    ShowFileByDate(repository, socketHandler);
                     break;
                 case 4:
                     Console.Clear();
-                    ShowFileByName(repository,socketClient, socketHandler);
+                    ShowFileByName(repository, socketHandler);
                     break;
                 case 5:
                     Console.Clear();
-                    ShowFileBySize(repository,socketClient, socketHandler);
+                    ShowFileBySize(repository, socketHandler);
                     break;
                 case 6:
                     Console.Clear();  
-                    new HomePageServer().MenuAsync(repository,socketClient, socketHandler);
+                    new HomePageServer().MenuAsync(repository,socketHandler);
                     break;
                 default:
                     Console.WriteLine("Invalid option");
@@ -76,14 +76,14 @@ namespace ClientHandler
                 return optionSelectedPosts;
             }
         }
-        private void ShowFileBySize(MemoryRepository repository,Socket socketClient, SocketHandler socketHandler)
+        private void ShowFileBySize(MemoryRepository repository, SocketHandler socketHandler)
         {
             var optionSelect = ListFileBySize(repository,"Files by size");
             if (optionSelect == "Back")
             {
-                ShowFileList(repository, socketHandler, socketClient);
+                ShowFileList(repository, socketHandler);
             }
-            ShowFileList(repository, socketHandler, socketClient);
+            ShowFileList(repository, socketHandler);
         }
 
         private static string ListFileByName(MemoryRepository repository,string title)
@@ -128,14 +128,14 @@ namespace ClientHandler
                 return optionSelectedPosts;
             }
         }
-        private void ShowFileByName(MemoryRepository repository,Socket socketClient, SocketHandler socketHandler)
+        private void ShowFileByName(MemoryRepository repository,SocketHandler socketHandler)
         {
             var optionSelect = ListFileByName(repository,"Files by name");
             if (optionSelect == "Back")
             {
-                ShowFileList(repository, socketHandler, socketClient);
+                ShowFileList(repository, socketHandler);
             }
-            ShowFileList(repository, socketHandler, socketClient);
+            ShowFileList(repository, socketHandler);
         }
         
         private static string ListFileByDate(MemoryRepository repository,string title)
@@ -181,17 +181,17 @@ namespace ClientHandler
             }
         }
 
-        private void ShowFileByDate(MemoryRepository repository,Socket socketClient, SocketHandler socketHandler)
+        private void ShowFileByDate(MemoryRepository repository, SocketHandler socketHandler)
         {
             var optionSelect = ListFileByDate(repository,"Files by date");
             if (optionSelect == "Back")
             {
-                ShowFileList(repository, socketHandler, socketClient);
+                ShowFileList(repository, socketHandler);
             }
-            ShowFileList(repository, socketHandler, socketClient);
+            ShowFileList(repository, socketHandler);
         }
 
-        private string ListThemes(MemoryRepository repository,SocketHandler socketHandler)
+        private string ListThemes(MemoryRepository repository)
         {
             string [] posts= new string[repository.Themes.Count];
             for (int i = 0; i < repository.Themes.Count; i++)
@@ -204,22 +204,22 @@ namespace ClientHandler
         }
 
 
-        private void ShowFileByTheme(MemoryRepository repository,Socket socketClient, SocketHandler socketHandler)
+        private void ShowFileByTheme(MemoryRepository repository, SocketHandler socketHandler)
         {
             if (repository.Themes.Count > 0)
             {
-                var themeName = ListThemes(repository, socketHandler);
+                var themeName = ListThemes(repository);
                 var optionSelect = ListFileByTheme(repository, "Files by theme name", themeName);
                 if (optionSelect == "Back")
                 {
-                    ShowFileList(repository, socketHandler, socketClient);
+                    ShowFileList(repository, socketHandler);
                 }
-                ShowFileList(repository, socketHandler, socketClient);
+                ShowFileList(repository, socketHandler);
             }
             else
             {
                 Console.WriteLine("There aren't themes to filter");
-                ShowFileList(repository, socketHandler, socketClient);
+                ShowFileList(repository, socketHandler);
             }
         }
         
@@ -310,12 +310,12 @@ namespace ClientHandler
             }
         }
 
-        public void ShowAllFiles(MemoryRepository repository, Socket socketClient, SocketHandler socketHandler)
+        public void ShowAllFiles(MemoryRepository repository, SocketHandler socketHandler)
         {
             var optionSelect = ListFiles(repository, "File posts");
             if (optionSelect == "Back")
             {
-                ShowFileList(repository, socketHandler, socketClient);
+                ShowFileList(repository, socketHandler);
             }
             else
             {
@@ -338,7 +338,7 @@ namespace ClientHandler
                 }
             }
 
-            ShowFileList(repository, socketHandler, socketClient);
+            ShowFileList(repository, socketHandler);
         }
     }
 }

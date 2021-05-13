@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
 using BusinessLogic;
@@ -8,14 +9,81 @@ using DataHandler;
 using Domain;
 using Domain.Services;
 using Protocol;
-
+using ProtocolFiles;
 
 
 namespace ClientHandler
 {
     public class HandleClient
     {
-        public async Task HandleClientMethodAsync(Socket clientSocket,MemoryRepository repository,bool _exit, List<Socket> connectedClients,SocketHandler socketHandler)
+    
+       public static readonly List<Socket> ConnectedClients = new List<Socket>();
+       private readonly TcpListener _tcpListener;
+       private readonly FileHandler _fileHandler;
+       private readonly IFileStreamHandler _fileStreamHandler;
+       private TcpClient _tcpClient;
+
+       public HandleClient()
+       {
+           _tcpListener = new TcpListener(IPAddress.Parse("127.0.0.1"), 6000);
+           _fileHandler = new FileHandler();
+           _fileStreamHandler = new FileStreamHandler();
+       }
+
+        public async Task StartServerAsync()
+        {
+            _tcpListener.Start(1);
+            _tcpClient = await _tcpListener.AcceptTcpClientAsync();
+            _tcpListener.Stop();
+            SocketHandler socketHandler = new SocketHandler(_tcpClient.GetStream());
+            MemoryRepository repository = new MemoryRepository();
+            
+            await ListenForConnectionsAsync(false,repository,ConnectedClients);
+            await new HomePageServer().MenuAsync(repository,socketHandler);
+          
+            foreach (var socketClient in ConnectedClients)
+            {
+                try
+                {
+                    socketClient.Shutdown(SocketShutdown.Both);
+                    socketClient.Close(1);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("Socket client is already closed");
+                }
+
+                Console.WriteLine("Saliendo del Main Thread...");
+            }
+        }
+        
+        public async Task ListenForConnectionsAsync(bool _exit,MemoryRepository repository,List<Socket> ConnectedClients)
+        {
+            try
+            {
+                ConnectedClients.Add(_tcpListener.Server);
+                ClientConnected clientConnection = new ClientConnected()
+                {
+                    TimeOfConnection = DateTime.Now.ToString(),
+                    LocalEndPoint = ConfigurationManager.AppSettings["ClientPort"],
+                    Ip = ConfigurationManager.AppSettings["ServerIp"]
+                };
+                repository.ClientsConnections.Add(clientConnection);
+                SocketHandler socketHandler = new SocketHandler(_tcpClient.GetStream());
+                await HandleClientMethodAsync(repository, _exit, ConnectedClients, socketHandler);
+            }
+            catch (SocketException se)
+            {
+                Console.WriteLine("El servidor está cerrándose...");
+                _exit = true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
+        
+        public async Task HandleClientMethodAsync(MemoryRepository repository,bool _exit, List<Socket> connectedClients,SocketHandler socketHandler)
         {
             try
             {
@@ -53,7 +121,7 @@ namespace ClientHandler
                             await new ThemeService(repository).DeleteThemeAsync(socketHandler);
                             break;
                         case CommandConstants.CommandUploadFile:
-                            await new FileService(repository).UploadFile(socketHandler,clientSocket);
+                            await new FileService(repository).UploadFile(socketHandler);
                             break;
                         case CommandConstants.SearchPost:
                             await new PostService(repository).SearchPostAsync(socketHandler);
@@ -70,39 +138,13 @@ namespace ClientHandler
             catch (SocketException e)
             {
                 ClientConnected client = repository.ClientsConnections.Find(x =>
-                    x.LocalEndPoint ==clientSocket.RemoteEndPoint.ToString());
-                repository.ClientsConnections.Remove(client);
-                Console.WriteLine("Removing client....");
-                connectedClients.Remove(clientSocket);
+                 x.LocalEndPoint ==_tcpListener.Server.RemoteEndPoint.ToString());
+              repository.ClientsConnections.Remove(client);
+              Console.WriteLine("Removing client....");
+              connectedClients.Remove(_tcpListener.Server);
             }
         }
         
-        public async Task ListenForConnectionsAsync(Socket socketServer, MemoryRepository repository,bool _exit, List<Socket> ConnectedClients)
-        {
-            try
-            {
-                var socketConnected = socketServer.Accept();
-                ConnectedClients.Add(socketConnected);
-                ClientConnected clientConnection = new ClientConnected()
-                {
-                    TimeOfConnection = DateTime.Now.ToString(), 
-                    LocalEndPoint = socketConnected.RemoteEndPoint.ToString(),
-                    Ip = ConfigurationManager.AppSettings["ServerIp"]
-                };
-                repository.ClientsConnections.Add(clientConnection);
-                SocketHandler socketHandler = new SocketHandler(socketConnected);
-                await new HandleClient().HandleClientMethodAsync(socketConnected, repository, _exit, ConnectedClients,
-                    socketHandler);
-            }
-            catch (SocketException se)
-            {
-              Console.WriteLine("El servidor está cerrándose...");
-                _exit = true;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-        }
+     
     }
 }

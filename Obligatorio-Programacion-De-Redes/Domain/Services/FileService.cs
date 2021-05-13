@@ -29,13 +29,13 @@ namespace Domain.Services
             await socketHandler.SendPackgAsync(packg);
         }
 
-        public async Task UploadFile(SocketHandler socketHandler, Socket socketClient)
+        public async Task UploadFile(SocketHandler socketHandler)
         {
             if (repository.Posts.Count != 0)
             {
                 await SendListPostAsync(socketHandler);
                 ProtocolHandler protocolHandler = new ProtocolHandler();
-                string[] fileData = await protocolHandler.ReceiveFileAsync(socketClient, socketHandler);
+                string[] fileData = await protocolHandler.ReceiveFileAsync(socketHandler);
                 string option = fileData[0];
                 if (option != "Back")
                 {

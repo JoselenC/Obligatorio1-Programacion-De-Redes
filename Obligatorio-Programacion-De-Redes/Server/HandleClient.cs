@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net.Sockets;
+using System.Threading;
 using System.Threading.Tasks;
 using BusinessLogic;
 using DataHandler;
@@ -19,6 +20,7 @@ namespace Server
          }
           public async Task HandleClientMethodAsync(MemoryRepository repository,bool _exit, List<Socket> connectedClients,SocketHandler socketHandler)
         {
+          SemaphoreSlim semaphoreSlim = new SemaphoreSlim(1);
             try
             {
                 while (!_exit)
@@ -31,10 +33,10 @@ namespace Server
                             await new PostService(repository).AddPostAsync(socketHandler);
                             break;
                         case CommandConstants.CommandModifyPost:
-                            await new PostService(repository).ModifyPostAsync(socketHandler);
+                            await new PostService(repository,semaphoreSlim).ModifyPostAsync(socketHandler);
                             break;
                         case CommandConstants.CommandDeletePost:
-                            await new PostService(repository).DeletePostAsync(socketHandler);
+                            await new PostService(repository,semaphoreSlim).DeletePostAsync(socketHandler);
                             break;
                         case CommandConstants.CommandAsociateTheme:
                             await new PostService(repository).AsociateThemeAsync(socketHandler);
@@ -49,10 +51,10 @@ namespace Server
                             await new ThemeService(repository).AddThemeAsync(socketHandler);
                             break;
                         case CommandConstants.CommandModifyTheme:
-                            await new ThemeService(repository).ModifyThemeAsync(socketHandler);
+                            await new ThemeService(repository,semaphoreSlim).ModifyThemeAsync(socketHandler);
                             break;
                         case CommandConstants.CommandDeleteTheme:
-                            await new ThemeService(repository).DeleteThemeAsync(socketHandler);
+                            await new ThemeService(repository,semaphoreSlim).DeleteThemeAsync(socketHandler);
                             break;
                         case CommandConstants.CommandUploadFile:
                             await new FileService(repository).UploadFile(socketHandler);

@@ -10,10 +10,16 @@ namespace Domain.Services
     public class ThemeService
     {
         private MemoryRepository repository;
-        private SemaphoreSlim semaphoreSlim = new SemaphoreSlim(1);
+        private SemaphoreSlim semaphoreSlim;
         public ThemeService(MemoryRepository repository)
         {
             this.repository = repository;
+        }
+
+        public ThemeService(MemoryRepository repository,SemaphoreSlim semaphore)
+        {
+            this.repository = repository;
+            semaphoreSlim = semaphore;
         }
         public async Task AddThemeAsync(SocketHandler socketHandler)
         {

@@ -12,12 +12,17 @@ namespace Domain.Services
     public class PostService
     {
         private MemoryRepository repository;
-        private SemaphoreSlim semaphoreSlim = new SemaphoreSlim(1);
+        private SemaphoreSlim semaphoreSlim;
         public PostService(MemoryRepository repository)
         {
             this.repository = repository;
         }
 
+        public PostService(MemoryRepository repository,SemaphoreSlim semaphore)
+        {
+            this.repository = repository;
+            semaphoreSlim = semaphore;
+        }
         private async Task SendListThemesPostAsync(SocketHandler socketHandler, string namePost)
         {
             Post postByName = repository.Posts.Find(x => x.Name == namePost);

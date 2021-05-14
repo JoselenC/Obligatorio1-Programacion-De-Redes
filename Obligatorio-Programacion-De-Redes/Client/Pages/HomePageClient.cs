@@ -32,7 +32,7 @@ namespace Client
                         Console.Clear();
                         Packet packg1 = new Packet("REQ", "9", "Search post");
                         await socketHandler.SendPackgAsync(packg1);
-                        await new PostPageClient().SearchPost(socketHandler);
+                        await new PostPageClient().SearchPostAsync(socketHandler);
                         break;
                     case 5:
                         Console.Clear();

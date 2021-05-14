@@ -41,7 +41,7 @@ namespace Client
             return 0;
         }
 
-        private static void PrintOptions(string[] _options, string title, int indexMenu)
+        private void PrintOptions(string[] _options, string title, int indexMenu)
         {
             Console.ForegroundColor = ConsoleColor.Magenta;
             Console.WriteLine("----" + title + "----");

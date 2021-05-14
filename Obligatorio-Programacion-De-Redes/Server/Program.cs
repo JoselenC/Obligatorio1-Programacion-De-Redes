@@ -6,8 +6,8 @@ namespace Server
     {
         static async Task Main(string[] args)
         {
-            Server clientHandler = new Server();
-            await clientHandler.StartServerAsync();
+            Server server = new Server();
+            await server.StartServerAsync();
         }
 
     }

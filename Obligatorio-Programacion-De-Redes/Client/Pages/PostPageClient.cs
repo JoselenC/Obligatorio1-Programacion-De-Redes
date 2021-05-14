@@ -313,7 +313,7 @@ namespace Client
             }
         }
 
-        public async Task SearchPost(SocketHandler socketHandler)
+        public async Task SearchPostAsync(SocketHandler socketHandler)
         {
             string title="Select post";
             var optionSelect = await ReceiveListPostAsync(socketHandler,title);

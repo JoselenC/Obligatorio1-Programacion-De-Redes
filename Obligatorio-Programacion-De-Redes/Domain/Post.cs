@@ -10,7 +10,6 @@ namespace Domain
         public string CreationDate { get; set; }
         public File File { get; set; }
 
-        public bool InUse { get; set; }
         public bool SameName(string name)
         {
             return Name == name;

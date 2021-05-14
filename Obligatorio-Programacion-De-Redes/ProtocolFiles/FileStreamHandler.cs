@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace ProtocolFiles
 {
-    public class FileStreamHandler: IFileStreamHandler
+    public class FileStreamHandler
     {
         public async Task<byte[]> ReadAsync(string path, long offset, int length)
         {

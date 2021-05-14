@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Net.Sockets;
+using System.Threading.Tasks;
 using DataHandler;
 using Protocol;
 using ProtocolFiles;
@@ -10,31 +11,29 @@ namespace Client
     public class FilePageClient
     {
 
-        private string ReceiveListPost(SocketHandler socketHandler, string message)
+        private async Task<string> ReceiveListPostAsync(SocketHandler socketHandler, string message)
         {
-            var packet = socketHandler.ReceivePackg();
+            var packet = await socketHandler.ReceivePackgAsync();
             String[] postsNAmes = packet.Data.Split('#');
-            int index = new MenuClient().ShowMenu(postsNAmes,message);
+            int index = await new MenuClient().ShowMenuAsync(postsNAmes,message);
             string optionSelect = postsNAmes[index - 1];
             return optionSelect;
         }
 
-        public void AssociateFile(SocketHandler socketHandler, Socket SocketClient)
+        public async Task AssociateFileAsync(SocketHandler socketHandler)
         {
             ProtocolHandler protocolHandler = new ProtocolHandler();
             Packet packg1 = new Packet("REQ", "8", "Associate file");
-            socketHandler.SendPackg(packg1);
+            await socketHandler.SendPackgAsync(packg1);
             string title = "Select post to associate file";
-            string optionSelect1 = ReceiveListPost(socketHandler, title);
+            string optionSelect1 = await ReceiveListPostAsync(socketHandler, title);
             if (optionSelect1 != "Back")
             {
-               
                 bool correctPath = false;
                 Console.WriteLine("Path: ");
                 string path = Console.ReadLine();
                 while (!correctPath)
                 {
-                   
                     while (path == "")
                     {
                         Console.ForegroundColor = ConsoleColor.Red;
@@ -45,10 +44,10 @@ namespace Client
                     }
                     try
                     {
-                        protocolHandler.SendFileAsync(path, SocketClient, socketHandler, optionSelect1);
+                        await protocolHandler.SendFileAsync(path, socketHandler, optionSelect1);
                         Console.ForegroundColor = ConsoleColor.Green;
                         Console.WriteLine("File was associated");
-                        new HomePageClient().Menu(SocketClient, socketHandler);
+                        await new HomePageClient().MenuAsync(socketHandler);
                         correctPath = true;
                     }
                     catch (Exception)
@@ -61,7 +60,7 @@ namespace Client
                     }
                 }
             }
-            new HomePageClient().Menu(SocketClient, socketHandler);
+            await new HomePageClient().MenuAsync(socketHandler);
         }
     
     }

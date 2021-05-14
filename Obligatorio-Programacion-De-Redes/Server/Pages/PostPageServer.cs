@@ -8,12 +8,12 @@ using DataHandler;
 using Domain.Services;
 using Server;
 
-namespace ClientHandler
+namespace Server
 {
     public class PostPageServer
     {
 
-        public void Menu(MemoryRepository repository,Socket socketClient,SocketHandler socketHandler)
+        public void Menu(MemoryRepository repository)
         {
             string[] _options = {"Show theme post", "Show post", "Show file post", "Back"};
             int option = new MenuServer().ShowMenu(_options,"Post menu");
@@ -21,19 +21,19 @@ namespace ClientHandler
                 {
                     case 1:
                         Console.Clear();
-                       MenuShowThemePost(repository,socketClient, socketHandler);
+                       MenuShowThemePost(repository);
                         break;
                     case 2:
                         Console.Clear();
-                        ShowEspecificPost(repository,socketClient,socketHandler);
+                        ShowEspecificPost(repository);
                         break;
                     case 3:
                         Console.Clear();
-                        ShowFilePost(repository,socketClient,socketHandler);
+                        ShowFilePost(repository);
                         break;
                     case 4:
                         Console.Clear();
-                        new HomePageServer().Menu(repository,socketClient,socketHandler);
+                        new HomePageServer().MenuAsync(repository,false);
                         break;
                     default:
                         break;
@@ -41,12 +41,12 @@ namespace ClientHandler
             }
         }
         
-        private void ShowEspecificPost(MemoryRepository repository,Socket socketClient,SocketHandler socketHandler)
+        private void ShowEspecificPost(MemoryRepository repository)
         {
             var optionSelect = ListPost(repository);
             if (optionSelect == "Back")
             {
-                Menu(repository,socketClient, socketHandler);
+                Menu(repository);
             }
             else
             {
@@ -68,10 +68,10 @@ namespace ClientHandler
                 }
 
             }
-            Menu(repository,socketClient, socketHandler);
+            Menu(repository);
         }
 
-       private void MenuShowThemePost(MemoryRepository repository,Socket socketClient, SocketHandler socketHandler)
+       private void MenuShowThemePost(MemoryRepository repository)
         { 
             string[] _options = {"By creation date", "By theme", "By both", "Back"};
             int option = new MenuServer().ShowMenu(_options,"Filter");
@@ -79,18 +79,18 @@ namespace ClientHandler
                 {
                     case 1:
                         Console.Clear();
-                        ShowThemePostByCreationDate(repository,socketClient, socketHandler);
+                        ShowThemePostByCreationDate(repository);
                         break;
                     case 2:
                         Console.Clear();
-                        ShowPostByTheme(repository,socketClient, socketHandler);
+                        ShowPostByTheme(repository);
                         break;
                     case 3:
                         Console.Clear();
-                        ShowThemePostByDateAndTheme(repository,socketClient, socketHandler);
+                        ShowThemePostByDateAndTheme(repository);
                         break;
                     case 4:
-                        new HomePageServer().Menu(repository,socketClient, socketHandler);
+                        new HomePageServer().MenuAsync(repository,false);
                         break;
                     default:
                         Console.WriteLine("Invalid option");
@@ -100,8 +100,6 @@ namespace ClientHandler
        
      private static string ListPostOrder(MemoryRepository repository,string title)
        {
-           
-           
            IOrderedEnumerable<Post> orderedEnumerable= repository.Posts.OrderBy(x=> new DateTime(Convert.ToInt32(x.CreationDate.Substring(6, 4)), Convert.ToInt32(x.CreationDate.Substring(3, 2)), // Month
                                     Convert.ToInt32(x.CreationDate.Substring(0, 2))));
             List<Post>orderList=orderedEnumerable.ToList();
@@ -208,22 +206,22 @@ namespace ClientHandler
             }
         }
 
-        public void ShowPostByTheme(MemoryRepository repository,Socket socketClient,SocketHandler socketHandler)
+        public void ShowPostByTheme(MemoryRepository repository)
        {
             var optionTheme = ListThemes(repository, "Select theme to filter");
            var optionSelect = ListPostByTheme(repository,"Posts by theme name", optionTheme);
            if (optionSelect == "Back")
            {
-               MenuShowThemePost(repository,socketClient, socketHandler);
+               MenuShowThemePost(repository);
            }
            else if (optionSelect == "0")
            {
                Console.WriteLine("There aren't post with this theme ");
-               MenuShowThemePost(repository,socketClient, socketHandler);
+               MenuShowThemePost(repository);
            }
            else
            {
-               MenuShowThemePost(repository,socketClient, socketHandler);
+               MenuShowThemePost(repository);
            }
            
        }
@@ -279,33 +277,33 @@ namespace ClientHandler
                 return "Back";
             }
        }
-       private void ShowThemePostByCreationDate(MemoryRepository repository,Socket socketClient, SocketHandler socketHandler)
+       private void ShowThemePostByCreationDate(MemoryRepository repository)
        {
            var optionSelect = ListPostOrder(repository,"Posts by creation date");
            if (optionSelect == "Back")
            {
-               MenuShowThemePost(repository,socketClient, socketHandler);
+               MenuShowThemePost(repository);
            }
            else if(optionSelect == "0")
            {
                Console.WriteLine("There aren't post with this theme ");
-               MenuShowThemePost(repository,socketClient, socketHandler);
+               MenuShowThemePost(repository);
            }
            else
            {
-               MenuShowThemePost(repository, socketClient, socketHandler);
+               MenuShowThemePost(repository);
            }
        }
        
-       public void ShowThemePostByDateAndTheme(MemoryRepository repository,Socket socketClient,SocketHandler socketHandler)
+       public void ShowThemePostByDateAndTheme(MemoryRepository repository)
        {
             var optionTheme = ListThemes(repository, "Select theme to filter");
             var optionSelect = ListPostByThemeAndCreationDate(repository,"Posts by theme name", optionTheme);
            if (optionSelect == "Back")
            {
-               MenuShowThemePost(repository,socketClient, socketHandler);
+               MenuShowThemePost(repository);
            }
-           MenuShowThemePost(repository,socketClient, socketHandler);
+           MenuShowThemePost(repository);
        }
 
        private static string ListPost(MemoryRepository repository)
@@ -327,12 +325,12 @@ namespace ClientHandler
            themesName[repository.Posts.Count] = "Back";
            return themesName;
        }
-       public void ShowFilePost(MemoryRepository repository,Socket socketClient,SocketHandler socketHandler)
+       public void ShowFilePost(MemoryRepository repository)
         {
             var optionSelect = ListPost(repository);
             if (optionSelect == "Back")
             {
-                Menu(repository,socketClient, socketHandler);
+                Menu(repository);
             }
             else
             {
@@ -355,7 +353,7 @@ namespace ClientHandler
                 {
                     Console.WriteLine("There aren't file to this post");
                 }
-                Menu(repository, socketClient, socketHandler);
+                Menu(repository);
             }
 
         }

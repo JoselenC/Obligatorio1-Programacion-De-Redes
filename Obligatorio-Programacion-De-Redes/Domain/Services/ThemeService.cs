@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
 using BusinessLogic;
 using DataHandler;
 using Protocol;
@@ -7,15 +9,21 @@ namespace Domain.Services
 {
     public class ThemeService
     {
-        
         private MemoryRepository repository;
+        private SemaphoreSlim semaphoreSlim;
         public ThemeService(MemoryRepository repository)
         {
             this.repository = repository;
         }
-        public void AddTheme(SocketHandler socketHandler)
+
+        public ThemeService(MemoryRepository repository,SemaphoreSlim semaphore)
         {
-            var packet = socketHandler.ReceivePackg();
+            this.repository = repository;
+            semaphoreSlim = semaphore;
+        }
+        public async Task AddThemeAsync(SocketHandler socketHandler)
+        {
+            var packet = await socketHandler.ReceivePackgAsync();
             String[] messageArray = packet.Data.Split('#');
             string name = messageArray[0];
             if (name != "Back")
@@ -27,7 +35,7 @@ namespace Domain.Services
                 {
                     if (!AlreadyExistTheme(name))
                     {
-                        Theme theme = new Theme() { Name = name, Description = description, InUse = false };
+                        Theme theme = new Theme() { Name = name, Description = description };
                         repository.Themes.Add(theme);
                         message = "The theme " + name + " was added";
                     }
@@ -41,7 +49,7 @@ namespace Domain.Services
                     message = "The theme name cannot be empty";
                 }
                 Packet packg = new Packet("RES", "4", message);
-                socketHandler.SendPackg(packg);
+                await socketHandler.SendPackgAsync(packg);
             }
         }
         
@@ -53,7 +61,7 @@ namespace Domain.Services
             return true;
         }
 
-        public void ModifyTheme(SocketHandler socketHandler)
+        public async Task ModifyThemeAsync(SocketHandler socketHandler)
         {
             string posts = "";
             foreach (var post in repository.Themes)
@@ -62,9 +70,9 @@ namespace Domain.Services
             }
             posts += "Back" + "#";
             Packet packg = new Packet("RES", "4", posts);
-            socketHandler.SendPackg(packg);
+            await socketHandler.SendPackgAsync(packg);
             string message;
-            var packet = socketHandler.ReceivePackg();
+            var packet = await socketHandler.ReceivePackgAsync();
             string[] messageArray = packet.Data.Split('#');
             string option = messageArray[0];
             if (option != "Back")
@@ -73,21 +81,16 @@ namespace Domain.Services
                 if (name != "")
                 {
                     string description = messageArray[2];
-                    Theme theme = new Theme() { Name = name, Description = description, InUse = false };
+                    Theme theme = new Theme() { Name = name, Description = description };
                     if (!AlreadyExistTheme(name))
                     {
                         Theme themeName = repository.Themes.Find(x => x.Name == option);
-                        if (!theme.InUse)
-                        {
-                            repository.Themes.Find(x => x.Name == option).InUse = true;
-                            repository.Themes.Remove(themeName);
-                            repository.Themes.Add(theme);
-                            message = "The theme " + option + " was modified" ;
-                        }
-                        else
-                        {
-                            message = "The theme " + option + " is in use";
-                        }
+                        semaphoreSlim.Wait();
+                        repository.Themes.Find(x => x.Name == option);
+                        repository.Themes.Remove(themeName);
+                        repository.Themes.Add(theme);
+                        message = "The theme " + option + " was modified";
+                        semaphoreSlim.Release();
                     }
                     else
                     {
@@ -99,11 +102,11 @@ namespace Domain.Services
                     message = "The theme name cannot be empty";
                 }
                 Packet packg2 = new Packet("RES", "4", message);
-                socketHandler.SendPackg(packg2);
+                await socketHandler.SendPackgAsync(packg2);
             }
         }
 
-        public void DeleteTheme(SocketHandler socketHandler)
+        public async Task DeleteThemeAsync(SocketHandler socketHandler)
         {
             string posts = "";
             foreach (var post in repository.Themes)
@@ -112,40 +115,34 @@ namespace Domain.Services
             }
             posts += "Back" + "#";
             Packet packg = new Packet("RES", "4", posts);
-            socketHandler.SendPackg(packg);
+            await socketHandler.SendPackgAsync(packg);
             string message;
-            var packet = socketHandler.ReceivePackg();
+            var packet = await socketHandler.ReceivePackgAsync();
             string oldName = packet.Data;
             if (oldName != "Back")
             {
                 if (AlreadyExistTheme(oldName))
                 {
                     Theme themeName = repository.Themes.Find(x => x.Name == oldName);
-                    if (!themeName.InUse)
+                    repository.Themes.Find(x => x.Name == oldName);
+                    if (!IsAssociatedAPost(themeName))
                     {
-                        repository.Themes.Find(x => x.Name == oldName).InUse = true;
-                        if (!IsAssociatedAPost(themeName))
-                        {
-                            repository.Themes.Remove(themeName);
-                            message = "The theme " + oldName + " was deleted";
-                        }
-                        else
-                        {
-                            message = "Not delete, the theme " + oldName + " is associated with a post";
-                        }
+                        semaphoreSlim.Wait();
+                        repository.Themes.Remove(themeName);
+                        message = "The theme " + oldName + " was deleted";
+                        semaphoreSlim.Wait();
                     }
                     else
                     {
-                        message = "Not delete, the theme  " + oldName + " in use";
+                        message = "Not delete, the theme " + oldName + " is associated with a post";
                     }
-
                 }
                 else
                 {
                     message = "Not delete, the theme " + oldName + " not exist";
                 }
                 Packet packg3 = new Packet("RES", "4", message);
-                socketHandler.SendPackg(packg3);
+                await socketHandler.SendPackgAsync(packg3);
             }
         }
 
@@ -161,7 +158,5 @@ namespace Domain.Services
             }
             return false;
         }
-
-       
     }
 }

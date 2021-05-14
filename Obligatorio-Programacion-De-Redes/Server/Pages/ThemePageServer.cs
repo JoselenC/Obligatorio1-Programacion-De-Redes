@@ -6,7 +6,7 @@ using DataHandler;
 using Domain;
 using Server;
 
-namespace ClientHandler
+namespace Server
 {
     public class ThemePageServer
     {
@@ -16,7 +16,7 @@ namespace ClientHandler
             string[] _options = {"Themes list", "Theme with more post", "Back"};
             while (!exit)
             {
-                int option = new MenuServer().ShowMenu(_options,"MenuAsync");
+                int option = new MenuServer().ShowMenu(_options,"Menu");
                 switch (option)
                 {
                     case 1:
@@ -30,7 +30,7 @@ namespace ClientHandler
                     case 3:
                         Console.Clear();
                         exit = true;
-                        new HomePageServer().MenuAsync(repository);
+                        new HomePageServer().Menu(repository);
                         break;
                     default:
                        break;

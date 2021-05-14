@@ -193,7 +193,7 @@ namespace Client
                 string messageReceive = packet.Data;
                 Console.WriteLine(messageReceive);
                 if (messageReceive.Substring(0, 3) != "Not")
-                    await AddThemeToPostAsync(socketHandler,messageReceive);
+                    await AddThemeToPostAsync(socketHandler,name);
             }
             else
             {

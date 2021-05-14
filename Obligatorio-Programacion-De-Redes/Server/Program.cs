@@ -1,24 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Net;
-using System.Net.Sockets;
-using System.Threading;
-using System.Threading.Tasks;
-using BusinessLogic;
-using ClientHandler;
-using DataHandler;
-using Domain;
+﻿using System.Threading.Tasks;
 
 namespace Server
 {
     class Program
     {
-        public static bool _exit = false;
-
         static async Task Main(string[] args)
         {
-            HandleClient clientHandler = new HandleClient();
+            Server clientHandler = new Server();
             await clientHandler.StartServerAsync();
         }
 

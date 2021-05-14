@@ -6,15 +6,15 @@ using DataHandler;
 using Protocol;
 using Server;
 
-namespace ClientHandler
+namespace Server
 {
     public class HomePageServer
     {
         
-        public void  MenuAsync(MemoryRepository repository)
+        public async Task Menu(MemoryRepository repository)
         {
             string[] _options = {"Client list", "Posts", "Themes", "File", "Exit"};
-            int option = new MenuServer().ShowMenu(_options,"MenuAsync");
+            int option = new MenuServer().ShowMenu(_options,"Menu");
 
                 switch (option)
                 {

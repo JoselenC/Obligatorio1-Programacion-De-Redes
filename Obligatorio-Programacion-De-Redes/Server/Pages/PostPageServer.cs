@@ -8,7 +8,7 @@ using DataHandler;
 using Domain.Services;
 using Server;
 
-namespace ClientHandler
+namespace Server
 {
     public class PostPageServer
     {
@@ -33,7 +33,7 @@ namespace ClientHandler
                         break;
                     case 4:
                         Console.Clear();
-                        new HomePageServer().MenuAsync(repository);
+                        new HomePageServer().Menu(repository);
                         break;
                     default:
                         break;
@@ -90,7 +90,7 @@ namespace ClientHandler
                         ShowThemePostByDateAndTheme(repository);
                         break;
                     case 4:
-                        new HomePageServer().MenuAsync(repository);
+                        new HomePageServer().Menu(repository);
                         break;
                     default:
                         Console.WriteLine("Invalid option");

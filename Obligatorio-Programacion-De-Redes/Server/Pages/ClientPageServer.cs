@@ -4,7 +4,7 @@ using BusinessLogic;
 using Domain;
 using DataHandler;
 
-namespace ClientHandler
+namespace Server
 {
     public class ClientPageServer
     {
@@ -16,7 +16,7 @@ namespace ClientHandler
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("No hay clientes conectados");
                 Console.ForegroundColor = ConsoleColor.White;
-                new HomePageServer().MenuAsync(repository);
+                new HomePageServer().Menu(repository);
             }
             else
             {
@@ -39,7 +39,7 @@ namespace ClientHandler
             }
 
             Console.ReadLine();
-            new HomePageServer().MenuAsync(repository);
+            new HomePageServer().Menu(repository);
         }
 
     }

@@ -1,12 +1,4 @@
-﻿using System;
-using System.Configuration;
-using System.Net;
-using System.Net.Sockets;
-using System.Threading;
-using System.Threading.Tasks;
-using BusinessLogic;
-using DataHandler;
-using Server;
+﻿using System.Threading.Tasks;
 
 namespace Client
 {
@@ -14,7 +6,7 @@ namespace Client
     {
         static async Task Main(string[] args)
         {
-            var serverHandler = new ServerHandler();
+            var serverHandler = new Client();
             await serverHandler.StartClientAsync();
         }
     }

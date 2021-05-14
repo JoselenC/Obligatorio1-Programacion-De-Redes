@@ -7,7 +7,7 @@ using DataHandler;
 using Domain;
 using Server;
 
-namespace ClientHandler
+namespace Server
 {
     public class FilePageServer
     {
@@ -40,7 +40,7 @@ namespace ClientHandler
                     break;
                 case 6:
                     Console.Clear();  
-                    new HomePageServer().MenuAsync(repository);
+                    new HomePageServer().Menu(repository);
                     break;
                 default:
                     Console.WriteLine("Invalid option");

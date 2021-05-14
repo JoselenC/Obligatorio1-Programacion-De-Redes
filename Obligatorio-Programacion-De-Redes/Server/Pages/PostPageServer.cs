@@ -33,7 +33,7 @@ namespace Server
                         break;
                     case 4:
                         Console.Clear();
-                        new HomePageServer().Menu(repository);
+                        new HomePageServer().MenuAsync(repository,false);
                         break;
                     default:
                         break;
@@ -90,7 +90,7 @@ namespace Server
                         ShowThemePostByDateAndTheme(repository);
                         break;
                     case 4:
-                        new HomePageServer().Menu(repository);
+                        new HomePageServer().MenuAsync(repository,false);
                         break;
                     default:
                         Console.WriteLine("Invalid option");

@@ -22,6 +22,8 @@ namespace Client
             await _tcpClient.ConnectAsync(IPAddress.Parse(ConfigurationManager.AppSettings["ClientIp"]), Int32.Parse(ConfigurationManager.AppSettings["ConnectPort"]));
             SocketHandler socketHandler = new SocketHandler(_tcpClient.GetStream());
             await new HomePageClient().MenuAsync(socketHandler);
+            _tcpClient.Close();
+            
         }
       
     }

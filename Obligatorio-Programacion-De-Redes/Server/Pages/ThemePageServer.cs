@@ -16,7 +16,7 @@ namespace Server
             string[] _options = {"Themes list", "Theme with more post", "Back"};
             while (!exit)
             {
-                int option = new MenuServer().ShowMenu(_options,"Menu");
+                int option = new MenuServer().ShowMenu(_options,"MenuAsync");
                 switch (option)
                 {
                     case 1:
@@ -30,7 +30,7 @@ namespace Server
                     case 3:
                         Console.Clear();
                         exit = true;
-                        new HomePageServer().Menu(repository);
+                        new HomePageServer().MenuAsync(repository,false);
                         break;
                     default:
                        break;

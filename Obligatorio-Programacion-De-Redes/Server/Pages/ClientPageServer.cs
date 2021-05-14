@@ -16,7 +16,7 @@ namespace Server
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("No hay clientes conectados");
                 Console.ForegroundColor = ConsoleColor.White;
-                new HomePageServer().Menu(repository);
+                new HomePageServer().MenuAsync(repository,false);
             }
             else
             {
@@ -39,7 +39,7 @@ namespace Server
             }
 
             Console.ReadLine();
-            new HomePageServer().Menu(repository);
+            new HomePageServer().MenuAsync(repository,false);
         }
 
     }

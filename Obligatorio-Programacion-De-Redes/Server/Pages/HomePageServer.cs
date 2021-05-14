@@ -10,12 +10,12 @@ namespace Server
 {
     public class HomePageServer
     {
-        
-        public async Task Menu(MemoryRepository repository)
+        public async Task MenuAsync(MemoryRepository repository, bool exit)
         {
             string[] _options = {"Client list", "Posts", "Themes", "File", "Exit"};
-            int option = new MenuServer().ShowMenu(_options,"Menu");
-
+            while (!exit)
+            {
+                int option = new MenuServer().ShowMenu(_options,"Menu");
                 switch (option)
                 {
                     case 1:
@@ -31,12 +31,11 @@ namespace Server
                         new FilePageServer().ShowFileList(repository);
                         break;
                     case 5:
-                        //SocketClient.Shutdown(SocketShutdown.Both);
-                        //SocketClient.Close();
+                        exit = true;
                         break;
                     default:
                         break;
-                
+                }
             }
         }
     }

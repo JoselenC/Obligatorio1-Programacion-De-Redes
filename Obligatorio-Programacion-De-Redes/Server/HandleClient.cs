@@ -73,7 +73,7 @@ namespace Server
             {
                 _exit = true;
                 ClientConnected client = repository.ClientsConnections.Find(x =>
-                 x.LocalEndPoint ==_tcpListener.Server.RemoteEndPoint.ToString());
+                 x.LocalEndPoint ==_tcpListener.LocalEndpoint.ToString());
               repository.ClientsConnections.Remove(client);
               Console.WriteLine("Removing client....");
               connectedClients.Remove(_tcpListener.Server);

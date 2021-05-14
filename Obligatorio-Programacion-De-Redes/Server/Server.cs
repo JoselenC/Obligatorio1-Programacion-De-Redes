@@ -17,6 +17,7 @@ namespace Server
        public static readonly List<Socket> ConnectedClients = new List<Socket>();
        private readonly TcpListener _tcpListener;
        private TcpClient _tcpClient;
+       private bool exit = false;
 
        public Server()
        {
@@ -26,14 +27,21 @@ namespace Server
        public async Task StartServerAsync()
        {
            MemoryRepository repository = new MemoryRepository();
-           Task.Run(async () => { new HomePageServer().Menu(repository); });
+           Task.Run(async () =>
+           {
+               new HomePageServer().MenuAsync(repository,exit);
+           });
 
-           _tcpListener.Start(1);
-           _tcpClient = await _tcpListener.AcceptTcpClientAsync();
-           _tcpListener.Stop();
-           await AddConnectedClient(repository, ConnectedClients);
-           SocketHandler socketHandler = new SocketHandler(_tcpClient.GetStream());
-           await new HandleClient(_tcpListener).HandleClientMethodAsync(repository, false, ConnectedClients, socketHandler);
+           while (!exit)
+           {
+               _tcpListener.Start(1);
+               _tcpClient = await _tcpListener.AcceptTcpClientAsync();
+               _tcpListener.Stop();
+               await AddConnectedClient(repository, ConnectedClients);
+               SocketHandler socketHandler = new SocketHandler(_tcpClient.GetStream());
+               await new HandleClient(_tcpListener).HandleClientMethodAsync(repository, false, ConnectedClients, socketHandler);
+           }
+
            foreach (var socketClient in ConnectedClients)
            {
                try
@@ -58,7 +66,7 @@ namespace Server
                 ClientConnected clientConnection = new ClientConnected()
                 {
                     TimeOfConnection = DateTime.Now.ToString(),
-                    LocalEndPoint = ConfigurationManager.AppSettings["ClientPort"],
+                    LocalEndPoint = _tcpListener.LocalEndpoint.ToString(),
                     Ip = ConfigurationManager.AppSettings["ServerIp"]
                 };
                 repository.ClientsConnections.Add(clientConnection);

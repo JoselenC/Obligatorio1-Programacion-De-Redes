@@ -12,35 +12,36 @@ namespace Client
         public async Task MenuAsync(SocketHandler socketHandler)
         {
             var exit = false;
-            string[] _options = { "Posts", "Themes", "Associate file", "Search post", "Exit" };
+            string[] _options = {"Posts", "Themes", "Associate file", "Search post", "Exit"};
 
-            int option = await new MenuClient().ShowMenuAsync(_options, "Menu");
-            switch (option)
+            while (!exit)
             {
-                case 1:
-                    await new PostPageClient().MenuAsync(socketHandler);
-                    break;
-                case 2:
-                    await new ThemePageClient().MenuAsync(socketHandler);
-                    break;
-                case 3:
-                    await new FilePageClient().AssociateFileAsync(socketHandler);
-                    break;
-                case 4:
-                    Console.Clear();
-                    Packet packg1 = new Packet("REQ", "9", "Search post");
-                    await socketHandler.SendPackgAsync(packg1);
-                    await new PostPageClient().SearchPost(socketHandler);
-                    break;
-                case 5: //REVISAR
-                    Console.Clear();
-                    Packet packg2 = new Packet("REQ", "6", "Add post");
-                    await socketHandler.SendPackgAsync(packg2);
-                    exit = true;
-                    break;
-                default:
-                    Console.WriteLine("Invalid option");
-                    break;
+                int option = await new MenuClient().ShowMenuAsync(_options, "MenuAsync");
+                switch (option)
+                {
+                    case 1:
+                        await new PostPageClient().MenuAsync(socketHandler);
+                        break;
+                    case 2:
+                        await new ThemePageClient().MenuAsync(socketHandler);
+                        break;
+                    case 3:
+                        await new FilePageClient().AssociateFileAsync(socketHandler);
+                        break;
+                    case 4:
+                        Console.Clear();
+                        Packet packg1 = new Packet("REQ", "9", "Search post");
+                        await socketHandler.SendPackgAsync(packg1);
+                        await new PostPageClient().SearchPost(socketHandler);
+                        break;
+                    case 5:
+                        Console.Clear();
+                        exit = true;
+                        break;
+                    default:
+                        Console.WriteLine("Invalid option");
+                        break;
+                }
             }
         }
     }

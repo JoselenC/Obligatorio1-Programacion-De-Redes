@@ -40,7 +40,7 @@ namespace Server
                     break;
                 case 6:
                     Console.Clear();  
-                    new HomePageServer().Menu(repository);
+                    new HomePageServer().MenuAsync(repository,false);
                     break;
                 default:
                     Console.WriteLine("Invalid option");

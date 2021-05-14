@@ -16,7 +16,7 @@ namespace Client
 
             while (!exit)
             {
-                int option = await new MenuClient().ShowMenuAsync(_options, "MenuAsync");
+                int option = await new MenuClient().ShowMenuAsync(_options, "Menu");
                 switch (option)
                 {
                     case 1:

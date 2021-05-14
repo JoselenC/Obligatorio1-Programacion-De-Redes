@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using BusinessLogic;
 using DataHandler;
@@ -11,6 +12,7 @@ namespace Domain.Services
     public class PostService
     {
         private MemoryRepository repository;
+        private SemaphoreSlim semaphoreSlim = new SemaphoreSlim(1);
         public PostService(MemoryRepository repository)
         {
             this.repository = repository;
@@ -96,7 +98,7 @@ namespace Domain.Services
                 {
                     if (!AlreadyExistPost(name))
                     {
-                        Post post = new Post() { Name = name, CreationDate = creationDate, InUse = false };
+                        Post post = new Post() { Name = name, CreationDate = creationDate };
                         repository.Posts.Add(post);
                         message = "The post " + name + " was created";
                     }
@@ -129,19 +131,14 @@ namespace Domain.Services
                     string newCreationDate = messageArray[2];
                     if (!AlreadyExistPost(name))
                     {
+                        semaphoreSlim.Wait();
                         Post postByName = repository.Posts.Find(x => x.Name == oldName);
-                        if (!postByName.InUse)
-                        {
-                            repository.Posts.Find(x => x.Name == oldName).InUse = true;
-                            repository.Posts.Remove(postByName);
-                            Post newPost = new Post() {Name = name, CreationDate = newCreationDate, InUse = false};
-                            repository.Posts.Add(newPost);
-                            message = "The post " + oldName + " was modified";
-                        }
-                        else
-                        {
-                            message = "Not modified, the post " + oldName + "is in use";
-                        }
+                        repository.Posts.Find(x => x.Name == oldName);
+                        repository.Posts.Remove(postByName);
+                        Post newPost = new Post() {Name = name, CreationDate = newCreationDate};
+                        repository.Posts.Add(newPost);
+                        message = "The post " + oldName + " was modified";
+                        semaphoreSlim.Release();
                     }
                     else
                     {
@@ -168,16 +165,11 @@ namespace Domain.Services
                 if (AlreadyExistPost(name))
                 {
                     Post postByName = repository.Posts.Find(x => x.Name == name);
-                    if (!postByName.InUse)
-                    {
-                        repository.Posts.Find(x => x.Name == name).InUse=true;
-                        repository.Posts.Remove(postByName);
-                        message = "was deleted";
-                    }
-                    else
-                    {
-                        message = "Not deleted, the post" + name + "is in use";
-                    }
+                    semaphoreSlim.Wait();
+                    repository.Posts.Find(x => x.Name == name);
+                    repository.Posts.Remove(postByName);
+                    message = "The post " + name + "was deleted";
+                    semaphoreSlim.Release();
                 }
                 else
                 {

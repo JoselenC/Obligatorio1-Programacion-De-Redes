@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using BusinessLogic;
 using DataHandler;
@@ -9,6 +10,7 @@ namespace Domain.Services
     public class ThemeService
     {
         private MemoryRepository repository;
+        private SemaphoreSlim semaphoreSlim = new SemaphoreSlim(1);
         public ThemeService(MemoryRepository repository)
         {
             this.repository = repository;
@@ -27,7 +29,7 @@ namespace Domain.Services
                 {
                     if (!AlreadyExistTheme(name))
                     {
-                        Theme theme = new Theme() { Name = name, Description = description, InUse = false };
+                        Theme theme = new Theme() { Name = name, Description = description };
                         repository.Themes.Add(theme);
                         message = "The theme " + name + " was added";
                     }
@@ -73,21 +75,16 @@ namespace Domain.Services
                 if (name != "")
                 {
                     string description = messageArray[2];
-                    Theme theme = new Theme() { Name = name, Description = description, InUse = false };
+                    Theme theme = new Theme() { Name = name, Description = description };
                     if (!AlreadyExistTheme(name))
                     {
                         Theme themeName = repository.Themes.Find(x => x.Name == option);
-                        if (!theme.InUse)
-                        {
-                            repository.Themes.Find(x => x.Name == option).InUse = true;
-                            repository.Themes.Remove(themeName);
-                            repository.Themes.Add(theme);
-                            message = "The theme " + option + " was modified" ;
-                        }
-                        else
-                        {
-                            message = "The theme " + option + " is in use";
-                        }
+                        semaphoreSlim.Wait();
+                        repository.Themes.Find(x => x.Name == option);
+                        repository.Themes.Remove(themeName);
+                        repository.Themes.Add(theme);
+                        message = "The theme " + option + " was modified";
+                        semaphoreSlim.Release();
                     }
                     else
                     {
@@ -121,22 +118,17 @@ namespace Domain.Services
                 if (AlreadyExistTheme(oldName))
                 {
                     Theme themeName = repository.Themes.Find(x => x.Name == oldName);
-                    if (!themeName.InUse)
+                    repository.Themes.Find(x => x.Name == oldName);
+                    if (!IsAssociatedAPost(themeName))
                     {
-                        repository.Themes.Find(x => x.Name == oldName).InUse = true;
-                        if (!IsAssociatedAPost(themeName))
-                        {
-                            repository.Themes.Remove(themeName);
-                            message = "The theme " + oldName + " was deleted";
-                        }
-                        else
-                        {
-                            message = "Not delete, the theme " + oldName + " is associated with a post";
-                        }
+                        semaphoreSlim.Wait();
+                        repository.Themes.Remove(themeName);
+                        message = "The theme " + oldName + " was deleted";
+                        semaphoreSlim.Wait();
                     }
                     else
                     {
-                        message = "Not delete, the theme  " + oldName + " in use";
+                        message = "Not delete, the theme " + oldName + " is associated with a post";
                     }
                 }
                 else

@@ -39,7 +39,7 @@ namespace Server
                _tcpListener.Stop();
                await AddConnectedClient(repository, ConnectedClients);
                SocketHandler socketHandler = new SocketHandler(_tcpClient.GetStream());
-               await new HandleClient(_tcpListener).HandleClientMethodAsync(repository, false, ConnectedClients, socketHandler);
+               new HandleClient(_tcpListener).HandleClientMethodAsync(repository, false, ConnectedClients, socketHandler);
            }
 
            foreach (var socketClient in ConnectedClients)

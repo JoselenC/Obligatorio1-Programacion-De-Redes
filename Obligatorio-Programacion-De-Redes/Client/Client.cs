@@ -23,7 +23,8 @@ namespace Client
             SocketHandler socketHandler = new SocketHandler(_tcpClient.GetStream());
             await new HomePageClient().MenuAsync(socketHandler);
             _tcpClient.Close();
-            
+
+
         }
       
     }

@@ -1,62 +1,66 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Net.Sockets;
+using System.Threading;
+using System.Threading.Tasks;
 using BusinessLogic;
 using DataHandler;
 using Domain;
 using Domain.Services;
 using Protocol;
 
-
-
-namespace ClientHandler
+namespace Server
 {
     public class HandleClient
     {
-        public void HandleClientMethod(Socket clientSocket,MemoryRepository repository,bool _exit, List<Socket> connectedClients,SocketHandler socketHandler)
-        { 
-            
+        private TcpListener _tcpListener;
+         public HandleClient(TcpListener vTcpListener)
+         {
+             _tcpListener = vTcpListener;
+         }
+          public async Task HandleClientMethodAsync(MemoryRepository repository,bool _exit, List<Socket> connectedClients,SocketHandler socketHandler)
+        {
+          SemaphoreSlim semaphoreSlim = new SemaphoreSlim(1);
             try
             {
                 while (!_exit)
                 {
-                    var packet = socketHandler.ReceivePackg();
+                    var packet = await socketHandler.ReceivePackgAsync();
                     var command= Int32.Parse(packet.Command);
                     switch (command)
                     {
                         case CommandConstants.CommandAddPost:
-                            new PostService(repository).AddPost(socketHandler);
+                            await new PostService(repository).AddPostAsync(socketHandler);
                             break;
                         case CommandConstants.CommandModifyPost:
-                            new PostService(repository).ModifyPost(socketHandler);
+                            await new PostService(repository,semaphoreSlim).ModifyPostAsync(socketHandler);
                             break;
                         case CommandConstants.CommandDeletePost:
-                            new PostService(repository).DeletePost(socketHandler);
+                            await new PostService(repository,semaphoreSlim).DeletePostAsync(socketHandler);
                             break;
                         case CommandConstants.CommandAsociateTheme:
-                            new PostService(repository).AsociateTheme(socketHandler);
+                            await new PostService(repository).AsociateThemeAsync(socketHandler);
                             break;
                         case CommandConstants.CommandAsociateThemeToPost:
-                            new PostService(repository).AsociateThemeToPost(socketHandler);
+                            await new PostService(repository).AsociateThemeToPostAsync(socketHandler);
                             break;
                         case CommandConstants.CommandDisassociateTheme:
-                            new PostService(repository).DisassociateTheme(socketHandler);
+                            await new PostService(repository).DisassociateThemeAsync(socketHandler);
                             break;
                         case CommandConstants.CommandAddTheme:
-                            new ThemeService(repository).AddTheme(socketHandler);
+                            await new ThemeService(repository).AddThemeAsync(socketHandler);
                             break;
                         case CommandConstants.CommandModifyTheme:
-                            new ThemeService(repository).ModifyTheme(socketHandler);
+                            await new ThemeService(repository,semaphoreSlim).ModifyThemeAsync(socketHandler);
                             break;
                         case CommandConstants.CommandDeleteTheme:
-                            new ThemeService(repository).DeleteTheme(socketHandler);
+                            await new ThemeService(repository,semaphoreSlim).DeleteThemeAsync(socketHandler);
                             break;
                         case CommandConstants.CommandUploadFile:
-                            new FileService(repository).UploadFile(socketHandler,clientSocket);
+                            await new FileService(repository).UploadFile(socketHandler);
                             break;
                         case CommandConstants.SearchPost:
-                            new PostService(repository).SearchPost(socketHandler);
+                            await new PostService(repository).SearchPostAsync(socketHandler);
                             break;
                         case CommandConstants.CommandBack:
                             Console.WriteLine("The client logged out");
@@ -69,42 +73,14 @@ namespace ClientHandler
             }
             catch (SocketException e)
             {
+                _exit = true;
                 ClientConnected client = repository.ClientsConnections.Find(x =>
-                    x.LocalEndPoint ==clientSocket.RemoteEndPoint.ToString());
-                repository.ClientsConnections.Remove(client);
-                Console.WriteLine("Removing client....");
-                connectedClients.Remove(clientSocket);
+                 x.LocalEndPoint ==_tcpListener.LocalEndpoint.ToString());
+              repository.ClientsConnections.Remove(client);
+              Console.WriteLine("Removing client....");
+              connectedClients.Remove(_tcpListener.Server);
             }
         }
         
-        public void ListenForConnections(Socket socketServer, MemoryRepository repository,bool _exit, List<Socket> ConnectedClients)
-        {
-            
-            try
-            {
-                var socketConnected = socketServer.Accept();
-                ConnectedClients.Add(socketConnected);
-                ClientConnected clientConnection = new ClientConnected()
-                {
-                    TimeOfConnection = DateTime.Now.ToString(), 
-                    LocalEndPoint = socketConnected.RemoteEndPoint.ToString(),
-                    Ip = ConfigurationManager.AppSettings["ServerIp"]
-                };
-                repository.ClientsConnections.Add(clientConnection);
-                SocketHandler socketHandler = new SocketHandler(socketConnected);
-                new HandleClient().HandleClientMethod(socketConnected, repository, _exit, ConnectedClients,
-                    socketHandler);
-            }
-            catch (SocketException se)
-            {
-              Console.WriteLine("El servidor está cerrándose...");
-                _exit = true;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-
-        }
     }
 }

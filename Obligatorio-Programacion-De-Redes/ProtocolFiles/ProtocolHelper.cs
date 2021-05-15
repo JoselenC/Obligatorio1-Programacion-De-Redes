@@ -5,12 +5,12 @@ namespace ProtocolFiles
 {
     public class ProtocolHelper
     {
-        public static int GetLength()
+        public int GetLength()
         {
             return ProtocolConstant.FileNameLength + ProtocolConstant.FileSizeLength;
         }
 
-        public static byte[] CreateHeader(string filename, long filesize)
+        public byte[] CreateHeader(string filename, long filesize)
         {
             var header = new byte[GetLength()];
             var fileNameLength = BitConverter.GetBytes(Encoding.UTF8.GetBytes(filename).Length);

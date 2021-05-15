@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using BusinessLogic;
 using DataHandler;
 using Protocol;
@@ -10,12 +12,18 @@ namespace Domain.Services
     public class PostService
     {
         private MemoryRepository repository;
+        private SemaphoreSlim semaphoreSlim;
         public PostService(MemoryRepository repository)
         {
             this.repository = repository;
         }
 
-        private void SendListThemesPost(SocketHandler socketHandler, string namePost)
+        public PostService(MemoryRepository repository,SemaphoreSlim semaphore)
+        {
+            this.repository = repository;
+            semaphoreSlim = semaphore;
+        }
+        private async Task SendListThemesPostAsync(SocketHandler socketHandler, string namePost)
         {
             Post postByName = repository.Posts.Find(x => x.Name == namePost);
             string themes = "";
@@ -31,26 +39,31 @@ namespace Domain.Services
             }
             themes += "Back" + "#";
             Packet packg = new Packet("RES", "2", themes);
-            socketHandler.SendPackg(packg);
+            await socketHandler.SendPackgAsync(packg);
         }
         
-        private void SendListPost(SocketHandler socketHandler)
+        private async Task SendListPostAsync(SocketHandler socketHandler)
         {
             string posts = "";
             if (repository.Posts != null && repository.Posts.Count!=0)
             {
                 for (int i = 0; i < repository.Posts.Count; i++)
                 {
-                    posts += repository.Posts[i].Name + "#";
+                    SemaphoreSlimPost semaphoreSlimPost = repository.SemaphoreSlimPosts
+                        .Find(x => x.Post.Name == repository.Posts[i].Name);
+                    
+                    if (semaphoreSlimPost==null || semaphoreSlimPost.SemaphoreSlim.CurrentCount > 0)
+                    {
+                        posts += repository.Posts[i].Name + "#";
+                    }
                 }
             }
             posts += "Back" + "#";
             Packet packg = new Packet("RES", "2", posts);
-            socketHandler.SendPackg(packg);
+            await socketHandler.SendPackgAsync(packg);
         }
         
-
-        private void SendListThemes(SocketHandler socketHandler)
+        private async Task SendListThemesAsync(SocketHandler socketHandler)
         {
             string posts = "";
             if (repository.Themes != null)
@@ -62,10 +75,9 @@ namespace Domain.Services
             }
             posts += "Back" + "#";
             Packet packg = new Packet("RES", "2", posts);
-            socketHandler.SendPackg(packg);
+            await socketHandler.SendPackgAsync(packg);
         }
-
-
+        
         private bool AlreadyExistTheme(string name)
         {
             Theme theme = repository.Themes.Find(x => x.Name == name);
@@ -82,14 +94,14 @@ namespace Domain.Services
             return true;
         }
         
-        public void AddPost(SocketHandler socketHandler)
+        public async Task AddPostAsync(SocketHandler socketHandler)
         {
             Packet packg = new Packet("RES", "2", repository.Themes.Count.ToString());
-            socketHandler.SendPackg(packg);
+            await socketHandler.SendPackgAsync(packg);
             string message = "";
             if (repository.Themes.Count > 0)
             {
-                var packet = socketHandler.ReceivePackg();
+                var packet = await socketHandler.ReceivePackgAsync();
                 String[] messageArray = packet.Data.Split('#');                
                 string name = messageArray[0];
                 string creationDate = messageArray[1];
@@ -97,7 +109,7 @@ namespace Domain.Services
                 {
                     if (!AlreadyExistPost(name))
                     {
-                        Post post = new Post() { Name = name, CreationDate = creationDate, InUse = false };
+                        Post post = new Post() { Name = name, CreationDate = creationDate };
                         repository.Posts.Add(post);
                         message = "The post " + name + " was created";
                     }
@@ -111,90 +123,127 @@ namespace Domain.Services
                     message = "The post name cannot be empty";
                 }
                 Packet packg2 = new Packet("RES", "2", message);
-                socketHandler.SendPackg(packg2);
+                await socketHandler.SendPackgAsync(packg2);
             }
-           
         }
         
-        public void ModifyPost(SocketHandler socketHandler)
+        public async Task DeletePostAsync(SocketHandler socketHandler)
         {
-            SendListPost(socketHandler);
-            var packet = socketHandler.ReceivePackg();
-            string[] messageArray = packet.Data.Split('#');
-            string oldName = messageArray[0];
-            string message;
-            if (oldName!= "Back")
-            {
-                string name = messageArray[1];
-                if (name != "")
-                {
-                    string newCreationDate = messageArray[2];
-                    if (!AlreadyExistPost(name))
-                    {
-                        Post postByName = repository.Posts.Find(x => x.Name == oldName);
-                        if (!postByName.InUse)
-                        {
-                            repository.Posts.Find(x => x.Name == oldName).InUse = true;
-                            repository.Posts.Remove(postByName);
-                            Post newPost = new Post() {Name = name, CreationDate = newCreationDate, InUse = false};
-                            repository.Posts.Add(newPost);
-                            message = "The post " + oldName + " was modified";
-                        }
-                        else
-                        {
-                            message = "Not modified, the post " + oldName + "is in use";
-                        }
-                    }
-                    else
-                    {
-                        message = "Not modified, the post" + name + " already exist";
-                    }
-                }
-                else
-                {
-                    message = "The theme name cannot be empty";
-                }
-                Packet packg = new Packet("RES", "2", message);
-                socketHandler.SendPackg(packg);
-            }
-        }
-
-        public void DeletePost(SocketHandler socketHandler)
-        {
-            SendListPost(socketHandler);
-            var packet = socketHandler.ReceivePackg();
+            await SendListPostAsync(socketHandler);
+            var packet = await socketHandler.ReceivePackgAsync();
             string name = packet.Data;
             if (name != "Back")
             {
+                if (!AlreadyExistSemaphore(name))
+                    repository.SemaphoreSlimPosts.Add(new SemaphoreSlimPost()
+                    {
+                        SemaphoreSlim = new SemaphoreSlim(1),
+                        Post = repository.Posts.Find(x => x.Name == name)
+                    });
+                repository.SemaphoreSlimPosts
+                    .Find(x => x.Post.Name == name).SemaphoreSlim.WaitAsync();
                 string message;
-                if (AlreadyExistPost(name))
-                {
-                    Post postByName = repository.Posts.Find(x => x.Name == name);
-                    if (!postByName.InUse)
-                    {
-                        repository.Posts.Find(x => x.Name == name).InUse=true;
-                        repository.Posts.Remove(postByName);
-                        message = "was deleted";
-                    }
-                    else
-                    {
-                        message = "Not deleted, the post" + name + "is in use";
-                    }
-                }
-                else
-                {
-                    message = "Not deleted, the post" + name + " does not exist";
-                }
+                message = DeletePost(name);
+                repository.SemaphoreSlimPosts
+                    .Find(x => x.Post.Name == name).SemaphoreSlim.Release();
                 Packet packg = new Packet("RES", "2", message);
-                socketHandler.SendPackg(packg);
+                await socketHandler.SendPackgAsync(packg);
             }
         }
-        
-        public void AsociateTheme(SocketHandler socketHandler)
+
+        private string DeletePost(string name)
         {
-            SendListPost(socketHandler);
-            SendListThemes(socketHandler);
-            var packet = socketHandler.ReceivePackg();
+            string message;
+            if (AlreadyExistPost(name))
+            {
+                Post postByName = repository.Posts.Find(x => x.Name == name);
+                repository.Posts.Find(x => x.Name == name);
+                repository.Posts.Remove(postByName);
+                message = "The post " + name + " was deleted";
+            }
+            else
+            {
+                message = "Not deleted, the post" + name + " does not exist";
+            }
+
+            return message;
+        }
+
+
+        public async Task ModifyPostAsync(SocketHandler socketHandler)
+        {
+            await SendListPostAsync(socketHandler);
+            var packet = await socketHandler.ReceivePackgAsync();
+            string[] messageArray = packet.Data.Split('#');
+            string oldName = messageArray[0];
+            if (oldName != "Back")
+            {
+                var message = await ModifyPost(socketHandler, oldName);
+
+                Packet packg = new Packet("RES", "2", message);
+                await socketHandler.SendPackgAsync(packg);
+            }
+        }
+
+        private async Task<string> ModifyPost(SocketHandler socketHandler, string oldName)
+        {
+            if (!AlreadyExistSemaphore(oldName))
+                repository.SemaphoreSlimPosts.Add(new SemaphoreSlimPost()
+                {
+                    SemaphoreSlim = new SemaphoreSlim(1),
+                    Post = repository.Posts.Find(x => x.Name == oldName)
+                });
+            repository.SemaphoreSlimPosts
+                .Find(x => x.Post.Name == oldName).SemaphoreSlim.WaitAsync();
+            var packet2 = await socketHandler.ReceivePackgAsync();
+            string[] messageArray2 = packet2.Data.Split('#');
+            string message;
+            string name = messageArray2[0];
+            if (name != "")
+            {
+                message = AddNewPost(messageArray2, name, oldName);
+            }
+            else
+            {
+                message = "The theme name cannot be empty";
+            }
+            repository.SemaphoreSlimPosts
+                .Find(x => x.Post.Name == oldName).SemaphoreSlim.Release();
+            return message;
+        }
+
+        private string AddNewPost(string[] messageArray2, string name, string oldName)
+        {
+            string message;
+            string newCreationDate = messageArray2[1];
+            Post postByName = repository.Posts.Find(x => x.Name == oldName);
+            repository.Posts.Remove(postByName);
+            if (!AlreadyExistPost(name))
+            {
+                Post newPost = new Post() {Name = name, CreationDate = newCreationDate};
+                repository.Posts.Add(newPost);
+                message = "The post " + oldName + " was modified";
+            }
+            else
+            {
+                message = "Not modified, the post" + name + " already exist";
+            }
+
+            return message;
+        }
+
+        private bool AlreadyExistSemaphore(string oldName)
+        {
+            return repository.SemaphoreSlimPosts
+                .Find(x => x.Post.Name == oldName) != null;
+        }
+
+   
+        public async Task AsociateThemeAsync(SocketHandler socketHandler)
+        {
+            await SendListPostAsync(socketHandler);
+            await SendListThemesAsync(socketHandler);
+            var packet = await socketHandler.ReceivePackgAsync();
             String[] messageArray = packet.Data.Split('#');
             string namePost = messageArray[0];
             string message = "";
@@ -212,8 +261,10 @@ namespace Domain.Services
                     else
                     {
                         repository.Themes.Remove(theme);
-                        if (theme.Posts == null) theme.Posts = new List<Post>();
-                        theme.Posts.Add(postByName);
+                        if (theme.Posts == null) 
+                            theme.Posts = new List<Post>();
+                        if(!theme.Posts.Contains(postByName))
+                            theme.Posts.Add(postByName);
                         repository.Themes.Add(theme);
                         postByName.Themes.Add(theme);
                         message = "The theme " + nameTheme + " was associated";
@@ -224,11 +275,11 @@ namespace Domain.Services
                     message = "Not associated, the theme " + nameTheme + " does not exist";
                 }
                 Packet packg = new Packet("RES", "2", message);
-                socketHandler.SendPackg(packg);
+                await socketHandler.SendPackgAsync(packg);
             }
         }
 
-        private void SendListThemesToPost(SocketHandler socketHandler)
+        private async Task SendListThemesToPostAsync(SocketHandler socketHandler)
         {
             string posts = "";
             if (repository.Themes != null)
@@ -238,14 +289,14 @@ namespace Domain.Services
                     posts += repository.Themes[i].Name + "#";
                 }
                 Packet packg = new Packet("RES", "2", posts);
-                socketHandler.SendPackg(packg);
+                await socketHandler.SendPackgAsync(packg);
             }         
         }
 
-        public void AsociateThemeToPost(SocketHandler socketHandler)
+        public async Task AsociateThemeToPostAsync(SocketHandler socketHandler)
         {
-            SendListThemesToPost(socketHandler);
-            var packet = socketHandler.ReceivePackg();
+            await SendListThemesToPostAsync(socketHandler);
+            var packet = await socketHandler.ReceivePackgAsync();
             String[] messageArray = packet.Data.Split('#');
             string namePost = messageArray[0];
             string message = "";
@@ -255,8 +306,10 @@ namespace Domain.Services
                 Post postByName = repository.Posts.Find(x => x.Name == namePost);
                 Theme theme = repository.Themes.Find(x => x.Name == nameTheme);
                 repository.Themes.Remove(theme);
-                if (theme.Posts == null) theme.Posts = new List<Post>();
-                theme.Posts.Add(postByName);
+                if (theme.Posts == null) 
+                    theme.Posts = new List<Post>();
+                if(!theme.Posts.Contains(postByName))
+                    theme.Posts.Add(postByName);
                 repository.Themes.Add(theme);
                 if (postByName.Themes == null)
                     postByName.Themes = new List<Theme>();
@@ -273,13 +326,13 @@ namespace Domain.Services
                 message = "Not associated, the theme " + nameTheme + " does not exist";
             }
             Packet packg = new Packet("RES", "2", message);
-            socketHandler.SendPackg(packg);
+            await socketHandler.SendPackgAsync(packg);
         }
 
-       public void SearchPost(SocketHandler socketHandler)
+       public async Task SearchPostAsync(SocketHandler socketHandler)
         {
-            SendListPost(socketHandler);
-            var packet = socketHandler.ReceivePackg();
+            await SendListPostAsync(socketHandler);
+            var packet = await socketHandler.ReceivePackgAsync();
             string namePost = packet.Data;
             if (namePost != "Back")
             {
@@ -295,24 +348,24 @@ namespace Domain.Services
                     message = "The post " + namePost + " does not exist";
                 } 
                 Packet packg = new Packet("RES", "2", message);
-                socketHandler.SendPackg(packg);
+                await socketHandler.SendPackgAsync(packg);
             }
         }
 
-        public void DisassociateTheme(SocketHandler socketHandler)
+        public async Task DisassociateThemeAsync(SocketHandler socketHandler)
         {
-            SendListPost(socketHandler);
-            var packet = socketHandler.ReceivePackg();
+            await SendListPostAsync(socketHandler);
+            var packet = await socketHandler.ReceivePackgAsync();
             string namePost = packet.Data;
-            SendListThemesPost(socketHandler,namePost);
+            await SendListThemesPostAsync(socketHandler,namePost);
             string themes = "";
             foreach (var theme in repository.Themes)
             {
                 themes += theme.Name + "#";
             }
             Packet packg2 = new Packet("RES", "2", themes);
-            socketHandler.SendPackg(packg2);
-            var packet2 = socketHandler.ReceivePackg();
+            await socketHandler.SendPackgAsync(packg2);
+            var packet2 = await socketHandler.ReceivePackgAsync();
             String[] messageArray = packet2.Data.Split('#');
             string postName = messageArray[0];
             if (postName != "Back")
@@ -322,18 +375,18 @@ namespace Domain.Services
                 string message = "";
                 if (AlreadyExistPost(postName))
                 {
-                    message = Disassociate(postName, nameThemeDisassociate, nameNewTheme);
+                    message = await DisassociateAsync(postName, nameThemeDisassociate, nameNewTheme);
                 }
                 else
                 {
                     message = "Not disassociated, the theme " + postName + " does not exist";
                 }
                 Packet packg = new Packet("RES", "2", message);
-                socketHandler.SendPackg(packg);
+                await socketHandler.SendPackgAsync(packg);
             }
         }
         
-        private string Disassociate(string postName, string nameThemeDisassociate, string nameNewTheme)
+        private async Task<string> DisassociateAsync(string postName, string nameThemeDisassociate, string nameNewTheme)
         {
             string message;
             Post postByName = repository.Posts.Find(x => x.Name == postName);
@@ -361,7 +414,5 @@ namespace Domain.Services
 
             return message;
         }
-
-       
     }
 }

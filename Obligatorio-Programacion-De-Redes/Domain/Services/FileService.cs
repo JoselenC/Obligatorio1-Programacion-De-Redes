@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net.Sockets;
+using System.Threading.Tasks;
 using BusinessLogic;
 using DataHandler;
 using Protocol;
@@ -16,7 +17,7 @@ namespace Domain.Services
             this.repository = repository;
         }
         
-        private void SendListPost(SocketHandler socketHandler)
+        private async Task SendListPostAsync(SocketHandler socketHandler)
         {
             string posts = "";
             for (int i = 0; i < repository.Posts.Count; i++)
@@ -25,16 +26,16 @@ namespace Domain.Services
             }
             posts += "Back" + "#";
             Packet packg = new Packet("RES", "4", posts);
-            socketHandler.SendPackg(packg);
+            await socketHandler.SendPackgAsync(packg);
         }
 
-        public void UploadFile(SocketHandler socketHandler, Socket socketClient)
+        public async Task UploadFile(SocketHandler socketHandler)
         {
             if (repository.Posts.Count != 0)
             {
-                SendListPost(socketHandler);
+                await SendListPostAsync(socketHandler);
                 ProtocolHandler protocolHandler = new ProtocolHandler();
-                string[] fileData = protocolHandler.ReceiveFile(socketClient, socketHandler);
+                string[] fileData = await protocolHandler.ReceiveFileAsync(socketHandler);
                 string option = fileData[0];
                 if (option != "Back")
                 {
@@ -59,7 +60,7 @@ namespace Domain.Services
             }
             else
             {
-                SendListPost(socketHandler);
+                await SendListPostAsync(socketHandler);
             }
         }
     }

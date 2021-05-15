@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net.Sockets;
+using System.Threading.Tasks;
 using DataHandler;
 using Protocol;
 using SocketHandler = DataHandler.SocketHandler;
@@ -8,40 +9,38 @@ namespace Client
 {
     public class HomePageClient
     {
-        public void Menu(Socket SocketClient, SocketHandler socketHandler)
+        public async Task MenuAsync(SocketHandler socketHandler,bool exit)
         {
-            var exit = false;
-            string[] _options = { "Posts", "Themes", "Associate file", "Search post", "Exit" };
+            string[] _options = {"Posts", "Themes", "Associate file", "Search post", "Exit"};
 
-            int option = new MenuClient().ShowMenu(_options, "Menu");
-            switch (option)
+            while (!exit)
             {
-                case 1:
-                    new PostPageClient().Menu(SocketClient, socketHandler, exit);
-                    break;
-                case 2:
-                    new ThemePageClient().Menu(SocketClient, socketHandler);
-                    break;
-                case 3:
-                    new FilePageClient().AssociateFile(socketHandler, SocketClient);
-                    break;
-                case 4:
-                    Console.Clear();
-                    Packet packg1 = new Packet("REQ", "9", "Search post");
-                    socketHandler.SendPackg(packg1);
-                    new PostPageClient().SearchPost(socketHandler, SocketClient);
-                    break;
-                case 5:
-                    Console.Clear();
-                    Packet packg2 = new Packet("REQ", "6", "Add post");
-                    socketHandler.SendPackg(packg2);
-                    exit = true;
-                    SocketClient.Shutdown(SocketShutdown.Both);
-                    SocketClient.Close();
-                    break;
-                default:
-                    Console.WriteLine("Invalid option");
-                    break;
+                int option = await new MenuClient().ShowMenuAsync(_options, "Menu");
+                switch (option)
+                {
+                    case 1:
+                        await new PostPageClient().MenuAsync(socketHandler);
+                        break;
+                    case 2:
+                        await new ThemePageClient().MenuAsync(socketHandler);
+                        break;
+                    case 3:
+                        await new FilePageClient().AssociateFileAsync(socketHandler);
+                        break;
+                    case 4:
+                        Console.Clear();
+                        Packet packg1 = new Packet("REQ", "9", "Search post");
+                        await socketHandler.SendPackgAsync(packg1);
+                        await new PostPageClient().SearchPostAsync(socketHandler);
+                        break;
+                    case 5:
+                        Console.Clear();
+                        exit = true;
+                        break;
+                    default:
+                        Console.WriteLine("Invalid option");
+                        break;
+                }
             }
         }
     }

@@ -16,7 +16,6 @@ namespace ProtocolFiles
             {
                 return new FileInfo(path).Name;
             }
-
             throw new Exception("File not exist");
         }
 

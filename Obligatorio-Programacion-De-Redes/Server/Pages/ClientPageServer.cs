@@ -4,11 +4,11 @@ using BusinessLogic;
 using Domain;
 using DataHandler;
 
-namespace ClientHandler
+namespace Server
 {
     public class ClientPageServer
     {
-        public void ShowClientList(MemoryRepository repository,SocketHandler socketHandler,Socket socketClient)
+        public void ShowClientList(MemoryRepository repository)
         {
             Console.Clear();
             if (repository.ClientsConnections.Count == 0 || repository.ClientsConnections==null)
@@ -16,7 +16,7 @@ namespace ClientHandler
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("No hay clientes conectados");
                 Console.ForegroundColor = ConsoleColor.White;
-                new HomePageServer().Menu(repository,socketClient,socketHandler);
+                new HomePageServer().MenuAsync(repository,false);
             }
             else
             {
@@ -39,7 +39,7 @@ namespace ClientHandler
             }
 
             Console.ReadLine();
-            new HomePageServer().Menu(repository,socketClient,socketHandler);
+            new HomePageServer().MenuAsync(repository,false);
         }
 
     }

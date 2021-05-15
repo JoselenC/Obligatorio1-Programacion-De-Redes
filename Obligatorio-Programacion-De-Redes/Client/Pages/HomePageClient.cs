@@ -9,9 +9,8 @@ namespace Client
 {
     public class HomePageClient
     {
-        public async Task MenuAsync(SocketHandler socketHandler)
+        public async Task MenuAsync(SocketHandler socketHandler,bool exit)
         {
-            var exit = false;
             string[] _options = {"Posts", "Themes", "Associate file", "Search post", "Exit"};
 
             while (!exit)

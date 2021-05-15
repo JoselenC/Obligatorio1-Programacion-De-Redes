@@ -50,7 +50,7 @@ namespace Client
                         break;
                     case 6:
                         Console.Clear();
-                        await new HomePageClient().MenuAsync(socketHandler);
+                        await new HomePageClient().MenuAsync(socketHandler,true);
                         break;
                     default:
                         break;
@@ -291,7 +291,7 @@ namespace Client
                 String[] themesNames = packet.Data.Split('#');
                 Packet packg = new Packet("REQ", "4", optionSelect1);
                 await socketHandler.SendPackgAsync(packg);
-                await new HomePageClient().MenuAsync(socketHandler);
+                await new HomePageClient().MenuAsync(socketHandler,false);
             }
             else
             {
@@ -301,7 +301,7 @@ namespace Client
                 {
                     Packet packg = new Packet("REQ", "4", optionSelect);
                     await socketHandler.SendPackgAsync(packg);
-                    await new HomePageClient().MenuAsync(socketHandler);
+                    await new HomePageClient().MenuAsync(socketHandler,false);
                 }
                 else
                 {
@@ -324,7 +324,7 @@ namespace Client
             {
                 Packet packg = new Packet("REQ", "9", optionSelect);
                 await socketHandler.SendPackgAsync(packg);
-                await new HomePageClient().MenuAsync(socketHandler);
+                await new HomePageClient().MenuAsync(socketHandler,false);
             }
             else
             {

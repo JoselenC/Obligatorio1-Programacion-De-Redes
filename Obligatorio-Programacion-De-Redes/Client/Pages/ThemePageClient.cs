@@ -33,7 +33,7 @@ namespace Client
                     await DeleteThemeAsync(socketHandler);
                     break;
                 case 4:
-                    await new HomePageClient().MenuAsync(socketHandler);
+                    await new HomePageClient().MenuAsync(socketHandler,true);
                     break;
                 default:
                     Console.WriteLine("Invalid option");

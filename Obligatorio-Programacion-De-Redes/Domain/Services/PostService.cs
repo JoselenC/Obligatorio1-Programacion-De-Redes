@@ -258,8 +258,10 @@ namespace Domain.Services
                     else
                     {
                         repository.Themes.Remove(theme);
-                        if (theme.Posts == null) theme.Posts = new List<Post>();
-                        theme.Posts.Add(postByName);
+                        if (theme.Posts == null) 
+                            theme.Posts = new List<Post>();
+                        if(!theme.Posts.Contains(postByName))
+                            theme.Posts.Add(postByName);
                         repository.Themes.Add(theme);
                         postByName.Themes.Add(theme);
                         message = "The theme " + nameTheme + " was associated";
@@ -301,8 +303,10 @@ namespace Domain.Services
                 Post postByName = repository.Posts.Find(x => x.Name == namePost);
                 Theme theme = repository.Themes.Find(x => x.Name == nameTheme);
                 repository.Themes.Remove(theme);
-                if (theme.Posts == null) theme.Posts = new List<Post>();
-                theme.Posts.Add(postByName);
+                if (theme.Posts == null) 
+                    theme.Posts = new List<Post>();
+                if(!theme.Posts.Contains(postByName))
+                    theme.Posts.Add(postByName);
                 repository.Themes.Add(theme);
                 if (postByName.Themes == null)
                     postByName.Themes = new List<Theme>();

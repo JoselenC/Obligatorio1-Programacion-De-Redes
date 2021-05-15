@@ -47,7 +47,7 @@ namespace Client
                         await protocolHandler.SendFileAsync(path, socketHandler, optionSelect1);
                         Console.ForegroundColor = ConsoleColor.Green;
                         Console.WriteLine("File was associated");
-                        await new HomePageClient().MenuAsync(socketHandler);
+                        await new HomePageClient().MenuAsync(socketHandler,false);
                         correctPath = true;
                     }
                     catch (Exception)
@@ -60,7 +60,7 @@ namespace Client
                     }
                 }
             }
-            await new HomePageClient().MenuAsync(socketHandler);
+            await new HomePageClient().MenuAsync(socketHandler,false);
         }
     
     }

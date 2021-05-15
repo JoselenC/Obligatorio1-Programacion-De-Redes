@@ -50,7 +50,7 @@ namespace Client
                         break;
                     case 6:
                         Console.Clear();
-                        await new HomePageClient().MenuAsync(socketHandler);
+                        await new HomePageClient().MenuAsync(socketHandler,true);
                         break;
                     default:
                         break;
@@ -91,6 +91,9 @@ namespace Client
             }
             else
             {
+                string message2 = optionSelect;
+                Packet packg2 = new Packet("REQ", "2", message2);
+                await socketHandler.SendPackgAsync(packg2);
                 Console.ForegroundColor = ConsoleColor.Magenta;
                 Console.Write("-----New data----- \n");
                 Console.Write("Name: ");
@@ -118,7 +121,7 @@ namespace Client
                     Console.ForegroundColor = ConsoleColor.White;
                     creationDate = Console.ReadLine();
                 }
-                string message = optionSelect + "#" + name + "#" + creationDate;
+                string message = name + "#" + creationDate;
                 Packet packg = new Packet("REQ", "2", message);
                 await socketHandler.SendPackgAsync(packg);
                 var packet = await socketHandler.ReceivePackgAsync();
@@ -288,7 +291,7 @@ namespace Client
                 String[] themesNames = packet.Data.Split('#');
                 Packet packg = new Packet("REQ", "4", optionSelect1);
                 await socketHandler.SendPackgAsync(packg);
-                await new HomePageClient().MenuAsync(socketHandler);
+                await new HomePageClient().MenuAsync(socketHandler,false);
             }
             else
             {
@@ -298,7 +301,7 @@ namespace Client
                 {
                     Packet packg = new Packet("REQ", "4", optionSelect);
                     await socketHandler.SendPackgAsync(packg);
-                    await new HomePageClient().MenuAsync(socketHandler);
+                    await new HomePageClient().MenuAsync(socketHandler,false);
                 }
                 else
                 {
@@ -321,7 +324,7 @@ namespace Client
             {
                 Packet packg = new Packet("REQ", "9", optionSelect);
                 await socketHandler.SendPackgAsync(packg);
-                await new HomePageClient().MenuAsync(socketHandler);
+                await new HomePageClient().MenuAsync(socketHandler,false);
             }
             else
             {

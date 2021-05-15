@@ -33,7 +33,7 @@ namespace Client
                     await DeleteThemeAsync(socketHandler);
                     break;
                 case 4:
-                    await new HomePageClient().MenuAsync(socketHandler);
+                    await new HomePageClient().MenuAsync(socketHandler,true);
                     break;
                 default:
                     Console.WriteLine("Invalid option");
@@ -84,6 +84,8 @@ namespace Client
             }
             else
             {
+                Packet packg2 = new Packet("REQ", "4", optionSelected);
+                await socketHandler.SendPackgAsync(packg2);
                 Console.ForegroundColor = ConsoleColor.Magenta;
                 Console.WriteLine("-----New data theme-----\n");
                 Console.Write("Name: ");
@@ -102,7 +104,7 @@ namespace Client
                 Console.Write("Description: ");
                 Console.ForegroundColor = ConsoleColor.White;
                 string description = Console.ReadLine();
-                string message = optionSelected + "#" + name + "#" + description;
+                string message = name + "#" + description;
                 Packet packg = new Packet("REQ", "4", message);
                 await socketHandler.SendPackgAsync(packg);
                 var packet = await socketHandler.ReceivePackgAsync();

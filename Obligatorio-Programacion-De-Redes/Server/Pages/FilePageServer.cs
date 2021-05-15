@@ -109,7 +109,7 @@ namespace Server
                 }
                 if (repository.Files[i].Post != null)
                 {
-                    Console.WriteLine("File: ");
+                    Console.WriteLine("Post: ");
                     Console.WriteLine("Name: " + repository.Files[i].Post.Name);
                 }
 
@@ -161,7 +161,7 @@ namespace Server
                 }
                 if (repository.Files[i].Post != null)
                 {
-                    Console.WriteLine("File: ");
+                    Console.WriteLine("Post: ");
                     Console.WriteLine("Name: " + repository.Files[i].Post.Name);
                 }
 
@@ -249,7 +249,7 @@ namespace Server
 
                         if (repository.Files[i].Post != null)
                         {
-                            Console.WriteLine("File: ");
+                            Console.WriteLine("Post: ");
                             Console.WriteLine("Name: " + repository.Files[i].Post.Name);
                         }
                     }
@@ -291,7 +291,7 @@ namespace Server
                 }
                 if (repository.Files[i].Post != null)
                 {
-                    Console.WriteLine("File: ");
+                    Console.WriteLine("Post: ");
                     Console.WriteLine("Name: " + repository.Files[i].Post.Name);
                 }
             }
@@ -333,7 +333,7 @@ namespace Server
                 }
                 if (file.Post != null)
                 {
-                    Console.WriteLine("File: ");
+                    Console.WriteLine("Post: ");
                     Console.WriteLine("Name: " + file.Post.Name);
                 }
             }

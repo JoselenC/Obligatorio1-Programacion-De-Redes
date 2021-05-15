@@ -121,7 +121,7 @@ namespace Server
                 foreach (var themeName in themeNames)
                 {
                     Theme themeMax = repository.Themes.Find(x => x.Name == themeName);
-                    Console.WriteLine("Name:" + themeMax.Name + "Description:" +
+                    Console.WriteLine("Name:" + themeMax.Name + " Description: " +
                                       themeMax.Description);
                 }
                 Console.ForegroundColor = ConsoleColor.DarkCyan;

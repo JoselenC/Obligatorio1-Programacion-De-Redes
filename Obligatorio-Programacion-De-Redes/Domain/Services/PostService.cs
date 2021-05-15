@@ -143,24 +143,30 @@ namespace Domain.Services
                 repository.SemaphoreSlimPosts
                     .Find(x => x.Post.Name == name).SemaphoreSlim.WaitAsync();
                 string message;
-                if (AlreadyExistPost(name))
-                {
-                    Post postByName = repository.Posts.Find(x => x.Name == name);
-                    semaphoreSlim.Wait();
-                    repository.Posts.Find(x => x.Name == name);
-                    repository.Posts.Remove(postByName);
-                    message = "The post " + name + "was deleted";
-                    semaphoreSlim.Release();
-                }
-                else
-                {
-                    message = "Not deleted, the post" + name + " does not exist";
-                }
+                message = DeletePost(name);
                 repository.SemaphoreSlimPosts
                     .Find(x => x.Post.Name == name).SemaphoreSlim.Release();
                 Packet packg = new Packet("RES", "2", message);
                 await socketHandler.SendPackgAsync(packg);
             }
+        }
+
+        private string DeletePost(string name)
+        {
+            string message;
+            if (AlreadyExistPost(name))
+            {
+                Post postByName = repository.Posts.Find(x => x.Name == name);
+                repository.Posts.Find(x => x.Name == name);
+                repository.Posts.Remove(postByName);
+                message = "The post " + name + " was deleted";
+            }
+            else
+            {
+                message = "Not deleted, the post" + name + " does not exist";
+            }
+
+            return message;
         }
 
 
@@ -210,16 +216,13 @@ namespace Domain.Services
         {
             string message;
             string newCreationDate = messageArray2[1];
+            Post postByName = repository.Posts.Find(x => x.Name == oldName);
+            repository.Posts.Remove(postByName);
             if (!AlreadyExistPost(name))
             {
-                semaphoreSlim.Wait();
-                Post postByName = repository.Posts.Find(x => x.Name == oldName);
-                repository.Posts.Find(x => x.Name == oldName);
-                repository.Posts.Remove(postByName);
                 Post newPost = new Post() {Name = name, CreationDate = newCreationDate};
                 repository.Posts.Add(newPost);
                 message = "The post " + oldName + " was modified";
-                semaphoreSlim.Release();
             }
             else
             {

@@ -101,11 +101,10 @@ namespace Domain.Services
             {
                 string description = messageArray2[1];
                 Theme theme = new Theme() {Name = name, Description = description};
+                Theme themeName = repository.Themes.Find(x => x.Name == option);
+                repository.Themes.Remove(themeName);
                 if (!AlreadyExistTheme(name))
                 {
-                    Theme themeName = repository.Themes.Find(x => x.Name == option);
-                    repository.Themes.Find(x => x.Name == option);
-                    repository.Themes.Remove(themeName);
                     repository.Themes.Add(theme);
                     message = "The theme " + option + " was modified";
                 }

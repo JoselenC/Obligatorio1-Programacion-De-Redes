@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using BusinessLogic;
 using DataHandler;
+using LogServer;
 using Protocol;
 
 namespace Domain.Services
@@ -11,13 +12,16 @@ namespace Domain.Services
     {
         private MemoryRepository repository;
         private SemaphoreSlim semaphoreSlim;
-        public ThemeService(MemoryRepository repository)
+        private Log log;
+        public ThemeService(MemoryRepository repository,Log log)
         {
+            this.log = log;
             this.repository = repository;
         }
 
-        public ThemeService(MemoryRepository repository,SemaphoreSlim semaphore)
+        public ThemeService(MemoryRepository repository,SemaphoreSlim semaphore,Log log)
         {
+            this.log = log;
             this.repository = repository;
             semaphoreSlim = semaphore;
         }
@@ -26,6 +30,7 @@ namespace Domain.Services
             var packet = await socketHandler.ReceivePackgAsync();
             String[] messageArray = packet.Data.Split('#');
             string name = messageArray[0];
+            log.SaveLog("New theme" + name);
             if (name != "Back")
             {
                 string description = messageArray[1];
@@ -107,6 +112,7 @@ namespace Domain.Services
                 {
                     repository.Themes.Add(theme);
                     message = "The theme " + option + " was modified";
+                    log.SaveLog("Modify theme" + themeName + "new name: "+ theme);
                 }
                 else
                 {
@@ -152,6 +158,7 @@ namespace Domain.Services
                 repository.Themes.Find(x => x.Name == oldName);
                 if (!IsAssociatedAPost(themeName))
                 {
+                    log.SaveLog("Delete theme" + themeName);
                     repository.Themes.Remove(themeName);
                     message = "The theme " + oldName + " was deleted";
                 }

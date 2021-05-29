@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using BusinessLogic;
 using DataHandler;
 using Domain;
+using LogServer;
 
 
 namespace Server
@@ -18,9 +19,13 @@ namespace Server
        private readonly TcpListener _tcpListener;
        private TcpClient _tcpClient;
        private bool exit = false;
+       private Log log;
 
        public Server()
        {
+           var rabbitHelper = new RabbitHelper();
+           log = new Log(rabbitHelper);
+
            _tcpListener = new TcpListener(IPAddress.Parse(ConfigurationManager.AppSettings["ServerIp"]), Int32.Parse(ConfigurationManager.AppSettings["ServerPort"]));
        }
 
@@ -39,7 +44,7 @@ namespace Server
                _tcpListener.Stop();
                await AddConnectedClient(repository, ConnectedClients);
                SocketHandler socketHandler = new SocketHandler(_tcpClient.GetStream());
-               new HandleClient(_tcpListener).HandleClientMethodAsync(repository, false, ConnectedClients, socketHandler);
+               await new HandleClient(_tcpListener,log).HandleClientMethodAsync(repository, false, ConnectedClients, socketHandler);
            }
 
            foreach (var socketClient in ConnectedClients)

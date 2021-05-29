@@ -4,6 +4,7 @@ using System.Net.Sockets;
 using System.Threading.Tasks;
 using BusinessLogic;
 using DataHandler;
+using LogServer;
 using Protocol;
 using ProtocolFiles;
 
@@ -12,8 +13,10 @@ namespace Domain.Services
     public class FileService
     {
         private MemoryRepository repository;
-        public FileService(MemoryRepository repository)
+        private Log log;
+        public FileService(MemoryRepository repository,Log log)
         {
+            this.log = log;
             this.repository = repository;
         }
         
@@ -36,6 +39,7 @@ namespace Domain.Services
                 await SendListPostAsync(socketHandler);
                 ProtocolHandler protocolHandler = new ProtocolHandler();
                 string[] fileData = await protocolHandler.ReceiveFileAsync(socketHandler);
+                log.SaveLog("Upload file" + fileData[2]);
                 string option = fileData[0];
                 if (option != "Back")
                 {

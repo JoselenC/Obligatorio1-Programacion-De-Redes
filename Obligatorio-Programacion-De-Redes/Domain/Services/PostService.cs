@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using BusinessLogic;
 using DataHandler;
+using LogServer;
 using Protocol;
 
 namespace Domain.Services
@@ -13,13 +14,16 @@ namespace Domain.Services
     {
         private MemoryRepository repository;
         private SemaphoreSlim semaphoreSlim;
-        public PostService(MemoryRepository repository)
+        private Log log;
+        public PostService(MemoryRepository repository,Log log)
         {
+            this.log = log;
             this.repository = repository;
         }
 
-        public PostService(MemoryRepository repository,SemaphoreSlim semaphore)
+        public PostService(MemoryRepository repository,SemaphoreSlim semaphore,Log log)
         {
+            this.log = log;
             this.repository = repository;
             semaphoreSlim = semaphore;
         }
@@ -96,13 +100,15 @@ namespace Domain.Services
         
         public async Task AddPostAsync(SocketHandler socketHandler)
         {
+            
             Packet packg = new Packet("RES", "2", repository.Themes.Count.ToString());
             await socketHandler.SendPackgAsync(packg);
             string message = "";
             if (repository.Themes.Count > 0)
             {
                 var packet = await socketHandler.ReceivePackgAsync();
-                String[] messageArray = packet.Data.Split('#');                
+                log.SaveLog("New post" + packet.Data);
+                String[] messageArray = packet.Data.Split('#');
                 string name = messageArray[0];
                 string creationDate = messageArray[1];
                 if (name != "")
@@ -132,6 +138,7 @@ namespace Domain.Services
             await SendListPostAsync(socketHandler);
             var packet = await socketHandler.ReceivePackgAsync();
             string name = packet.Data;
+            log.SaveLog("Delete post" + packet.Data);
             if (name != "Back")
             {
                 if (!AlreadyExistSemaphore(name))
@@ -176,6 +183,7 @@ namespace Domain.Services
             var packet = await socketHandler.ReceivePackgAsync();
             string[] messageArray = packet.Data.Split('#');
             string oldName = messageArray[0];
+            
             if (oldName != "Back")
             {
                 var message = await ModifyPost(socketHandler, oldName);
@@ -214,6 +222,7 @@ namespace Domain.Services
 
         private string AddNewPost(string[] messageArray2, string name, string oldName)
         {
+            log.SaveLog("Modify post, old Name: " + oldName + "new name: "+name);
             string message;
             string newCreationDate = messageArray2[1];
             Post postByName = repository.Posts.Find(x => x.Name == oldName);
@@ -250,6 +259,7 @@ namespace Domain.Services
             if (namePost != "Back")
             {
                 string nameTheme = messageArray[1];
+                log.SaveLog("Associate theme: " + nameTheme +"to post: "+ namePost);
                 if (AlreadyExistTheme(nameTheme))
                 {
                     Post postByName = repository.Posts.Find(x => x.Name == namePost);
@@ -301,6 +311,7 @@ namespace Domain.Services
             string namePost = messageArray[0];
             string message = "";
             string nameTheme = messageArray[1];
+            log.SaveLog("Associate theme: " + nameTheme +"to post: "+ namePost);
             if (AlreadyExistTheme(nameTheme))
             {
                 Post postByName = repository.Posts.Find(x => x.Name == namePost);
@@ -339,6 +350,7 @@ namespace Domain.Services
                 string message;
                 if (AlreadyExistPost(namePost))
                 {
+                    log.SaveLog("Search post: "+ namePost);
                     Post post = repository.Posts.Find(x => x.Name == namePost);
                     message = post.Name + "#" + post.CreationDate;
                 }
@@ -373,6 +385,8 @@ namespace Domain.Services
                 string nameThemeDisassociate = messageArray[1];
                 string nameNewTheme = messageArray[2];
                 string message = "";
+                log.SaveLog("Associate theme: " + nameNewTheme + "Dissasociate theme" + nameThemeDisassociate +
+                            "to post: " + namePost);
                 if (AlreadyExistPost(postName))
                 {
                     message = await DisassociateAsync(postName, nameThemeDisassociate, nameNewTheme);

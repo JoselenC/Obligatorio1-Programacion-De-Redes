@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Net.Sockets;
 using System.Threading.Tasks;
-using BusinessLogic;
 using DataHandler;
-using Domain;
 using Protocol;
 
 namespace Client

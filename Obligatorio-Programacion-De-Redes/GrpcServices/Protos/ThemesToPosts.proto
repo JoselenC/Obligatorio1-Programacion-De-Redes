@@ -1,0 +1,24 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "GrpcServices";
+
+package themes;
+
+service ThemeGrpc {
+    rpc AssociateThemeToPost (AssociateThemeToPostRequest) returns (AssociateThemeToPostReply);
+
+}
+
+message ThemeToPost{
+    string postName=1;
+    string themeName=2;
+}
+
+message AssociateThemeToPostRequest {
+    ThemeToPost Theme=1;
+}
+
+
+message AssociateThemeToPostReply {
+    ThemeToPost Theme=1;
+}

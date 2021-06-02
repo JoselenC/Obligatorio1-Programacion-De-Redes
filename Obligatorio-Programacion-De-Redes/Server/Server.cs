@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using BusinessLogic;
 using DataHandler;
 using Domain;
+using Grpc.Net.Client;
 using LogServer;
 
 
@@ -25,7 +26,6 @@ namespace Server
        {
            var rabbitHelper = new RabbitHelper();
            log = new Log(rabbitHelper);
-
            _tcpListener = new TcpListener(IPAddress.Parse(ConfigurationManager.AppSettings["ServerIp"]), Int32.Parse(ConfigurationManager.AppSettings["ServerPort"]));
        }
 
@@ -36,7 +36,6 @@ namespace Server
            {
                new HomePageServer().MenuAsync(repository,exit);
            });
-
            while (!exit)
            {
                _tcpListener.Start(1);
@@ -47,6 +46,9 @@ namespace Server
                await new HandleClient(_tcpListener,log).HandleClientMethodAsync(repository, false, ConnectedClients, socketHandler);
            }
 
+           var channel = GrpcChannel.ForAddress("https://localhost:5001");
+           HandleServerGrpc handleServerGrpc = new HandleServerGrpc(channel);
+           //Aca iria HandleServerGrpc().ReceiveRequest(); o algo asi?? 
            foreach (var socketClient in ConnectedClients)
            {
                try

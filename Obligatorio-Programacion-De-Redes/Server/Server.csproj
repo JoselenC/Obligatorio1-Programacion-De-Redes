@@ -6,7 +6,9 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\DomainObjects\DomainObjects.csproj" />
       <ProjectReference Include="..\Domain\Domain.csproj" />
+      <ProjectReference Include="..\GrpcServices\GrpcServices.csproj" />
       <ProjectReference Include="..\LogServer\LogServer.csproj" />
     </ItemGroup>
 

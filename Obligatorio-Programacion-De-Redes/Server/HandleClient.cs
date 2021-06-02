@@ -7,6 +7,7 @@ using BusinessLogic;
 using DataHandler;
 using Domain;
 using Domain.Services;
+using Grpc.Net.Client;
 using LogServer;
 using Protocol;
 
@@ -16,11 +17,13 @@ namespace Server
     {
         private TcpListener _tcpListener;
         private Log log;
+     
          public HandleClient(TcpListener vTcpListener,Log log)
          {
              this.log = log;
              _tcpListener = vTcpListener;
          }
+         
           public async Task HandleClientMethodAsync(MemoryRepository repository,bool _exit, List<Socket> connectedClients,SocketHandler socketHandler)
         {
           SemaphoreSlim semaphoreSlim = new SemaphoreSlim(1);

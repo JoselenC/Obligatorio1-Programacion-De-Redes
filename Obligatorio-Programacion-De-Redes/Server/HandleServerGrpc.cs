@@ -1,5 +1,6 @@
 ﻿using Grpc.Net.Client;
 using GrpcServices;
+using ServicesGRPC;
 
 namespace Server
 {

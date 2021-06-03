@@ -46,9 +46,12 @@ namespace Server
                await new HandleClient(_tcpListener,log).HandleClientMethodAsync(repository, false, ConnectedClients, socketHandler);
            }
 
+           //TODO
            var channel = GrpcChannel.ForAddress("https://localhost:5001");
            HandleServerGrpc handleServerGrpc = new HandleServerGrpc(channel);
            //Aca iria HandleServerGrpc().ReceiveRequest(); o algo asi?? 
+           
+           
            foreach (var socketClient in ConnectedClients)
            {
                try

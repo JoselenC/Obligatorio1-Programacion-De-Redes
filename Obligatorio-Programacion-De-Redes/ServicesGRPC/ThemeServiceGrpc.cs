@@ -1,9 +1,11 @@
-﻿using System.Threading.Tasks;
+﻿
+using System.Threading.Tasks;
 using AutoMapper;
 using Domain;
 using Grpc.Net.Client;
+using GrpcServices;
 
-namespace GrpcServices
+namespace ServicesGRPC
 {
     public class ThemeServiceGrpc : IThemeServiceGrpc
     {

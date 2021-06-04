@@ -22,5 +22,14 @@ namespace WebAPI.Controllers
             _postServiceGrpc.AddPostAsyc(post);
             return Ok(post);
         }
+
+        [HttpPut]
+
+        public IActionResult ModifyPost([FromBody] Post post, [FromQuery] string oldName)
+        {
+            _postServiceGrpc.ModifyPostAsyc(post);
+            return Ok(post);
+        }
+        
     }
 }

@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\LogServer\LogServer.csproj" />
+      <ProjectReference Include="..\ProtocolFiles\ProtocolFiles.csproj" />
+      <ProjectReference Include="..\Protocol\Protocol.csproj" />
+    </ItemGroup>
+
+</Project>

@@ -1,7 +1,7 @@
 {
   "version": 2,
-  "dgSpecHash": "Np8JJHfvTi8zQembKTdz3YTSDnXa0qFJiK6vPaY3rrTAFn1bIU09gM7lDlmJr3LxL5wjR78kCXi9UCs5hJcWHw==",
-  "success": false,
+  "dgSpecHash": "BJmluvGoKVvlwKfTKgM8ARruDtcIwcoqILBjEAl/4w9l3Q7VmkL+DfRfGZpm+wO2sboqBZQpkzlzVBaN5tOpPA==",
+  "success": true,
   "projectFilePath": "C:\\Obligatorio1-Programacion-De-Redes\\Obligatorio-Programacion-De-Redes\\Client\\Client.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Choche\\.nuget\\packages\\automapper\\10.1.1\\automapper.10.1.1.nupkg.sha512",
@@ -41,15 +41,5 @@
     "C:\\Users\\Choche\\.nuget\\packages\\system.threading.channels\\4.7.1\\system.threading.channels.4.7.1.nupkg.sha512",
     "C:\\Users\\Choche\\.nuget\\packages\\system.windows.extensions\\6.0.0-preview.4.21253.7\\system.windows.extensions.6.0.0-preview.4.21253.7.nupkg.sha512"
   ],
-  "logs": [
-    {
-      "code": "NU1104",
-      "level": "Error",
-      "message": "Unable to find project 'C:\\Obligatorio1-Programacion-De-Redes\\Obligatorio-Programacion-De-Redes\\GrpcServices\\GrpcServices.csproj'. Check that the project reference is valid and that the project file exists.",
-      "libraryId": "C:\\Obligatorio1-Programacion-De-Redes\\Obligatorio-Programacion-De-Redes\\GrpcServices\\GrpcServices.csproj",
-      "targetGraphs": [
-        ".NETCoreApp,Version=v3.1"
-      ]
-    }
-  ]
+  "logs": []
 }

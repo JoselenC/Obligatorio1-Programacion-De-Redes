@@ -18,7 +18,7 @@ namespace Server
 
         private async Task AddPost()
         {
-            User user = await _postServiceGrpc.AddPostAsyc();
+           // User user = await _postServiceGrpc.AddPostAsyc();
         }
     }
 }

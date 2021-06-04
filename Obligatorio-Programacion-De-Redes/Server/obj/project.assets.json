@@ -1558,7 +1558,6 @@
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v3.1": [
-      "C:\\Obligatorio1-Programacion-De-Redes\\Obligatorio-Programacion-De-Redes\\GrpcServices\\GrpcServices.csproj",
       "Domain >= 1.0.0",
       "DomainObjects >= 1.0.0",
       "GRPCClient >= 1.0.0",
@@ -1602,9 +1601,6 @@
             },
             "C:\\Obligatorio1-Programacion-De-Redes\\Obligatorio-Programacion-De-Redes\\GRPCClient\\GRPCClient.csproj": {
               "projectPath": "C:\\Obligatorio1-Programacion-De-Redes\\Obligatorio-Programacion-De-Redes\\GRPCClient\\GRPCClient.csproj"
-            },
-            "C:\\Obligatorio1-Programacion-De-Redes\\Obligatorio-Programacion-De-Redes\\GrpcServices\\GrpcServices.csproj": {
-              "projectPath": "C:\\Obligatorio1-Programacion-De-Redes\\Obligatorio-Programacion-De-Redes\\GrpcServices\\GrpcServices.csproj"
             },
             "C:\\Obligatorio1-Programacion-De-Redes\\Obligatorio-Programacion-De-Redes\\LogServer\\LogServer.csproj": {
               "projectPath": "C:\\Obligatorio1-Programacion-De-Redes\\Obligatorio-Programacion-De-Redes\\LogServer\\LogServer.csproj"
@@ -1651,16 +1647,5 @@
         "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.202\\RuntimeIdentifierGraph.json"
       }
     }
-  },
-  "logs": [
-    {
-      "code": "NU1104",
-      "level": "Error",
-      "message": "Unable to find project 'C:\\Obligatorio1-Programacion-De-Redes\\Obligatorio-Programacion-De-Redes\\GrpcServices\\GrpcServices.csproj'. Check that the project reference is valid and that the project file exists.",
-      "libraryId": "C:\\Obligatorio1-Programacion-De-Redes\\Obligatorio-Programacion-De-Redes\\GrpcServices\\GrpcServices.csproj",
-      "targetGraphs": [
-        ".NETCoreApp,Version=v3.1"
-      ]
-    }
-  ]
+  }
 }

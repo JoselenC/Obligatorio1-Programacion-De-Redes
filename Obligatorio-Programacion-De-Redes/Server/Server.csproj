@@ -9,7 +9,6 @@
       <ProjectReference Include="..\DomainObjects\DomainObjects.csproj" />
       <ProjectReference Include="..\Domain\Domain.csproj" />
       <ProjectReference Include="..\GRPCClient\GRPCClient.csproj" />
-      <ProjectReference Include="..\GrpcServices\GrpcServices.csproj" />
       <ProjectReference Include="..\LogServer\LogServer.csproj" />
       <ProjectReference Include="..\ServicesGRPC\ServicesGRPC.csproj" />
     </ItemGroup>

@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <AssemblyName>AdministrativeServer</AssemblyName>
+        <RootNamespace>AdministrativeServer</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <Protobuf Include="Protos\posts.proto">
+        <Generator>MSBuild:Compile</Generator>
+      </Protobuf>
+      <Protobuf Include="Protos\themes.proto">
+        <Generator>MSBuild:Compile</Generator>
+      </Protobuf>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\GrpcServicesInterfaces\GrpcServicesInterfaces.csproj" />
+      <ProjectReference Include="..\Server\Server.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="AutoMapper" Version="10.1.1" />
+      <PackageReference Include="Google.Protobuf" Version="3.17.2" />
+      <PackageReference Include="Grpc.AspNetCore" Version="2.37.0" />
+    </ItemGroup>
+
+</Project>

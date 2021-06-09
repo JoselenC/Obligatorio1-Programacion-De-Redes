@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using DataHandler;
 
-namespace Domain.Services
+namespace BusinessLogic.Services
 {
     public interface IFileService
     {

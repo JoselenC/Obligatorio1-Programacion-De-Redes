@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Net.Sockets;
 using System.Threading.Tasks;
 using BusinessLogic;
+using BusinessLogic.Services;
 using DataHandler;
 using Domain;
-using Domain.Services;
 using LogServer;
 using Protocol;
 

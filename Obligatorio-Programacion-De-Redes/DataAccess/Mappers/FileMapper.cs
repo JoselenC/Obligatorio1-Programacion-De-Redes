@@ -27,12 +27,16 @@ namespace DataAccess.Mappers
                 context.Entry(fileDto).Collection("FilesThemesDto").Load();
             }
 
-            List<ThemeDto> themes = CreateThemes(obj.Themes, context);
-            fileDto.FilesThemesDto = new List<FileThemeDto>();
-            foreach (var themeDto in themes)
+            if (obj.Themes != null)
             {
-                fileDto.FilesThemesDto.Add(new FileThemeDto(){File = fileDto, Theme = themeDto});
+                List<ThemeDto> themes = CreateThemes(obj.Themes, context);
+                fileDto.FilesThemesDto = new List<FileThemeDto>();
+                foreach (var themeDto in themes)
+                {
+                    fileDto.FilesThemesDto.Add(new FileThemeDto() {File = fileDto, Theme = themeDto});
+                }
             }
+
             return fileDto;
         }
 

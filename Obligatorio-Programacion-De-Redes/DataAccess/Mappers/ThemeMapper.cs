@@ -85,7 +85,7 @@ namespace DataAccess.Mappers
             {
                 foreach (PostThemeDto postThemeDto in obj.PostsThemesDto)
                 { 
-                    PostDto postDto= postSet.FirstOrDefault(x => x.Name == postThemeDto.Post.Name);
+                    PostDto postDto= postSet.FirstOrDefault(x => x.Id == postThemeDto.PostId);
                     if(postDto!=null)
                         posts.Add(new PostMapper().DtoToDomain(postDto,context));
                 }

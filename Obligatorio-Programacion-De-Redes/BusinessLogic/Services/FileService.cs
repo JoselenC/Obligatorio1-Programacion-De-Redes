@@ -49,15 +49,15 @@ namespace Domain.Services
                         UploadDate = DateTime.Now
                       
                     };
+                    Post oldPost = repository.Posts.Find(x => x.Name == fileData[0]);
                     Post post = repository.Posts.Find(x => x.Name == fileData[0]);
-                    repository.Posts.Delete(post);
                     if (post.File == null) post.File = new File();
                     post.File = file;
                     if (file.Themes == null) file.Themes = new List<Theme>();
                     file.Themes = post.Themes;
                     if (file.Post == null) file.Post = new Post();
                     file.Post = post;
-                    repository.Posts.Add(post);
+                    repository.Posts.Update(oldPost,post);
                     repository.Files.Add(file);
                 }
             }

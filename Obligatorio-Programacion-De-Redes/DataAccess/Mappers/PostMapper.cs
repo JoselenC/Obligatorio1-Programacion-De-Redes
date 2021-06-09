@@ -78,16 +78,26 @@ namespace DataAccess.Mappers
 
         public Post DtoToDomain(PostDto obj, ContextDb context)
         {
-            DbSet<ThemeDto> themesSet = context.Set<ThemeDto>();
+            DbSet<ThemeDto> themeSet = context.Set<ThemeDto>();
             List<Theme> themes = new List<Theme>();
             context.Entry(obj).Collection("PostsThemesDto").Load();
             if (!(obj.PostsThemesDto is null))
             {
                 foreach (PostThemeDto postThemeDto in obj.PostsThemesDto)
                 { 
-                    ThemeDto themeDto= themesSet.FirstOrDefault(x => x.Id == postThemeDto.ThemeId);
-                    if(themeDto!=null)
-                        themes.Add(new ThemeMapper().DtoToDomain(themeDto,context));
+                    ThemeDto themeDto= themeSet.FirstOrDefault(x => x.Id == postThemeDto.ThemeId);
+                    if (themeDto != null)
+                    {
+                        Theme theme = new Theme()
+                        {
+                            Name = themeDto.Name,
+                            Description = themeDto.Description,
+                            Id = themeDto.Id
+                        };
+                        themes.Add(theme);
+                    }
+
+                  
                 }
             }
             

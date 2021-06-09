@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading;
 using System.Threading.Tasks;
 using BusinessLogic;
 using DataHandler;
@@ -41,18 +40,16 @@ namespace Domain.Services
         private async Task SendListPostAsync(SocketHandler socketHandler)
         {
             string posts = "";
-            if (repository.Posts != null && repository.Posts.Get().Count!=0)
+            List<Post> listPosts = repository.Posts.Get();
+            for (int i = 0; i < listPosts.Count; i++)
             {
-                for (int i = 0; i < repository.Posts.Get().Count; i++)
-                {
-                 //   SemaphoreSlimPost semaphoreSlimPost = repository.SemaphoreSlimPosts
-                   //     .Find(x => x.Post.Name == repository.Posts.Get()[i].Name);
-                    
+                //   SemaphoreSlimPost semaphoreSlimPost = repository.SemaphoreSlimPosts
+                //     .Find(x => x.Post.Name == repository.Posts.Get()[i].Name);
+
                 //    if (semaphoreSlimPost==null || semaphoreSlimPost.SemaphoreSlim.CurrentCount > 0)
-                  //  {
-                        posts += repository.Posts.Get()[i].Name + "#";
-                   // }
-                }
+                //  {
+                posts +=listPosts[i].Name + "#";
+                // }
             }
             posts += "Back" + "#";
             Packet packg = new Packet("RES", "2", posts);
@@ -223,11 +220,10 @@ namespace Domain.Services
             string message;
             string newCreationDate = messageArray2[1];
             Post postByName = repository.Posts.Find(x => x.Name == oldName);
-            repository.Posts.Delete(postByName);
             if (!AlreadyExistPost(name))
             {
                 Post newPost = new Post() {Name = name, CreationDate = newCreationDate};
-                repository.Posts.Add(newPost);
+                repository.Posts.Update(postByName,newPost);
                 message = "The post " + oldName + " was modified";
             }
             else
@@ -400,19 +396,20 @@ namespace Domain.Services
         private async Task<string> DisassociateAsync(string postName, string nameThemeDisassociate, string nameNewTheme)
         {
             string message;
-            Post postByName = repository.Posts.Find(x => x.Name == postName);
+            Post oldPost = repository.Posts.Find(x => x.Name == postName);
+            Post newPost = repository.Posts.Find(x => x.Name == postName);
             if (AlreadyExistTheme(nameThemeDisassociate) && AlreadyExistTheme(nameNewTheme))
             {
                 Theme theme = repository.Themes.Find(x => x.Name == nameThemeDisassociate);
                 Theme newTheme = repository.Themes.Find(x => x.Name == nameNewTheme);
-                if (postByName.Themes != null && postByName.Themes.Contains(theme))
+                if (newPost.Themes != null && newPost.Themes.Contains(theme))
                 {
-                    postByName.Themes.Remove(theme);
-                    postByName.Themes.Add(newTheme);
+                    newPost.Themes.Remove(theme);
+                    newPost.Themes.Add(newTheme);
                 }
-
                 message = "The theme " + nameThemeDisassociate + " was disassociate and " + nameNewTheme +
                           " was associate";
+                repository.Posts.Update(oldPost, newPost);
             }
             else if (!AlreadyExistTheme(nameThemeDisassociate))
             {

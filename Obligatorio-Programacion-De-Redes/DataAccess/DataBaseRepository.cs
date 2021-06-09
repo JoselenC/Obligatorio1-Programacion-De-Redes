@@ -22,8 +22,7 @@ namespace DataAccess
             {
                 DbSet<T> entity = context.Set<T>();
                 var dto = mapper.DomainToDto(objectToAdd, context);
-                if (context.Entry(dto).State == (EntityState) EntityState.Detached)
-                    entity.Add(dto);
+                entity.Add(dto);
                 context.SaveChanges();
                 var domainObj = mapper.DtoToDomain(dto, context);
                 return domainObj;
@@ -77,13 +76,15 @@ namespace DataAccess
             using (ContextDb context = new ContextDb())
             {
                 DbSet<T> entity = context.Set<T>();
-                List<D> Dlist = new List<D>();
+                List<D> dlist = new List<D>();
                 foreach (T item in entity.ToList())
                 {
                     var x = mapper.DtoToDomain(item, context);
-                    Dlist.Add(x);
+                    if(x!=null)
+                        dlist.Add(x);
                 }
-                return Dlist;
+
+                return dlist;
             }
         }
 

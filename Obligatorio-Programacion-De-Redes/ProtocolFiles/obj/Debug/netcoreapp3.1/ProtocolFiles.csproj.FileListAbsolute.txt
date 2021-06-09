@@ -1,0 +1,12 @@
+C:\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\ProtocolFiles\bin\Debug\netcoreapp3.1\ProtocolFiles.deps.json
+C:\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\ProtocolFiles\bin\Debug\netcoreapp3.1\ProtocolFiles.dll
+C:\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\ProtocolFiles\bin\Debug\netcoreapp3.1\ProtocolFiles.pdb
+C:\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\ProtocolFiles\bin\Debug\netcoreapp3.1\Protocol.dll
+C:\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\ProtocolFiles\bin\Debug\netcoreapp3.1\Protocol.pdb
+C:\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\ProtocolFiles\obj\Debug\netcoreapp3.1\ProtocolFiles.csprojAssemblyReference.cache
+C:\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\ProtocolFiles\obj\Debug\netcoreapp3.1\ProtocolFiles.AssemblyInfoInputs.cache
+C:\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\ProtocolFiles\obj\Debug\netcoreapp3.1\ProtocolFiles.AssemblyInfo.cs
+C:\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\ProtocolFiles\obj\Debug\netcoreapp3.1\ProtocolFiles.csproj.CoreCompileInputs.cache
+C:\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\ProtocolFiles\obj\Debug\netcoreapp3.1\ProtocolFiles.csproj.CopyComplete
+C:\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\ProtocolFiles\obj\Debug\netcoreapp3.1\ProtocolFiles.dll
+C:\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\ProtocolFiles\obj\Debug\netcoreapp3.1\ProtocolFiles.pdb

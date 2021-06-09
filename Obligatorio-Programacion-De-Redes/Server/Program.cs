@@ -1,14 +1,31 @@
-﻿using System.Threading.Tasks;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+using BusinessLogic;
+using DataAccess;
+using Domain.Services;
+using GrpcServices;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 
-namespace Server
+namespace ServerGRPC
 {
-    class Program
+    public class Program
     {
-        static async Task Main(string[] args)
+        public static async Task Main(string[] args)
         {
-            Server server = new Server();
+            ManagerRepository memoryRepository = new DataBaseManagerRepository();
+            Server.Server server = new Server.Server(memoryRepository);
             await server.StartServerAsync();
+            CreateHostBuilder(args).Build().Run();
         }
 
+        // Additional configuration is required to successfully run gRPC on macOS.
+        // For instructions on how to configure Kestrel and gRPC clients on macOS, visit https://go.microsoft.com/fwlink/?linkid=2099682
+        public static IHostBuilder CreateHostBuilder(string[] args) =>
+            Host.CreateDefaultBuilder(args)
+                .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
     }
 }

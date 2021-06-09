@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net.Sockets;
 using BusinessLogic;
+using BusinessLogic.Managers;
 using Domain;
 using DataHandler;
 
@@ -8,7 +9,7 @@ namespace Server
 {
     public class ClientPageServer
     {
-        public void ShowClientList(ManagerRepository repository)
+        public void ShowClientList(ManagerRepository repository,ManagerPostRepository managerPostRepository,ManagerThemeRepository managerThemeRepository)
         {
             Console.Clear();
             if (repository.Clients.Get().Count == 0 || repository.Clients.Get()==null)
@@ -16,7 +17,7 @@ namespace Server
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("No hay clientes conectados");
                 Console.ForegroundColor = ConsoleColor.White;
-                new HomePageServer().MenuAsync(repository,false);
+                new HomePageServer().MenuAsync(repository,false,managerPostRepository,managerThemeRepository);
             }
             else
             {
@@ -38,7 +39,7 @@ namespace Server
             }
 
             Console.ReadLine();
-            new HomePageServer().MenuAsync(repository,false);
+            new HomePageServer().MenuAsync(repository,false,managerPostRepository,managerThemeRepository);
         }
 
     }

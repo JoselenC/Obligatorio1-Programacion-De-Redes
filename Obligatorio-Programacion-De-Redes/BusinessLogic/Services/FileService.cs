@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using BusinessLogic.Managers;
 using DataHandler;
 using Domain;
 using LogServer;
@@ -12,9 +13,11 @@ namespace BusinessLogic.Services
     public class FileService : IFileService
     {
         private ManagerRepository repository;
+        private ManagerPostRepository _postRepository;
         private Log log;
-        public FileService(ManagerRepository vRepository,Log log)
+        public FileService(ManagerRepository vRepository, ManagerPostRepository postRepository,Log log)
         {
+            _postRepository = postRepository;
             repository = vRepository;
             this.log = log;
         }
@@ -22,9 +25,9 @@ namespace BusinessLogic.Services
         private async Task SendListPostAsync(SocketHandler socketHandler)
         {
             string posts = "";
-            for (int i = 0; i < repository.Posts.Get().Count; i++)
+            for (int i = 0; i < _postRepository.Posts.Get().Count; i++)
             {
-                posts +=repository.Posts.Get()[i].Name+"#";
+                posts +=_postRepository.Posts.Get()[i].Name+"#";
             }
             posts += "Back" + "#";
             Packet packg = new Packet("RES", "4", posts);
@@ -33,7 +36,7 @@ namespace BusinessLogic.Services
 
         public async Task UploadFile(SocketHandler socketHandler)
         {
-            if (repository.Posts.Get().Count != 0)
+            if (_postRepository.Posts.Get().Count != 0)
             {
                 await SendListPostAsync(socketHandler);
                 ProtocolHandler protocolHandler = new ProtocolHandler();
@@ -49,15 +52,15 @@ namespace BusinessLogic.Services
                         UploadDate = DateTime.Now
                       
                     };
-                    Post oldPost = repository.Posts.Find(x => x.Name == fileData[0]);
-                    Post post = repository.Posts.Find(x => x.Name == fileData[0]);
+                    Post oldPost = _postRepository.Posts.Find(x => x.Name == fileData[0]);
+                    Post post = _postRepository.Posts.Find(x => x.Name == fileData[0]);
                     if (post.File == null) post.File = new File();
                     post.File = file;
                     if (file.Themes == null) file.Themes = new List<Theme>();
                     file.Themes = post.Themes;
                     if (file.Post == null) file.Post = new Post();
                     file.Post = post;
-                    repository.Posts.Update(oldPost,post);
+                    _postRepository.Posts.Update(oldPost,post);
                     repository.Files.Add(file);
                 }
             }

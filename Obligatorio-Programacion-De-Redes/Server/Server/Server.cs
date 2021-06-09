@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
 using BusinessLogic;
+using BusinessLogic.Managers;
 using BusinessLogic.Services;
 using DataHandler;
 using Domain;
@@ -27,23 +28,27 @@ namespace ServerGRPC.Server
        private IThemeService _themeService;
        private IFileService _fileService;
        private ManagerRepository _repository;
+       private ManagerPostRepository _postRepository;
+       private ManagerThemeRepository _themeRepository;
        
-       public Server(ManagerRepository repository)
+       public Server(ManagerRepository repository,ManagerPostRepository postRepository, ManagerThemeRepository themeRepository)
        {
+           _postRepository = postRepository;
+           _themeRepository = themeRepository;
            _repository = repository;
            var rabbitHelper = new RabbitHelper();
            log = new Log(rabbitHelper);
            _tcpListener = new TcpListener(IPAddress.Parse(ConfigurationManager.AppSettings["ServerIp"]), Int32.Parse(ConfigurationManager.AppSettings["ServerPort"]));
-           _postService = new PostService(repository, log);
-           _themeService = new ThemeService(repository, log);
-           _fileService = new FileService(repository, log);
+           _postService = new PostService(repository, log, postRepository, themeRepository );
+           _themeService = new ThemeService(repository, log , postRepository, themeRepository);
+           _fileService = new FileService(repository, postRepository, log);
        }
 
        public async Task StartServerAsync()
        {
            Task.Run(async () =>
            {
-               new HomePageServer().MenuAsync(_repository,exit);
+               new HomePageServer().MenuAsync(_repository,exit,_postRepository,_themeRepository);
            });
            
            while (!exit)

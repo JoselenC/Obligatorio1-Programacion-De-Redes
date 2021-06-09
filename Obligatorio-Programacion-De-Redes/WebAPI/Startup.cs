@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BusinessLogic;
+using BusinessLogic.Managers;
 using DataAccess;
 using GrpcServices;
 using Microsoft.AspNetCore.Builder;
@@ -35,6 +36,8 @@ namespace WebAPI
             services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo {Title = "WebAPI", Version = "v1"}); });
             services.AddScoped<IPostServiceGrpc, PostServiceGrpc>();
             services.AddScoped<IThemeServiceGrpc, ThemeServiceGrpc>();
+            services.AddScoped<ManagerPostRepository, DataBasePostRepository>();
+            services.AddScoped<ManagerThemeRepository, DataBaseThemeRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

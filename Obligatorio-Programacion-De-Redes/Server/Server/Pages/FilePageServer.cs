@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Sockets;
 using BusinessLogic;
+using BusinessLogic.Managers;
 using DataHandler;
 using Domain;
 using Server;
@@ -13,7 +14,7 @@ namespace Server
     public class FilePageServer
     {
         
-        public void ShowFileList(ManagerRepository repository)
+        public void ShowFileList(ManagerRepository repository,ManagerPostRepository managerPostRepository,ManagerThemeRepository managerThemeRepository)
         {
             string[] _options = {"All files", "By theme", "Order by creation date", "Order by name", "Order by size", "Back"};
             int option = new MenuServer().ShowMenu(_options, "File menu");
@@ -21,27 +22,27 @@ namespace Server
             {
                 case 1:
                     Console.Clear();
-                    ShowAllFiles(repository);
+                    ShowAllFiles(repository,managerPostRepository,managerThemeRepository);
                     break;
                 case 2:
                     Console.Clear();
-                    ShowFileByTheme(repository);
+                    ShowFileByTheme(repository,managerPostRepository,managerThemeRepository);
                     break;
                 case 3:
                     Console.Clear();
-                    ShowFileByDate(repository);
+                    ShowFileByDate(repository,managerPostRepository,managerThemeRepository);
                     break;
                 case 4:
                     Console.Clear();
-                    ShowFileByName(repository);
+                    ShowFileByName(repository,managerPostRepository,managerThemeRepository);
                     break;
                 case 5:
                     Console.Clear();
-                    ShowFileBySize(repository);
+                    ShowFileBySize(repository,managerPostRepository,managerThemeRepository);
                     break;
                 case 6:
                     Console.Clear();  
-                    new HomePageServer().MenuAsync(repository,false);
+                    new HomePageServer().MenuAsync(repository,false,managerPostRepository,managerThemeRepository);
                     break;
                 default:
                     Console.WriteLine("Invalid option");
@@ -77,14 +78,15 @@ namespace Server
                 return optionSelectedPosts;
             }
         }
-        private void ShowFileBySize(ManagerRepository repository)
+        private void ShowFileBySize(ManagerRepository repository,ManagerPostRepository managerPostRepository,ManagerThemeRepository managerThemeRepository)
         {
             var optionSelect = ListFileBySize(repository,"Files by size");
             if (optionSelect == "Back")
             {
-                ShowFileList(repository);
+                ShowFileList(repository,managerPostRepository,managerThemeRepository);
             }
-            ShowFileList(repository);
+
+            ShowFileList(repository, managerPostRepository, managerThemeRepository);
         }
 
         private static string ListFileByName(ManagerRepository repository,string title)
@@ -129,14 +131,14 @@ namespace Server
                 return optionSelectedPosts;
             }
         }
-        private void ShowFileByName(ManagerRepository repository)
+        private void ShowFileByName(ManagerRepository repository,ManagerPostRepository managerPostRepository,ManagerThemeRepository managerThemeRepository)
         {
             var optionSelect = ListFileByName(repository,"Files by name");
             if (optionSelect == "Back")
             {
-                ShowFileList(repository);
+                ShowFileList(repository, managerPostRepository, managerThemeRepository);
             }
-            ShowFileList(repository);
+            ShowFileList(repository, managerPostRepository, managerThemeRepository);
         }
         
         private static string ListFileByDate(ManagerRepository repository,string title)
@@ -182,22 +184,22 @@ namespace Server
             }
         }
 
-        private void ShowFileByDate(ManagerRepository repository)
+        private void ShowFileByDate(ManagerRepository repository,ManagerPostRepository managerPostRepository,ManagerThemeRepository managerThemeRepository)
         {
             var optionSelect = ListFileByDate(repository,"Files by date");
             if (optionSelect == "Back")
             {
-                ShowFileList(repository);
+                ShowFileList(repository,managerPostRepository,managerThemeRepository);
             }
-            ShowFileList(repository);
+            ShowFileList(repository,managerPostRepository,managerThemeRepository);
         }
 
-        private string ListThemes(ManagerRepository repository)
+        private string ListThemes(ManagerThemeRepository managerThemeRepository)
         {
-            string [] posts= new string[repository.Themes.Get().Count];
-            for (int i = 0; i < repository.Themes.Get().Count; i++)
+            string [] posts= new string[managerThemeRepository.Themes.Get().Count];
+            for (int i = 0; i < managerThemeRepository.Themes.Get().Count; i++)
             {
-                posts[i] = repository.Themes.Get()[i].Name;
+                posts[i] = managerThemeRepository.Themes.Get()[i].Name;
             }
             int index = new MenuServer().ShowMenu(posts, "Themes");
             string optionSelect = posts[index - 1];
@@ -205,30 +207,30 @@ namespace Server
         }
 
 
-        private void ShowFileByTheme(ManagerRepository repository)
+        private void ShowFileByTheme(ManagerRepository repository,ManagerPostRepository managerPostRepository,ManagerThemeRepository managerThemeRepository)
         {
-            if (repository.Themes.Get().Count > 0)
+            if (managerThemeRepository.Themes.Get().Count > 0)
             {
-                var themeName = ListThemes(repository);
-                var optionSelect = ListFileByTheme(repository, "Files by theme name", themeName);
+                var themeName = ListThemes(managerThemeRepository);
+                var optionSelect = ListFileByTheme(repository, "Files by theme name", themeName,managerThemeRepository);
                 if (optionSelect == "Back")
                 {
-                    ShowFileList(repository);
+                    ShowFileList(repository,managerPostRepository,managerThemeRepository);
                 }
-                ShowFileList(repository);
+                ShowFileList(repository,managerPostRepository,managerThemeRepository);
             }
             else
             {
                 Console.WriteLine("There aren't themes to filter");
-                ShowFileList(repository);
+                ShowFileList(repository,managerPostRepository,managerThemeRepository);
             }
         }
         
-        private static string ListFileByTheme(ManagerRepository repository,string title,string themeName)
+        private static string ListFileByTheme(ManagerRepository repository,string title,string themeName,ManagerThemeRepository managerThemeRepository)
         {
             Console.ForegroundColor = ConsoleColor.DarkCyan;
             Console.WriteLine("----"+ title +"----");
-            Theme theme = repository.Themes.Find(x => x.Name == themeName);
+            Theme theme = managerThemeRepository.Themes.Find(x => x.Name == themeName);
             for (var i = 0; i < repository.Files.Get().Count; i++)
             {
                 if (repository.Files.Get()[i].Themes != null)
@@ -311,16 +313,16 @@ namespace Server
             }
         }
 
-        public void ShowAllFiles(ManagerRepository repository)
+        public void ShowAllFiles(ManagerRepository repository,ManagerPostRepository managerPostRepository,ManagerThemeRepository managerThemeRepository)
         {
             var optionSelect = ListFiles(repository, "File posts");
             if (optionSelect == "Back")
             {
-                ShowFileList(repository);
+                ShowFileList(repository,managerPostRepository,managerThemeRepository);
             }
             else
             {
-                Post post = repository.Posts.Find(x => x.Name == optionSelect);
+                Post post = managerPostRepository.Posts.Find(x => x.Name == optionSelect);
                 File file = post.File;
                 Console.WriteLine("File\n" + "Name:" + file.Name + "Size:" + file.Size
                                   + "Upload date" + file.UploadDate);
@@ -338,8 +340,7 @@ namespace Server
                     Console.WriteLine("Name: " + file.Post.Name);
                 }
             }
-
-            ShowFileList(repository);
+            ShowFileList(repository,managerPostRepository,managerThemeRepository);
         }
     }
 }

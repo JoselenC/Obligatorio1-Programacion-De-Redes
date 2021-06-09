@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Sockets;
 using BusinessLogic;
+using BusinessLogic.Managers;
 using Domain;
 using DataHandler;
 using Server;
@@ -13,7 +14,7 @@ namespace Server
     public class PostPageServer
     {
 
-        public void Menu(ManagerRepository repository)
+        public void Menu(ManagerRepository repository, ManagerPostRepository managerPostRepository, ManagerThemeRepository managerThemeRepository)
         {
             string[] _options = {"Show theme post", "Show post", "Show file post", "Back"};
             int option = new MenuServer().ShowMenu(_options,"Post menu");
@@ -21,19 +22,19 @@ namespace Server
                 {
                     case 1:
                         Console.Clear();
-                       MenuShowThemePost(repository);
+                       MenuShowThemePost(repository,managerPostRepository,managerThemeRepository);
                         break;
                     case 2:
                         Console.Clear();
-                        ShowEspecificPost(repository);
+                        ShowEspecificPost(repository,managerPostRepository,managerThemeRepository);
                         break;
                     case 3:
                         Console.Clear();
-                        ShowFilePost(repository);
+                        ShowFilePost(repository,managerPostRepository,managerThemeRepository);
                         break;
                     case 4:
                         Console.Clear();
-                        new HomePageServer().MenuAsync(repository,false);
+                        new HomePageServer().MenuAsync(repository,false,managerPostRepository,managerThemeRepository);
                         break;
                     default:
                         break;
@@ -41,16 +42,16 @@ namespace Server
             }
         }
         
-        private void ShowEspecificPost(ManagerRepository repository)
+        private void ShowEspecificPost(ManagerRepository repository, ManagerPostRepository managerPostRepository, ManagerThemeRepository managerThemeRepository)
         {
-            var optionSelect = ListPost(repository);
+            var optionSelect = ListPost(managerPostRepository);
             if (optionSelect == "Back")
             {
-                Menu(repository);
+                Menu(repository,managerPostRepository,managerThemeRepository);
             }
             else
             {
-                Post post = repository.Posts.Find(a => a.Name==optionSelect);
+                Post post = managerPostRepository.Posts.Find(a => a.Name==optionSelect);
                 Console.WriteLine("Post\n" + "Name: " + post.Name + "Creation date: " + post.CreationDate);
               
                 if (post.Themes != null)
@@ -68,10 +69,10 @@ namespace Server
                 }
 
             }
-            Menu(repository);
+            Menu(repository,managerPostRepository,managerThemeRepository);
         }
 
-       private void MenuShowThemePost(ManagerRepository repository)
+       private void MenuShowThemePost(ManagerRepository repository, ManagerPostRepository managerPostRepository, ManagerThemeRepository managerThemeRepository)
         { 
             string[] _options = {"By creation date", "By theme", "By both", "Back"};
             int option = new MenuServer().ShowMenu(_options,"Filter");
@@ -79,18 +80,18 @@ namespace Server
                 {
                     case 1:
                         Console.Clear();
-                        ShowThemePostByCreationDate(repository);
+                        ShowThemePostByCreationDate(managerThemeRepository,managerPostRepository,repository);
                         break;
                     case 2:
                         Console.Clear();
-                        ShowPostByTheme(repository);
+                        ShowPostByTheme(repository,managerThemeRepository,managerPostRepository);
                         break;
                     case 3:
                         Console.Clear();
-                        ShowThemePostByDateAndTheme(repository);
+                        ShowThemePostByDateAndTheme(repository,managerThemeRepository,managerPostRepository);
                         break;
                     case 4:
-                        new HomePageServer().MenuAsync(repository,false);
+                        new HomePageServer().MenuAsync(repository,false,managerPostRepository,managerThemeRepository);
                         break;
                     default:
                         Console.WriteLine("Invalid option");
@@ -98,9 +99,9 @@ namespace Server
                 }
         }
        
-     private static string ListPostOrder(ManagerRepository repository,string title)
+     private static string ListPostOrder(string title,ManagerPostRepository managerPostRepository)
        {
-           IOrderedEnumerable<Post> orderedEnumerable= repository.Posts.Get().OrderBy(x=> new DateTime(Convert.ToInt32(x.CreationDate.Substring(6, 4)), Convert.ToInt32(x.CreationDate.Substring(3, 2)), // Month
+           IOrderedEnumerable<Post> orderedEnumerable= managerPostRepository.Posts.Get().OrderBy(x=> new DateTime(Convert.ToInt32(x.CreationDate.Substring(6, 4)), Convert.ToInt32(x.CreationDate.Substring(3, 2)), // Month
                                     Convert.ToInt32(x.CreationDate.Substring(0, 2))));
             List<Post>orderList=orderedEnumerable.ToList();
            Console.ForegroundColor = ConsoleColor.DarkCyan;
@@ -127,26 +128,26 @@ namespace Server
            }
        }
        
-       private static string ListPostByTheme(ManagerRepository repository,string title,string themeName)
+       private static string ListPostByTheme(ManagerPostRepository managerPostRepository,ManagerThemeRepository managerThemeRepository,string title,string themeName)
        {
            Console.ForegroundColor = ConsoleColor.DarkCyan;
            Console.WriteLine("----"+ title +"----");
            int cant = 0;
             if (themeName != "Back")
             {
-                Theme theme = repository.Themes.Find(x => x.Name == themeName);
+                Theme theme = managerThemeRepository.Themes.Find(x => x.Name == themeName);
 
-                for (var i = 0; i < repository.Posts.Get().Count; i++)
+                for (var i = 0; i < managerPostRepository.Posts.Get().Count; i++)
                 {
 
-                    if (repository.Posts.Get()[i].Themes.Contains(theme))
+                    if (managerPostRepository.Posts.Get()[i].Themes.Contains(theme))
                     {
                         cant++;
                         Console.ForegroundColor = ConsoleColor.DarkCyan;
                         var prefix = "Post" + i + 1 + ":  ";
                         Console.BackgroundColor = ConsoleColor.Black;
-                        Console.WriteLine(prefix + "Name:" + repository.Posts.Get()[i].Name + "Creation date:" +
-                                          repository.Posts.Get()[i].CreationDate);
+                        Console.WriteLine(prefix + "Name:" + managerPostRepository.Posts.Get()[i].Name + "Creation date:" +
+                                          managerPostRepository.Posts.Get()[i].CreationDate);
                     }
                 }
 
@@ -166,7 +167,7 @@ namespace Server
                     }
                     else
                     {
-                        string optionSelectedPosts = repository.Posts.Get()[indexPost - 1].Name;
+                        string optionSelectedPosts = managerPostRepository.Posts.Get()[indexPost - 1].Name;
                         return optionSelectedPosts;
                     }
                 }
@@ -177,66 +178,68 @@ namespace Server
             }
        }
 
-        private static string ListThemes(ManagerRepository repository, string title)
+        private static string ListThemes(string title,ManagerThemeRepository managerThemeRepository)
         {
             Console.ForegroundColor = ConsoleColor.DarkCyan;
             Console.WriteLine("----" + title + "----");
-            for (var i = 0; i < repository.Themes.Get().Count; i++)
+            for (var i = 0; i < managerThemeRepository.Themes.Get().Count; i++)
             {
                 Console.ForegroundColor = ConsoleColor.DarkCyan;
                 Console.WriteLine("Theme" + (i + 1) + ":  ");
                 Console.ForegroundColor = ConsoleColor.White;
-                Console.WriteLine("Name: " + repository.Themes.Get()[i].Name + " Description: " +
-                                  repository.Themes.Get()[i].Description);
+                Console.WriteLine("Name: " + managerThemeRepository.Themes.Get()[i].Name + " Description: " +
+                                  managerThemeRepository.Themes.Get()[i].Description);
             }
 
             Console.ForegroundColor = ConsoleColor.DarkCyan;
-            Console.WriteLine(repository.Themes.Get().Count + 1 + ".  Back");
+            Console.WriteLine(managerThemeRepository.Themes.Get().Count + 1 + ".  Back");
             Console.ForegroundColor = ConsoleColor.White;
             var var = Console.ReadLine();
             int indexThemes = Int32.Parse(var);
-            if (indexThemes > repository.Themes.Get().Count)
+            if (indexThemes > managerThemeRepository.Themes.Get().Count)
             {
                 return "Back";
             }
             else
             {
-                string optionSelectThemes = repository.Themes.Get()[indexThemes - 1].Name;
+                string optionSelectThemes = managerThemeRepository.Themes.Get()[indexThemes - 1].Name;
                 return optionSelectThemes;
             }
         }
 
-        public void ShowPostByTheme(ManagerRepository repository)
+        public void ShowPostByTheme(ManagerRepository repository,ManagerThemeRepository managerThemeRepository,ManagerPostRepository managerPostRepository)
        {
-            var optionTheme = ListThemes(repository, "Select theme to filter");
-           var optionSelect = ListPostByTheme(repository,"Posts by theme name", optionTheme);
+            var optionTheme = ListThemes( "Select theme to filter",managerThemeRepository);
+           var optionSelect = ListPostByTheme(managerPostRepository,managerThemeRepository,"Posts by theme name", optionTheme);
            if (optionSelect == "Back")
            {
-               MenuShowThemePost(repository);
+               MenuShowThemePost(repository,managerPostRepository,managerThemeRepository);
            }
            else if (optionSelect == "0")
            {
                Console.WriteLine("There aren't post with this theme ");
-               MenuShowThemePost(repository);
+               MenuShowThemePost(repository,managerPostRepository,managerThemeRepository);
            }
            else
            {
-               MenuShowThemePost(repository);
+               MenuShowThemePost(repository,managerPostRepository,managerThemeRepository);
            }
            
        }
 
-       private static string ListPostByThemeAndCreationDate(ManagerRepository repository,string title,string themeName)
+       private static string ListPostByThemeAndCreationDate(ManagerThemeRepository managerThemeRepository,ManagerPostRepository managerPostRepository,string title,string themeName)
        {
-            IOrderedEnumerable<Post> orderedEnumerable = repository.Posts.Get().OrderBy(x => new DateTime(Convert.ToInt32(x.CreationDate.Substring(6, 4)), Convert.ToInt32(x.CreationDate.Substring(3, 2)), // Month
-                                     Convert.ToInt32(x.CreationDate.Substring(0, 2))));
+            IOrderedEnumerable<Post> orderedEnumerable = managerPostRepository.Posts.Get()
+                .OrderBy(x => new DateTime(Convert.ToInt32(x.CreationDate.Substring(6, 4)), 
+                    Convert.ToInt32(x.CreationDate.Substring(3, 2)), // Month
+                    Convert.ToInt32(x.CreationDate.Substring(0, 2))));
             List<Post>orderList=orderedEnumerable.ToList();
            Console.ForegroundColor = ConsoleColor.DarkCyan;
            Console.WriteLine("----"+ title +"----");
            int cant = 0;
             if (themeName != "Back")
             {
-                Theme theme = repository.Themes.Find(x => x.Name == themeName);
+                Theme theme = managerThemeRepository.Themes.Find(x => x.Name == themeName);
                 for (var i = 0; i < orderList.Count; i++)
                 {
 
@@ -277,64 +280,64 @@ namespace Server
                 return "Back";
             }
        }
-       private void ShowThemePostByCreationDate(ManagerRepository repository)
+       private void ShowThemePostByCreationDate(ManagerThemeRepository managerThemeRepository,ManagerPostRepository managerPostRepository,ManagerRepository repository)
        {
-           var optionSelect = ListPostOrder(repository,"Posts by creation date");
+           var optionSelect = ListPostOrder("Posts by creation date",managerPostRepository);
            if (optionSelect == "Back")
            {
-               MenuShowThemePost(repository);
+               MenuShowThemePost(repository,managerPostRepository,managerThemeRepository);
            }
            else if(optionSelect == "0")
            {
                Console.WriteLine("There aren't post with this theme ");
-               MenuShowThemePost(repository);
+               MenuShowThemePost(repository,managerPostRepository,managerThemeRepository);
            }
            else
            {
-               MenuShowThemePost(repository);
+               MenuShowThemePost(repository,managerPostRepository,managerThemeRepository);
            }
        }
        
-       public void ShowThemePostByDateAndTheme(ManagerRepository repository)
+       public void ShowThemePostByDateAndTheme(ManagerRepository repository,ManagerThemeRepository managerThemeRepository,ManagerPostRepository managerPostRepository)
        {
-            var optionTheme = ListThemes(repository, "Select theme to filter");
-            var optionSelect = ListPostByThemeAndCreationDate(repository,"Posts by theme name", optionTheme);
+            var optionTheme = ListThemes( "Select theme to filter",managerThemeRepository);
+            var optionSelect = ListPostByThemeAndCreationDate(managerThemeRepository,managerPostRepository,"Posts by theme name", optionTheme);
            if (optionSelect == "Back")
            {
-               MenuShowThemePost(repository);
+               MenuShowThemePost(repository,managerPostRepository,managerThemeRepository);
            }
-           MenuShowThemePost(repository);
+           MenuShowThemePost(repository,managerPostRepository,managerThemeRepository);
        }
 
-       private static string ListPost(ManagerRepository repository)
+       private static string ListPost(ManagerPostRepository managerPostRepository)
        {
-           string[] postNames = GetPostNames(repository);
+           string[] postNames = GetPostNames(managerPostRepository);
            int index = new MenuServer().ShowMenu(postNames,"Posts");
            string optionSelect = postNames[index-1];
            return optionSelect;
        }
 
-       private static string[] GetPostNames(ManagerRepository repository)
+       private static string[] GetPostNames(ManagerPostRepository managerPostRepository)
        {
-           string[] themesName = new string[repository.Posts.Get().Count+1];
-           for (int i=0; i<repository.Posts.Get().Count; i++)
+           string[] themesName = new string[managerPostRepository.Posts.Get().Count+1];
+           for (int i=0; i<managerPostRepository.Posts.Get().Count; i++)
            {
-               themesName[i] = repository.Posts.Get()[i].Name;
+               themesName[i] = managerPostRepository.Posts.Get()[i].Name;
            }
 
-           themesName[repository.Posts.Get().Count] = "Back";
+           themesName[managerPostRepository.Posts.Get().Count] = "Back";
            return themesName;
        }
-       public void ShowFilePost(ManagerRepository repository)
-        {
-            var optionSelect = ListPost(repository);
+       public void ShowFilePost(ManagerRepository repository,ManagerPostRepository managerPostRepository, ManagerThemeRepository managerThemeRepository)
+       {
+            var optionSelect = ListPost(managerPostRepository);
             if (optionSelect == "Back")
             {
-                Menu(repository);
+                Menu(repository,managerPostRepository,managerThemeRepository);
             }
             else
             {
-                Post post = repository.Posts.Find(x => x.Name == optionSelect);
+                Post post = managerPostRepository.Posts.Find(x => x.Name == optionSelect);
                 File file = post.File;
                 if (file != null)
                 {
@@ -353,7 +356,7 @@ namespace Server
                 {
                     Console.WriteLine("There aren't file to this post");
                 }
-                Menu(repository);
+                Menu(repository,managerPostRepository,managerThemeRepository);
             }
 
         }

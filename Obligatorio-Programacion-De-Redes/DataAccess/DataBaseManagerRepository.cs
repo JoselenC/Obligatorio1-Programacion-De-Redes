@@ -9,8 +9,6 @@ namespace DataAccess
     {
         public DataBaseManagerRepository()
         {
-            Posts = new DataBaseRepository<Post, PostDto>(new PostMapper());
-            Themes = new DataBaseRepository<Theme, ThemeDto>(new ThemeMapper());
             Files = new DataBaseRepository<File, FileDto>(new FileMapper());
             Clients = new DataBaseRepository<Client, ClientDto>(new ClientMapper());
             SemaphoreSlimPosts = new DataBaseRepository<SemaphoreSlimPost, SemaphoreSlimPostDto>(new SemaphorePostMapper());

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using BusinessLogic.Managers;
 using DataHandler;
 using Domain;
 using LogServer;
@@ -11,16 +12,21 @@ namespace BusinessLogic.Services
     public class PostService : IPostService
     {
         private ManagerRepository repository;
+        private ManagerPostRepository _postRepository;
+        private ManagerThemeRepository _themeRepository;
         private Log log;
-        public PostService(ManagerRepository vRepository,Log log)
+        public PostService(ManagerRepository vRepository,Log log, ManagerPostRepository managerPostRepository, 
+            ManagerThemeRepository managerThemeRepository)
         {
+            _postRepository = managerPostRepository;
+            _themeRepository = managerThemeRepository;
             repository = vRepository;
             this.log = log;
         }
         
         private async Task SendListThemesPostAsync(SocketHandler socketHandler, string namePost)
         {
-            Post postByName = repository.Posts.Find(x => x.Name == namePost);
+            Post postByName = _postRepository.Posts.Find(x => x.Name == namePost);
             string themes = "";
             if (postByName!=null)
             {
@@ -40,11 +46,11 @@ namespace BusinessLogic.Services
         private async Task SendListPostAsync(SocketHandler socketHandler)
         {
             string posts = "";
-            List<Post> listPosts = repository.Posts.Get();
+            List<Post> listPosts = _postRepository.Posts.Get();
             for (int i = 0; i < listPosts.Count; i++)
             {
                 //   SemaphoreSlimPost semaphoreSlimPost = repository.SemaphoreSlimPosts
-                //     .Find(x => x.Post.Name == repository.Posts.Get()[i].Name);
+                //     .Find(x => x.Post.Name == _postRepository.Posts.Get()[i].Name);
 
                 //    if (semaphoreSlimPost==null || semaphoreSlimPost.SemaphoreSlim.CurrentCount > 0)
                 //  {
@@ -59,11 +65,11 @@ namespace BusinessLogic.Services
         private async Task SendListThemesAsync(SocketHandler socketHandler)
         {
             string posts = "";
-            if (repository.Themes != null)
+            if (_themeRepository.Themes != null)
             {
-                for (int i = 0; i < repository.Themes.Get().Count; i++)
+                for (int i = 0; i < _themeRepository.Themes.Get().Count; i++)
                 {
-                    posts += repository.Themes.Get()[i].Name + "#";
+                    posts += _themeRepository.Themes.Get()[i].Name + "#";
                 }
             }
             posts += "Back" + "#";
@@ -73,7 +79,7 @@ namespace BusinessLogic.Services
         
         private bool AlreadyExistTheme(string name)
         {
-            Theme theme = repository.Themes.Find(x => x.Name == name);
+            Theme theme = _themeRepository.Themes.Find(x => x.Name == name);
             if (theme == null)
                 return false;
             return true;
@@ -83,7 +89,7 @@ namespace BusinessLogic.Services
         {
             try
             {
-                Post post = repository.Posts.Find(x => x.SameName(name));
+                Post post = _postRepository.Posts.Find(x => x.SameName(name));
                 return true;
             }
             catch (KeyNotFoundException)
@@ -95,10 +101,10 @@ namespace BusinessLogic.Services
         public async Task AddPostAsync(SocketHandler socketHandler)
         {
             
-            Packet packg = new Packet("RES", "2", repository.Themes.Get().Count.ToString());
+            Packet packg = new Packet("RES", "2", _themeRepository.Themes.Get().Count.ToString());
             await socketHandler.SendPackgAsync(packg);
             string message = "";
-            if (repository.Themes.Get().Count > 0)
+            if (_themeRepository.Themes.Get().Count > 0)
             {
                 var packet = await socketHandler.ReceivePackgAsync();
                 log.SaveLog("New post" + packet.Data);
@@ -110,7 +116,7 @@ namespace BusinessLogic.Services
                     if (!AlreadyExistPost(name))
                     {
                         Post post = new Post() { Name = name, CreationDate = creationDate };
-                        repository.Posts.Add(post);
+                        _postRepository.Posts.Add(post);
                         message = "The post " + name + " was created";
                     }
                     else
@@ -139,7 +145,7 @@ namespace BusinessLogic.Services
            //         repository.SemaphoreSlimPosts.Add(new SemaphoreSlimPost()
              //       {
                //         SemaphoreSlim = new SemaphoreSlim(1),
-                 //       Post = repository.Posts.Find(x => x.Name == name)
+                 //       Post = _postRepository.Posts.Find(x => x.Name == name)
                   //  });
                 //repository.SemaphoreSlimPosts
                   //  .Find(x => x.Post.Name == name).SemaphoreSlim.WaitAsync();
@@ -157,9 +163,9 @@ namespace BusinessLogic.Services
             string message;
             if (AlreadyExistPost(name))
             {
-                Post postByName = repository.Posts.Find(x => x.Name == name);
-                repository.Posts.Find(x => x.Name == name);
-                repository.Posts.Delete(postByName);
+                Post postByName = _postRepository.Posts.Find(x => x.Name == name);
+                _postRepository.Posts.Find(x => x.Name == name);
+                _postRepository.Posts.Delete(postByName);
                 message = "The post " + name + " was deleted";
             }
             else
@@ -193,7 +199,7 @@ namespace BusinessLogic.Services
          //       repository.SemaphoreSlimPosts.Add(new SemaphoreSlimPost()
            //     {
              //       SemaphoreSlim = new SemaphoreSlim(1),
-               //     Post = repository.Posts.Find(x => x.Name == oldName)
+               //     Post = _postRepository.Posts.Find(x => x.Name == oldName)
                // });
             //repository.SemaphoreSlimPosts
               //  .Find(x => x.Post.Name == oldName).SemaphoreSlim.WaitAsync();
@@ -219,13 +225,13 @@ namespace BusinessLogic.Services
             log.SaveLog("Modify post, old Name: " + oldName + "new name: "+name);
             string message;
             string newCreationDate = messageArray2[1];
-            Post postByName = repository.Posts.Find(x => x.Name == oldName);
+            Post postByName = _postRepository.Posts.Find(x => x.Name == oldName);
             if (!AlreadyExistPost(name))
             {
                 Post newPost = new Post() {Name = name, CreationDate = newCreationDate};
                 if (postByName.File != null) newPost.File = postByName.File;
                 if (postByName.Themes != null) newPost.Themes = postByName.Themes;
-                repository.Posts.Update(postByName,newPost);
+                _postRepository.Posts.Update(postByName,newPost);
                 message = "The post " + oldName + " was modified";
             }
             else
@@ -257,20 +263,20 @@ namespace BusinessLogic.Services
                 log.SaveLog("Associate theme: " + nameTheme +"to post: "+ namePost);
                 if (AlreadyExistTheme(nameTheme))
                 {
-                    Post postByName = repository.Posts.Find(x => x.Name == namePost);
-                    Theme theme = repository.Themes.Find(x => x.Name == nameTheme);
+                    Post postByName = _postRepository.Posts.Find(x => x.Name == namePost);
+                    Theme theme = _themeRepository.Themes.Find(x => x.Name == nameTheme);
                     if (postByName.Themes == null)
                         postByName.Themes = new List<Theme>();
                     if(postByName.Themes.Contains(theme))
                         message = "Not associated, the theme " + nameTheme + " already associated";
                     else
                     {
-                        repository.Themes.Delete(theme);
+                        _themeRepository.Themes.Delete(theme);
                         if (theme.Posts == null) 
                             theme.Posts = new List<Post>();
                         if(!theme.Posts.Contains(postByName))
                             theme.Posts.Add(postByName);
-                        repository.Themes.Add(theme);
+                        _themeRepository.Themes.Add(theme);
                         postByName.Themes.Add(theme);
                         message = "The theme " + nameTheme + " was associated";
                     }
@@ -287,11 +293,11 @@ namespace BusinessLogic.Services
         private async Task SendListThemesToPostAsync(SocketHandler socketHandler)
         {
             string posts = "";
-            if (repository.Themes != null)
+            if (_themeRepository.Themes != null)
             {
-                for (int i = 0; i < repository.Themes.Get().Count; i++)
+                for (int i = 0; i < _themeRepository.Themes.Get().Count; i++)
                 {
-                    posts += repository.Themes.Get()[i].Name + "#";
+                    posts += _themeRepository.Themes.Get()[i].Name + "#";
                 }
                 Packet packg = new Packet("RES", "2", posts);
                 await socketHandler.SendPackgAsync(packg);
@@ -309,14 +315,14 @@ namespace BusinessLogic.Services
             log.SaveLog("Associate theme: " + nameTheme +"to post: "+ namePost);
             if (AlreadyExistTheme(nameTheme))
             {
-                Post postByName = repository.Posts.Find(x => x.Name == namePost);
-                Theme oldtheme = repository.Themes.Find(x => x.Name == nameTheme);
-                Theme theme = repository.Themes.Find(x => x.Name == nameTheme);
+                Post postByName = _postRepository.Posts.Find(x => x.Name == namePost);
+                Theme oldtheme = _themeRepository.Themes.Find(x => x.Name == nameTheme);
+                Theme theme = _themeRepository.Themes.Find(x => x.Name == nameTheme);
                 if (theme.Posts == null) 
                     theme.Posts = new List<Post>();
                 if(!theme.Posts.Contains(postByName))
                     theme.Posts.Add(postByName);
-                repository.Themes.Update(oldtheme,theme);
+                _themeRepository.Themes.Update(oldtheme,theme);
                 if (postByName.Themes == null)
                     postByName.Themes = new List<Theme>();
                 if (postByName.Themes.Contains(theme))
@@ -346,7 +352,7 @@ namespace BusinessLogic.Services
                 if (AlreadyExistPost(namePost))
                 {
                     log.SaveLog("Search post: "+ namePost);
-                    Post post = repository.Posts.Find(x => x.Name == namePost);
+                    Post post = _postRepository.Posts.Find(x => x.Name == namePost);
                     message = post.Name + "#" + post.CreationDate;
                 }
                 else
@@ -366,7 +372,7 @@ namespace BusinessLogic.Services
             string namePost = packet.Data;
             await SendListThemesPostAsync(socketHandler,namePost);
             string themes = "";
-            foreach (var theme in repository.Themes.Get())
+            foreach (var theme in _themeRepository.Themes.Get())
             {
                 themes += theme.Name + "#";
             }
@@ -398,12 +404,12 @@ namespace BusinessLogic.Services
         private async Task<string> DisassociateAsync(string postName, string nameThemeDisassociate, string nameNewTheme)
         {
             string message;
-            Post oldPost = repository.Posts.Find(x => x.Name == postName);
-            Post newPost = repository.Posts.Find(x => x.Name == postName);
+            Post oldPost = _postRepository.Posts.Find(x => x.Name == postName);
+            Post newPost = _postRepository.Posts.Find(x => x.Name == postName);
             if (AlreadyExistTheme(nameThemeDisassociate) && AlreadyExistTheme(nameNewTheme))
             {
-                Theme theme = repository.Themes.Find(x => x.Name == nameThemeDisassociate);
-                Theme newTheme = repository.Themes.Find(x => x.Name == nameNewTheme);
+                Theme theme = _themeRepository.Themes.Find(x => x.Name == nameThemeDisassociate);
+                Theme newTheme = _themeRepository.Themes.Find(x => x.Name == nameNewTheme);
                 if (newPost.Themes != null && newPost.Themes.Contains(theme))
                 {
                     newPost.Themes.Remove(theme);
@@ -411,7 +417,7 @@ namespace BusinessLogic.Services
                 }
                 message = "The theme " + nameThemeDisassociate + " was disassociate and " + nameNewTheme +
                           " was associate";
-                repository.Posts.Update(oldPost, newPost);
+                _postRepository.Posts.Update(oldPost, newPost);
             }
             else if (!AlreadyExistTheme(nameThemeDisassociate))
             {

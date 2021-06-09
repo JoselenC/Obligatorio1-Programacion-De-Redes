@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using AutoMapper;
 using BusinessLogic;
+using BusinessLogic.Managers;
 using BusinessLogic.Services;
 using Domain;
 using Grpc.Core;
@@ -14,11 +15,10 @@ namespace ServerGRPC.ServerGrpc.Services
         private readonly IPostServiceGrpc _postService;
         private IPostService postService;
         private readonly IMapper _mapper;
-        private ManagerRepository _repository;
-        
-        public PostService(ILogger<PostService> logger, IPostServiceGrpc postService, ManagerRepository repository)
+        private ManagerPostRepository _postRepository;
+        public PostService(ILogger<PostService> logger, IPostServiceGrpc postService, ManagerPostRepository repository)
         {
-            _repository = repository;
+            _postRepository = repository;
             _postService = postService;
             var config = new MapperConfiguration(
                 conf =>
@@ -34,7 +34,7 @@ namespace ServerGRPC.ServerGrpc.Services
             
             Post post = _mapper.Map<Post>(request.Post);
             
-            var postRepsonse = _repository.Posts.Add(post);
+            var postRepsonse = _postRepository.Posts.Add(post);
             return new AddPostsReply
             {
                 Post = _mapper.Map<PostMessage>(postRepsonse)
@@ -44,8 +44,8 @@ namespace ServerGRPC.ServerGrpc.Services
         public override async Task<ModifyPostReply> ModifyPost(ModifyPostRequest request, ServerCallContext context)
         {
             var postRequest = _mapper.Map<Post>(request.Post);
-            var post =  _repository.Posts.Find(x=>x.Name==postRequest.Name);
-            var postRepsonse = _repository.Posts.Update(post,postRequest);
+            var post =  _postRepository.Posts.Find(x=>x.Name==postRequest.Name);
+            var postRepsonse = _postRepository.Posts.Update(post,postRequest);
             return new ModifyPostReply
             {
                 Post = _mapper.Map<PostMessage>(postRepsonse)
@@ -54,7 +54,7 @@ namespace ServerGRPC.ServerGrpc.Services
         public override async Task<DeletePostReply> DeletePost(DeletePostRequest request, ServerCallContext context)
         {
             var postRequest = _mapper.Map<Post>(request.Post);
-            _repository.Posts.Delete(postRequest);
+            _postRepository.Posts.Delete(postRequest);
             return new DeletePostReply { };
         }
     }

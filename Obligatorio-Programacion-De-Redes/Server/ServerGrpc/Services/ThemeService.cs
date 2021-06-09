@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using AutoMapper;
 using BusinessLogic;
+using BusinessLogic.Managers;
 using Domain;
 using Grpc.Core;
 using GrpcServices;
@@ -12,12 +13,12 @@ namespace ServerGRPC.ServerGrpc.Services
     {
         private readonly IThemeServiceGrpc _themeService;
         private readonly IMapper _mapper;
-        private ManagerRepository _repository;
+        private ManagerThemeRepository _themeRepository;
 
         public ThemeService(ILogger<ThemeService> logger, IThemeServiceGrpc themeService,
-            ManagerRepository repository)
+            ManagerThemeRepository repository)
         {
-            _repository = repository;
+            _themeRepository = repository;
             _themeService = themeService;
             var config = new MapperConfiguration(
                 conf =>
@@ -31,7 +32,7 @@ namespace ServerGRPC.ServerGrpc.Services
         public override async Task<AddThemesReply> AddTheme(AddThemesRequest request, ServerCallContext context)
         {
             var themeRequest = _mapper.Map<Theme>(request.Theme);
-            var themeRepsonse = _repository.Themes.Add(themeRequest);
+            var themeRepsonse = _themeRepository.Themes.Add(themeRequest);
             return new AddThemesReply
             {
                 Theme = _mapper.Map<ThemeMessage>(themeRepsonse)
@@ -41,8 +42,8 @@ namespace ServerGRPC.ServerGrpc.Services
         public override async Task<ModifyThemeReply> ModifyTheme(ModifyThemeRequest request, ServerCallContext context)
         {
             var themeRequest = _mapper.Map<Theme>(request.Theme);
-            var theme =  _repository.Themes.Find(x=>x.Name==themeRequest.Name);
-            var themeRepsonse = _repository.Themes.Update(theme,themeRequest);
+            var theme =  _themeRepository.Themes.Find(x=>x.Name==themeRequest.Name);
+            var themeRepsonse = _themeRepository.Themes.Update(theme,themeRequest);
             return new ModifyThemeReply
             {
                 Theme = _mapper.Map<ThemeMessage>(themeRepsonse)
@@ -51,7 +52,7 @@ namespace ServerGRPC.ServerGrpc.Services
         public override async Task<DeleteThemeReply> DeleteTheme(DeleteThemeRequest request, ServerCallContext context)
         {
             var themeRequest = _mapper.Map<Theme>(request.Theme);
-             _repository.Themes.Delete(themeRequest);
+            _themeRepository.Themes.Delete(themeRequest);
             return new DeleteThemeReply{ };
         }
     }

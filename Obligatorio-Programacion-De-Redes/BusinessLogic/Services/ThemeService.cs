@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using BusinessLogic.Managers;
 using DataHandler;
 using Domain;
 using LogServer;
@@ -13,10 +14,15 @@ namespace BusinessLogic.Services
     {
         
         private ManagerRepository repository;
+        private ManagerThemeRepository _themeRepository;
+        private ManagerPostRepository _postRepository;
         private Log log;
         private SemaphoreSlim semaphoreSlim;
-        public ThemeService(ManagerRepository vRepository,Log log)
+        public ThemeService(ManagerRepository vRepository,Log log,ManagerPostRepository managerPostRepository, 
+        ManagerThemeRepository managerThemeRepository)
         {
+            _postRepository = managerPostRepository;
+            _themeRepository = managerThemeRepository;
             repository = vRepository;
             this.log = log;
         }
@@ -47,7 +53,7 @@ namespace BusinessLogic.Services
                     if (!AlreadyExistTheme(name))
                     {
                         Theme theme = new Theme() { Name = name, Description = description };
-                        repository.Themes.Add(theme);
+                        _themeRepository.Themes.Add(theme);
                         message = "The theme " + name + " was added";
                     }
                     else
@@ -68,7 +74,7 @@ namespace BusinessLogic.Services
         {
             try
             {
-                Theme theme = repository.Themes.Find(x => x.Name == name);
+                Theme theme = _themeRepository.Themes.Find(x => x.Name == name);
                 return true;
             }
             catch (KeyNotFoundException)
@@ -99,7 +105,7 @@ namespace BusinessLogic.Services
            //     repository.SemaphoreSlimThemes.Add(new SemaphoreSlimTheme()
              //   {
                //     SemaphoreSlim = new SemaphoreSlim(1),
-                 //   Theme = repository.Themes.Find(x => x.Name == option)
+                 //   Theme = _themeRepository.Themes.Find(x => x.Name == option)
                // });
          //   repository.SemaphoreSlimThemes.Find(x => x.Theme.Name == option).SemaphoreSlim.WaitAsync();
             var packet2 = await socketHandler.ReceivePackgAsync();
@@ -117,10 +123,10 @@ namespace BusinessLogic.Services
             {
                 string description = messageArray2[1];
                 Theme theme = new Theme() {Name = name, Description = description};
-                Theme themeName = repository.Themes.Find(x => x.Name == option);
+                Theme themeName = _themeRepository.Themes.Find(x => x.Name == option);
                 if (!AlreadyExistTheme(name))
                 {
-                    repository.Themes.Update(themeName,theme);
+                    _themeRepository.Themes.Update(themeName,theme);
                     message = "The theme " + option + " was modified";
                     log.SaveLog("Modify theme" + themeName + "new name: "+ theme);
                 }
@@ -150,7 +156,7 @@ namespace BusinessLogic.Services
                 //    repository.SemaphoreSlimThemes.Add(new SemaphoreSlimTheme()
                   //  {
                     //    SemaphoreSlim = new SemaphoreSlim(1),
-                      //  Theme = repository.Themes.Find(x => x.Name == oldName)
+                      //  Theme = _themeRepository.Themes.Find(x => x.Name == oldName)
                    // });
               //  }
 
@@ -167,12 +173,12 @@ namespace BusinessLogic.Services
             string message;
             if (AlreadyExistTheme(oldName))
             {
-                Theme themeName = repository.Themes.Find(x => x.Name == oldName);
-                repository.Themes.Find(x => x.Name == oldName);
+                Theme themeName = _themeRepository.Themes.Find(x => x.Name == oldName);
+                _themeRepository.Themes.Find(x => x.Name == oldName);
                 if (!IsAssociatedAPost(themeName))
                 {
                     log.SaveLog("Delete theme" + themeName);
-                    repository.Themes.Delete(themeName);
+                    _themeRepository.Themes.Delete(themeName);
                     message = "The theme " + oldName + " was deleted";
                 }
                 else
@@ -205,7 +211,7 @@ namespace BusinessLogic.Services
         private async Task SendThemesAsync(SocketHandler socketHandler)
         {
             string themes = "";
-            foreach (var theme in repository.Themes.Get())
+            foreach (var theme in _themeRepository.Themes.Get())
             {
                 try
                 {
@@ -225,7 +231,7 @@ namespace BusinessLogic.Services
 
         private bool IsAssociatedAPost(Theme theme)
         {
-            foreach (var post in repository.Posts.Get())
+            foreach (var post in _postRepository.Posts.Get())
             {
                 if (post.Themes != null)
                 {

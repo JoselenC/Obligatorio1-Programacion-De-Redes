@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using BusinessLogic;
 using DataHandler;
+using Domain;
 using LogServer;
 using Protocol;
 using ProtocolFiles;
 
-namespace Domain.Services
+namespace BusinessLogic.Services
 {
     public class FileService : IFileService
     {

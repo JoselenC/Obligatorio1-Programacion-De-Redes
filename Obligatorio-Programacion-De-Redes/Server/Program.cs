@@ -5,7 +5,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using BusinessLogic;
 using DataAccess;
-using Domain.Services;
 using GrpcServices;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;

@@ -13,7 +13,7 @@ namespace DataAccess.Mappers
             if (clientDto is null)
                 clientDto = new ClientDto()
                 {
-                    LocalEndPoint = obj.LocalEndPoint,
+                    Ip= obj.Ip, 
                     TimeOfConnection = obj.TimeOfConnection
                 };
             return clientDto;
@@ -25,7 +25,6 @@ namespace DataAccess.Mappers
             {
                 Id = obj.Id, 
                 Ip = obj.Ip,
-                LocalEndPoint = obj.LocalEndPoint,
                 TimeOfConnection = obj.TimeOfConnection
             };
         }
@@ -33,7 +32,6 @@ namespace DataAccess.Mappers
         public ClientDto UpdateDtoObject(ClientDto objToUpdate, Client updatedObject, ContextDb context)
         {
             objToUpdate.Ip = updatedObject.Ip;
-            objToUpdate.LocalEndPoint = updatedObject.LocalEndPoint;
             objToUpdate.TimeOfConnection = updatedObject.TimeOfConnection;
             return objToUpdate;
         }

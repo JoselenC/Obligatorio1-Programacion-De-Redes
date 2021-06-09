@@ -223,6 +223,8 @@ namespace Domain.Services
             if (!AlreadyExistPost(name))
             {
                 Post newPost = new Post() {Name = name, CreationDate = newCreationDate};
+                if (postByName.File != null) newPost.File = postByName.File;
+                if (postByName.Themes != null) newPost.Themes = postByName.Themes;
                 repository.Posts.Update(postByName,newPost);
                 message = "The post " + oldName + " was modified";
             }

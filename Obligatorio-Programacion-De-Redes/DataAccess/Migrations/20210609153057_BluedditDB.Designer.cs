@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(ContextDb))]
-    [Migration("20210609014414_BluedditDB")]
+    [Migration("20210609153057_BluedditDB")]
     partial class BluedditDB
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -29,9 +29,6 @@ namespace DataAccess.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Ip")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LocalEndPoint")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("TimeOfConnection")

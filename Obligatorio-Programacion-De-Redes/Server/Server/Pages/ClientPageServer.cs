@@ -28,8 +28,7 @@ namespace Server
                     Console.WriteLine("Client " + prefix + ":  ");
                     Console.ForegroundColor = ConsoleColor.White;
                     Console.WriteLine(" Hour of connection: " + 
-                                     clientConnection.TimeOfConnection + "  Port: " + 
-                                     clientConnection.LocalEndPoint + "  Ip: " + 
+                                     clientConnection.TimeOfConnection + "  Ip: " + 
                                      clientConnection.Ip + "\n");
                 }
 

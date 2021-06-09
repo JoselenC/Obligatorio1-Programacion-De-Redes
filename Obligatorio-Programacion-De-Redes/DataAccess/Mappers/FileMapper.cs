@@ -11,7 +11,7 @@ namespace DataAccess.Mappers
     {
         public FileDto DomainToDto(File obj, ContextDb context)
         {
-            FileDto fileDto = context.Files.FirstOrDefault(x => x.Name == obj.Name);
+            FileDto fileDto = context.Files.FirstOrDefault(x => x.Id == obj.Id);
             if (fileDto is null)
             {
                 fileDto = new FileDto()
@@ -19,7 +19,11 @@ namespace DataAccess.Mappers
                     Name = obj.Name,
                     Size = obj.Size,
                     UploadDate = obj.UploadDate,
-                    Post = new PostMapper().DomainToDto(obj.Post,context)
+                    Post = new PostDto()
+                        {
+                            Name = obj.Post.Name,
+                            CreationDate = obj.Post.CreationDate
+                        }
                 };
             }
             else
@@ -27,9 +31,16 @@ namespace DataAccess.Mappers
                 context.Entry(fileDto).Collection("FilesThemesDto").Load();
             }
 
+            List<ThemeDto> themes = new PostMapper().CreateThemes(obj.Post.Themes, context);
+            fileDto.Post.PostsThemesDto = new List<PostThemeDto>();
+            foreach (var themeDto in themes)
+            {
+                fileDto.Post.PostsThemesDto.Add(new PostThemeDto(){Post = fileDto.Post, Theme = themeDto});
+            }
+
             if (obj.Themes != null)
             {
-                List<ThemeDto> themes = CreateThemes(obj.Themes, context);
+                themes = CreateThemes(obj.Themes, context);
                 fileDto.FilesThemesDto = new List<FileThemeDto>();
                 foreach (var themeDto in themes)
                 {
@@ -68,7 +79,6 @@ namespace DataAccess.Mappers
                                 new PostThemeDto()
                                 {
                                     Theme = themeDto,
-                                    Post = new PostMapper().DomainToDto(post,context)
                                 }
                             };
                         }
@@ -90,19 +100,36 @@ namespace DataAccess.Mappers
                 foreach (FileThemeDto fileThemeDto in obj.FilesThemesDto)
                 { 
                     ThemeDto themeDto= themesSet.FirstOrDefault(x => x.Id == fileThemeDto.ThemeId);
-                    if(themeDto!=null)
-                        themes.Add(new ThemeMapper().DtoToDomain(themeDto,context));
+                    if (themeDto != null)
+                    {
+                        Theme theme = new Theme()
+                        {
+                            Name = themeDto.Name,
+                            Description = themeDto.Description,
+                            Id = themeDto.Id
+                        };
+                        themes.Add(theme);
+                    }
                 }
             }
-            return new File()
+            File file= new File()
             {
                 Name = obj.Name,
                 Id = obj.Id,
                 Size = obj.Size,
                 UploadDate = obj.UploadDate,
-                Post = new PostMapper().DtoToDomain(obj.Post,context),
                 Themes = themes
             };
+            if (obj.Post != null)
+            {
+                file.Post = new Post()
+                {
+                    CreationDate = obj.Post.CreationDate,
+                    Name = obj.Post.Name
+                };
+            }
+
+            return file;
         }
 
         public FileDto UpdateDtoObject(FileDto objToUpdate, File updatedObject, ContextDb context)

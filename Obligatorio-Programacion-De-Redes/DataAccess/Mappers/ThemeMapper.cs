@@ -51,8 +51,7 @@ namespace DataAccess.Mappers
                         postDto = new PostDto()
                         {
                             Name = post.Name,
-                            CreationDate = post.CreationDate,
-                            FileDto = new FileMapper().DomainToDto(post.File, context)
+                            CreationDate = post.CreationDate
                         };
                     }
                     if (post.Themes != null)

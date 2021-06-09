@@ -82,8 +82,7 @@ namespace ServerGRPC.Server
                 Client clientConnection = new Client()
                 {
                     TimeOfConnection = DateTime.Now.ToString(),
-                    LocalEndPoint = _tcpListener.LocalEndpoint.ToString(),
-                    Ip = ConfigurationManager.AppSettings["ServerIp"]
+                    Ip = _tcpListener.LocalEndpoint.ToString(),
                 };
                 repository.Clients.Add(clientConnection);
             }

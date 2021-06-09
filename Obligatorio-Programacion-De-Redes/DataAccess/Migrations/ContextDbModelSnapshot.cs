@@ -29,9 +29,6 @@ namespace DataAccess.Migrations
                     b.Property<string>("Ip")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("LocalEndPoint")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("TimeOfConnection")
                         .HasColumnType("nvarchar(max)");
 

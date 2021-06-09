@@ -36,7 +36,7 @@ namespace DataAccess.Mappers
             return postDto;
         }
         
-        private List<ThemeDto> CreateThemes(List<Theme> themes, ContextDb context)
+        public List<ThemeDto> CreateThemes(List<Theme> themes, ContextDb context)
         {
               
             List<ThemeDto> themesDto = new List<ThemeDto>();
@@ -64,7 +64,6 @@ namespace DataAccess.Mappers
                                 new PostThemeDto()
                                 {
                                     Theme = themeDto,
-                                    Post = new PostMapper().DomainToDto(post,context)
                                 }
                             };
                         }
@@ -96,8 +95,6 @@ namespace DataAccess.Mappers
                         };
                         themes.Add(theme);
                     }
-
-                  
                 }
             }
             
@@ -118,7 +115,8 @@ namespace DataAccess.Mappers
             ThemeMapper themeMapper = new ThemeMapper();
             objToUpdate.Name = updatedObject.Name;
             objToUpdate.CreationDate = updatedObject.CreationDate;
-            objToUpdate.FileDto = new FileMapper().DomainToDto(updatedObject.File,context);
+            if(updatedObject.File!=null)
+             objToUpdate.FileDto = new FileMapper().DomainToDto(updatedObject.File,context);
             var diffListOldValuesThemes = UpdatePostsThemesDto(objToUpdate, updatedObject, context, themeMapper);
             objToUpdate.PostsThemesDto = diffListOldValuesThemes;
             return objToUpdate;

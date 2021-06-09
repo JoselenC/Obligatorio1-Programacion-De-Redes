@@ -14,7 +14,6 @@ namespace DataAccess.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     TimeOfConnection = table.Column<string>(nullable: true),
-                    LocalEndPoint = table.Column<string>(nullable: true),
                     Ip = table.Column<string>(nullable: true)
                 },
                 constraints: table =>

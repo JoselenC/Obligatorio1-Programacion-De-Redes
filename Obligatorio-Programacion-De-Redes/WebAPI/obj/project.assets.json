@@ -1642,10 +1642,7 @@
         },
         "runtime": {
           "bin/placeholder/AdministrativeServer.dll": {}
-        },
-        "frameworkReferences": [
-          "Microsoft.AspNetCore.App"
-        ]
+        }
       },
       "BusinessLogic/1.0.0": {
         "type": "project",

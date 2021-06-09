@@ -84,7 +84,7 @@ namespace ServerGRPC.Server
             {
                 _exit = true;
                 Client client = repository.Clients.Find(x =>
-                 x.LocalEndPoint ==_tcpListener.LocalEndpoint.ToString());
+                 x.Ip ==_tcpListener.LocalEndpoint.ToString());
               repository.Clients.Delete(client);
               Console.WriteLine("Removing client....");
               connectedClients.Remove(_tcpListener.Server);

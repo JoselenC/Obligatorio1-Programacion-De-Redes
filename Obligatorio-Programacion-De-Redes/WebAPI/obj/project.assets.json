@@ -533,6 +533,26 @@
           }
         }
       },
+      "AdministrativeServer/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v3.1",
+        "dependencies": {
+          "AutoMapper": "10.1.1",
+          "Google.Protobuf": "3.17.2",
+          "Grpc.AspNetCore": "2.37.0",
+          "GrpcServicesInterfaces": "1.0.0",
+          "Server": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/AdministrativeServer.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/AdministrativeServer.dll": {}
+        },
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ]
+      },
       "ClientGRPC/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v3.1",
@@ -561,7 +581,7 @@
           "AutoMapper": "10.1.1",
           "LogServer": "1.0.0",
           "ProtocolFiles": "1.0.0",
-          "ServerGRPC": "1.0.0"
+          "Server": "1.0.0"
         },
         "compile": {
           "bin/placeholder/Domain.dll": {}
@@ -638,20 +658,21 @@
           "bin/placeholder/ProtocolFiles.dll": {}
         }
       },
-      "ServerGRPC/1.0.0": {
+      "Server/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v3.1",
         "dependencies": {
           "AutoMapper": "10.1.1",
           "Google.Protobuf": "3.17.2",
           "Grpc.AspNetCore": "2.37.0",
-          "GrpcServicesInterfaces": "1.0.0"
+          "GrpcServicesInterfaces": "1.0.0",
+          "System.Configuration.ConfigurationManager": "6.0.0-preview.4.21253.7"
         },
         "compile": {
-          "bin/placeholder/ServerGRPC.dll": {}
+          "bin/placeholder/Server.dll": {}
         },
         "runtime": {
-          "bin/placeholder/ServerGRPC.dll": {}
+          "bin/placeholder/Server.dll": {}
         },
         "frameworkReferences": [
           "Microsoft.AspNetCore.App"
@@ -1674,6 +1695,11 @@
         "system.windows.extensions.nuspec"
       ]
     },
+    "AdministrativeServer/1.0.0": {
+      "type": "project",
+      "path": "../AdministrativeServer/AdministrativeServer.csproj",
+      "msbuildProject": "../AdministrativeServer/AdministrativeServer.csproj"
+    },
     "ClientGRPC/1.0.0": {
       "type": "project",
       "path": "../ClientGRPC/ClientGRPC.csproj",
@@ -1709,7 +1735,7 @@
       "path": "../ProtocolFiles/ProtocolFiles.csproj",
       "msbuildProject": "../ProtocolFiles/ProtocolFiles.csproj"
     },
-    "ServerGRPC/1.0.0": {
+    "Server/1.0.0": {
       "type": "project",
       "path": "../ServerGRPC/ServerGRPC.csproj",
       "msbuildProject": "../ServerGRPC/ServerGRPC.csproj"
@@ -1717,6 +1743,7 @@
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v3.1": [
+      "AdministrativeServer >= 1.0.0",
       "ClientGRPC >= 1.0.0",
       "GrpcServicesInterfaces >= 1.0.0",
       "Swashbuckle.AspNetCore >= 5.6.3"
@@ -1749,6 +1776,9 @@
         "netcoreapp3.1": {
           "targetAlias": "netcoreapp3.1",
           "projectReferences": {
+            "C:\\Obligatorio1-Programacion-De-Redes\\Obligatorio-Programacion-De-Redes\\AdministrativeServer\\AdministrativeServer.csproj": {
+              "projectPath": "C:\\Obligatorio1-Programacion-De-Redes\\Obligatorio-Programacion-De-Redes\\AdministrativeServer\\AdministrativeServer.csproj"
+            },
             "C:\\Obligatorio1-Programacion-De-Redes\\Obligatorio-Programacion-De-Redes\\ClientGRPC\\ClientGRPC.csproj": {
               "projectPath": "C:\\Obligatorio1-Programacion-De-Redes\\Obligatorio-Programacion-De-Redes\\ClientGRPC\\ClientGRPC.csproj"
             },

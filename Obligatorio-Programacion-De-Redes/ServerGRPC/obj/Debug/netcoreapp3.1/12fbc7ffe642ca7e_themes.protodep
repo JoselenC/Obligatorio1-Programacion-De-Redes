@@ -1,2 +1,0 @@
-obj\Debug\netcoreapp3.1\Protos/Themes.cs \
-obj\Debug\netcoreapp3.1\Protos/ThemesGrpc.cs: Protos/themes.proto

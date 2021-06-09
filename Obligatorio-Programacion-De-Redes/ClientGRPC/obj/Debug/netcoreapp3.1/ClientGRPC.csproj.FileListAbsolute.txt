@@ -1,4 +1,0 @@
-C:\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\ClientGRPC\obj\Debug\netcoreapp3.1\ClientGRPC.csprojAssemblyReference.cache
-C:\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\ClientGRPC\obj\Debug\netcoreapp3.1\ClientGRPC.AssemblyInfoInputs.cache
-C:\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\ClientGRPC\obj\Debug\netcoreapp3.1\ClientGRPC.AssemblyInfo.cs
-C:\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\ClientGRPC\obj\Debug\netcoreapp3.1\ClientGRPC.csproj.CoreCompileInputs.cache

@@ -127,7 +127,8 @@
       "Grpc.Tools/2.37.0": {
         "type": "package",
         "build": {
-          "build/_._": {}
+          "build/Grpc.Tools.props": {},
+          "build/Grpc.Tools.targets": {}
         }
       },
       "Microsoft.CSharp/4.7.0": {
@@ -459,25 +460,6 @@
           }
         }
       },
-      "Domain/1.0.0": {
-        "type": "project",
-        "framework": ".NETCoreApp,Version=v3.1",
-        "dependencies": {
-          "AutoMapper": "10.1.1",
-          "LogServer": "1.0.0",
-          "ProtocolFiles": "1.0.0",
-          "ServerGRPC": "1.0.0"
-        },
-        "compile": {
-          "bin/placeholder/Domain.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/Domain.dll": {}
-        },
-        "frameworkReferences": [
-          "Microsoft.AspNetCore.App"
-        ]
-      },
       "DomainObjects/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v3.1",
@@ -492,24 +474,6 @@
         "runtime": {
           "bin/placeholder/DomainObjects.dll": {}
         }
-      },
-      "GRPCClient/1.0.0": {
-        "type": "project",
-        "framework": ".NETCoreApp,Version=v3.1",
-        "dependencies": {
-          "Google.Protobuf": "3.17.1",
-          "Grpc.Net.Client": "2.37.0",
-          "ServerGRPC": "1.0.0"
-        },
-        "compile": {
-          "bin/placeholder/GRPCClient.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/GRPCClient.dll": {}
-        },
-        "frameworkReferences": [
-          "Microsoft.AspNetCore.App"
-        ]
       },
       "GrpcServicesInterfaces/1.0.0": {
         "type": "project",
@@ -560,45 +524,6 @@
         "runtime": {
           "bin/placeholder/ProtocolFiles.dll": {}
         }
-      },
-      "ServerGRPC/1.0.0": {
-        "type": "project",
-        "framework": ".NETCoreApp,Version=v3.1",
-        "dependencies": {
-          "AutoMapper": "10.1.1",
-          "Google.Protobuf": "3.17.2",
-          "Grpc.AspNetCore": "2.37.0",
-          "GrpcServicesInterfaces": "1.0.0"
-        },
-        "compile": {
-          "bin/placeholder/ServerGRPC.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/ServerGRPC.dll": {}
-        },
-        "frameworkReferences": [
-          "Microsoft.AspNetCore.App"
-        ]
-      },
-      "ServicesGRPC/1.0.0": {
-        "type": "project",
-        "framework": ".NETCoreApp,Version=v3.1",
-        "dependencies": {
-          "AutoMapper": "10.1.1",
-          "Google.Protobuf": "3.17.2",
-          "Grpc.AspNetCore": "2.37.0",
-          "GrpcServicesInterfaces": "1.0.0",
-          "ServerGRPC": "1.0.0"
-        },
-        "compile": {
-          "bin/placeholder/ServicesGRPC.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/ServicesGRPC.dll": {}
-        },
-        "frameworkReferences": [
-          "Microsoft.AspNetCore.App"
-        ]
       }
     }
   },
@@ -1510,20 +1435,10 @@
         "system.windows.extensions.nuspec"
       ]
     },
-    "Domain/1.0.0": {
-      "type": "project",
-      "path": "../Domain/Domain.csproj",
-      "msbuildProject": "../Domain/Domain.csproj"
-    },
     "DomainObjects/1.0.0": {
       "type": "project",
       "path": "../DomainObjects/DomainObjects.csproj",
       "msbuildProject": "../DomainObjects/DomainObjects.csproj"
-    },
-    "GRPCClient/1.0.0": {
-      "type": "project",
-      "path": "../GRPCClient/GRPCClient.csproj",
-      "msbuildProject": "../GRPCClient/GRPCClient.csproj"
     },
     "GrpcServicesInterfaces/1.0.0": {
       "type": "project",
@@ -1544,25 +1459,14 @@
       "type": "project",
       "path": "../ProtocolFiles/ProtocolFiles.csproj",
       "msbuildProject": "../ProtocolFiles/ProtocolFiles.csproj"
-    },
-    "ServerGRPC/1.0.0": {
-      "type": "project",
-      "path": "../ServerGRPC/ServerGRPC.csproj",
-      "msbuildProject": "../ServerGRPC/ServerGRPC.csproj"
-    },
-    "ServicesGRPC/1.0.0": {
-      "type": "project",
-      "path": "../ServicesGRPC/ServicesGRPC.csproj",
-      "msbuildProject": "../ServicesGRPC/ServicesGRPC.csproj"
     }
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v3.1": [
-      "Domain >= 1.0.0",
-      "DomainObjects >= 1.0.0",
-      "GRPCClient >= 1.0.0",
-      "LogServer >= 1.0.0",
-      "ServicesGRPC >= 1.0.0",
+      "AutoMapper >= 10.1.1",
+      "Google.Protobuf >= 3.17.2",
+      "Grpc.AspNetCore >= 2.37.0",
+      "GrpcServicesInterfaces >= 1.0.0",
       "System.Configuration.ConfigurationManager >= 6.0.0-preview.4.21253.7"
     ]
   },
@@ -1572,11 +1476,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Obligatorio1-Programacion-De-Redes\\Obligatorio-Programacion-De-Redes\\Server\\Server.csproj",
-      "projectName": "Server",
-      "projectPath": "C:\\Obligatorio1-Programacion-De-Redes\\Obligatorio-Programacion-De-Redes\\Server\\Server.csproj",
+      "projectUniqueName": "C:\\Obligatorio1-Programacion-De-Redes\\Obligatorio-Programacion-De-Redes\\ServerGRPC\\ServerGRPC.csproj",
+      "projectName": "ServerGRPC",
+      "projectPath": "C:\\Obligatorio1-Programacion-De-Redes\\Obligatorio-Programacion-De-Redes\\ServerGRPC\\ServerGRPC.csproj",
       "packagesPath": "C:\\Users\\Choche\\.nuget\\packages\\",
-      "outputPath": "C:\\Obligatorio1-Programacion-De-Redes\\Obligatorio-Programacion-De-Redes\\Server\\obj\\",
+      "outputPath": "C:\\Obligatorio1-Programacion-De-Redes\\Obligatorio-Programacion-De-Redes\\ServerGRPC\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Choche\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -1593,20 +1497,8 @@
         "netcoreapp3.1": {
           "targetAlias": "netcoreapp3.1",
           "projectReferences": {
-            "C:\\Obligatorio1-Programacion-De-Redes\\Obligatorio-Programacion-De-Redes\\DomainObjects\\DomainObjects.csproj": {
-              "projectPath": "C:\\Obligatorio1-Programacion-De-Redes\\Obligatorio-Programacion-De-Redes\\DomainObjects\\DomainObjects.csproj"
-            },
-            "C:\\Obligatorio1-Programacion-De-Redes\\Obligatorio-Programacion-De-Redes\\Domain\\Domain.csproj": {
-              "projectPath": "C:\\Obligatorio1-Programacion-De-Redes\\Obligatorio-Programacion-De-Redes\\Domain\\Domain.csproj"
-            },
-            "C:\\Obligatorio1-Programacion-De-Redes\\Obligatorio-Programacion-De-Redes\\GRPCClient\\GRPCClient.csproj": {
-              "projectPath": "C:\\Obligatorio1-Programacion-De-Redes\\Obligatorio-Programacion-De-Redes\\GRPCClient\\GRPCClient.csproj"
-            },
-            "C:\\Obligatorio1-Programacion-De-Redes\\Obligatorio-Programacion-De-Redes\\LogServer\\LogServer.csproj": {
-              "projectPath": "C:\\Obligatorio1-Programacion-De-Redes\\Obligatorio-Programacion-De-Redes\\LogServer\\LogServer.csproj"
-            },
-            "C:\\Obligatorio1-Programacion-De-Redes\\Obligatorio-Programacion-De-Redes\\ServicesGRPC\\ServicesGRPC.csproj": {
-              "projectPath": "C:\\Obligatorio1-Programacion-De-Redes\\Obligatorio-Programacion-De-Redes\\ServicesGRPC\\ServicesGRPC.csproj"
+            "C:\\Obligatorio1-Programacion-De-Redes\\Obligatorio-Programacion-De-Redes\\GrpcServicesInterfaces\\GrpcServicesInterfaces.csproj": {
+              "projectPath": "C:\\Obligatorio1-Programacion-De-Redes\\Obligatorio-Programacion-De-Redes\\GrpcServicesInterfaces\\GrpcServicesInterfaces.csproj"
             }
           }
         }
@@ -1621,6 +1513,18 @@
       "netcoreapp3.1": {
         "targetAlias": "netcoreapp3.1",
         "dependencies": {
+          "AutoMapper": {
+            "target": "Package",
+            "version": "[10.1.1, )"
+          },
+          "Google.Protobuf": {
+            "target": "Package",
+            "version": "[3.17.2, )"
+          },
+          "Grpc.AspNetCore": {
+            "target": "Package",
+            "version": "[2.37.0, )"
+          },
           "System.Configuration.ConfigurationManager": {
             "target": "Package",
             "version": "[6.0.0-preview.4.21253.7, )"

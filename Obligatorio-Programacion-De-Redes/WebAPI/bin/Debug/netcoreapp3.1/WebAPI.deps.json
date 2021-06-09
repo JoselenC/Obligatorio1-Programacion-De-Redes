@@ -31,6 +31,7 @@
     ".NETCoreApp,Version=v3.1": {
       "WebAPI/1.0.0": {
         "dependencies": {
+          "AdministrativeServer": "1.0.0",
           "ClientGRPC": "1.0.0",
           "GrpcServicesInterfaces": "1.0.0",
           "Swashbuckle.AspNetCore": "5.6.3",
@@ -742,34 +743,19 @@
           "ref/netcoreapp3.0/System.Windows.Extensions.dll": {}
         }
       },
-      "ClientGRPC/1.0.0": {
+      "AdministrativeServer/1.0.0": {
         "dependencies": {
-          "Domain": "1.0.0",
-          "DomainObjects": "1.0.0",
+          "AutoMapper": "10.1.1",
           "Google.Protobuf": "3.17.2",
           "Grpc.AspNetCore": "2.37.0",
           "GrpcServicesInterfaces": "1.0.0",
-          "System.Configuration.ConfigurationManager": "6.0.0-preview.4.21253.7"
+          "Server": "1.0.0"
         },
         "runtime": {
-          "ClientGRPC.dll": {}
+          "AdministrativeServer.dll": {}
         },
         "compile": {
-          "ClientGRPC.dll": {}
-        }
-      },
-      "Domain/1.0.0": {
-        "dependencies": {
-          "AutoMapper": "10.1.1",
-          "LogServer": "1.0.0",
-          "ProtocolFiles": "1.0.0",
-          "ServerGRPC": "1.0.0"
-        },
-        "runtime": {
-          "Domain.dll": {}
-        },
-        "compile": {
-          "Domain.dll": {}
+          "AdministrativeServer.dll": {}
         }
       },
       "DomainObjects/1.0.0": {
@@ -825,20 +811,6 @@
         },
         "compile": {
           "ProtocolFiles.dll": {}
-        }
-      },
-      "ServerGRPC/1.0.0": {
-        "dependencies": {
-          "AutoMapper": "10.1.1",
-          "Google.Protobuf": "3.17.2",
-          "Grpc.AspNetCore": "2.37.0",
-          "GrpcServicesInterfaces": "1.0.0"
-        },
-        "runtime": {
-          "ServerGRPC.dll": {}
-        },
-        "compile": {
-          "ServerGRPC.dll": {}
         }
       },
       "Microsoft.AspNetCore.Antiforgery/3.1.0.0": {
@@ -2502,6 +2474,36 @@
           "WindowsBase.dll": {}
         },
         "compileOnly": true
+      },
+      "ClientGRPC/1.0.0": {
+        "dependencies": {
+          "Domain": "1.0.0",
+          "DomainObjects": "1.0.0",
+          "Google.Protobuf": "3.17.2",
+          "Grpc.AspNetCore": "2.37.0",
+          "GrpcServicesInterfaces": "1.0.0",
+          "System.Configuration.ConfigurationManager": "6.0.0-preview.4.21253.7"
+        },
+        "compileOnly": true
+      },
+      "Domain/1.0.0": {
+        "dependencies": {
+          "AutoMapper": "10.1.1",
+          "LogServer": "1.0.0",
+          "ProtocolFiles": "1.0.0",
+          "Server": "1.0.0"
+        },
+        "compileOnly": true
+      },
+      "Server/1.0.0": {
+        "dependencies": {
+          "AutoMapper": "10.1.1",
+          "Google.Protobuf": "3.17.2",
+          "Grpc.AspNetCore": "2.37.0",
+          "GrpcServicesInterfaces": "1.0.0",
+          "System.Configuration.ConfigurationManager": "6.0.0-preview.4.21253.7"
+        },
+        "compileOnly": true
       }
     }
   },
@@ -2805,12 +2807,7 @@
       "path": "system.windows.extensions/6.0.0-preview.4.21253.7",
       "hashPath": "system.windows.extensions.6.0.0-preview.4.21253.7.nupkg.sha512"
     },
-    "ClientGRPC/1.0.0": {
-      "type": "project",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "Domain/1.0.0": {
+    "AdministrativeServer/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
@@ -2836,11 +2833,6 @@
       "sha512": ""
     },
     "ProtocolFiles/1.0.0": {
-      "type": "project",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "ServerGRPC/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
@@ -4227,6 +4219,21 @@
     },
     "WindowsBase/4.0.0.0": {
       "type": "referenceassembly",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "ClientGRPC/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Domain/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Server/1.0.0": {
+      "type": "project",
       "serviceable": false,
       "sha512": ""
     }

@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace LogServer
+﻿namespace LogServer
 {
     public class Log
     {

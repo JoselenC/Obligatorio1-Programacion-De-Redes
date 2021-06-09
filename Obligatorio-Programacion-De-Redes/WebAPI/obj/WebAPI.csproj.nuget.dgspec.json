@@ -4,6 +4,84 @@
     "C:\\Obligatorio1-Programacion-De-Redes\\Obligatorio-Programacion-De-Redes\\WebAPI\\WebAPI.csproj": {}
   },
   "projects": {
+    "C:\\Obligatorio1-Programacion-De-Redes\\Obligatorio-Programacion-De-Redes\\AdministrativeServer\\AdministrativeServer.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Obligatorio1-Programacion-De-Redes\\Obligatorio-Programacion-De-Redes\\AdministrativeServer\\AdministrativeServer.csproj",
+        "projectName": "AdministrativeServer",
+        "projectPath": "C:\\Obligatorio1-Programacion-De-Redes\\Obligatorio-Programacion-De-Redes\\AdministrativeServer\\AdministrativeServer.csproj",
+        "packagesPath": "C:\\Users\\Choche\\.nuget\\packages\\",
+        "outputPath": "C:\\Obligatorio1-Programacion-De-Redes\\Obligatorio-Programacion-De-Redes\\AdministrativeServer\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\Choche\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp3.1"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp3.1": {
+            "targetAlias": "netcoreapp3.1",
+            "projectReferences": {
+              "C:\\Obligatorio1-Programacion-De-Redes\\Obligatorio-Programacion-De-Redes\\GrpcServicesInterfaces\\GrpcServicesInterfaces.csproj": {
+                "projectPath": "C:\\Obligatorio1-Programacion-De-Redes\\Obligatorio-Programacion-De-Redes\\GrpcServicesInterfaces\\GrpcServicesInterfaces.csproj"
+              },
+              "C:\\Obligatorio1-Programacion-De-Redes\\Obligatorio-Programacion-De-Redes\\Server\\Server.csproj": {
+                "projectPath": "C:\\Obligatorio1-Programacion-De-Redes\\Obligatorio-Programacion-De-Redes\\Server\\Server.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp3.1": {
+          "targetAlias": "netcoreapp3.1",
+          "dependencies": {
+            "AutoMapper": {
+              "target": "Package",
+              "version": "[10.1.1, )"
+            },
+            "Google.Protobuf": {
+              "target": "Package",
+              "version": "[3.17.2, )"
+            },
+            "Grpc.AspNetCore": {
+              "target": "Package",
+              "version": "[2.37.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.202\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
     "C:\\Obligatorio1-Programacion-De-Redes\\Obligatorio-Programacion-De-Redes\\ClientGRPC\\ClientGRPC.csproj": {
       "version": "1.0.0",
       "restore": {
@@ -460,7 +538,7 @@
       "version": "1.0.0",
       "restore": {
         "projectUniqueName": "C:\\Obligatorio1-Programacion-De-Redes\\Obligatorio-Programacion-De-Redes\\ServerGRPC\\ServerGRPC.csproj",
-        "projectName": "ServerGRPC",
+        "projectName": "Server",
         "projectPath": "C:\\Obligatorio1-Programacion-De-Redes\\Obligatorio-Programacion-De-Redes\\ServerGRPC\\ServerGRPC.csproj",
         "packagesPath": "C:\\Users\\Choche\\.nuget\\packages\\",
         "outputPath": "C:\\Obligatorio1-Programacion-De-Redes\\Obligatorio-Programacion-De-Redes\\ServerGRPC\\obj\\",
@@ -507,6 +585,89 @@
             "Grpc.AspNetCore": {
               "target": "Package",
               "version": "[2.37.0, )"
+            },
+            "System.Configuration.ConfigurationManager": {
+              "target": "Package",
+              "version": "[6.0.0-preview.4.21253.7, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.202\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Obligatorio1-Programacion-De-Redes\\Obligatorio-Programacion-De-Redes\\Server\\Server.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Obligatorio1-Programacion-De-Redes\\Obligatorio-Programacion-De-Redes\\Server\\Server.csproj",
+        "projectName": "Server",
+        "projectPath": "C:\\Obligatorio1-Programacion-De-Redes\\Obligatorio-Programacion-De-Redes\\Server\\Server.csproj",
+        "packagesPath": "C:\\Users\\Choche\\.nuget\\packages\\",
+        "outputPath": "C:\\Obligatorio1-Programacion-De-Redes\\Obligatorio-Programacion-De-Redes\\Server\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\Choche\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp3.1"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp3.1": {
+            "targetAlias": "netcoreapp3.1",
+            "projectReferences": {
+              "C:\\Obligatorio1-Programacion-De-Redes\\Obligatorio-Programacion-De-Redes\\GrpcServicesInterfaces\\GrpcServicesInterfaces.csproj": {
+                "projectPath": "C:\\Obligatorio1-Programacion-De-Redes\\Obligatorio-Programacion-De-Redes\\GrpcServicesInterfaces\\GrpcServicesInterfaces.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp3.1": {
+          "targetAlias": "netcoreapp3.1",
+          "dependencies": {
+            "AutoMapper": {
+              "target": "Package",
+              "version": "[10.1.1, )"
+            },
+            "Google.Protobuf": {
+              "target": "Package",
+              "version": "[3.17.2, )"
+            },
+            "Grpc.AspNetCore": {
+              "target": "Package",
+              "version": "[2.37.0, )"
+            },
+            "System.Configuration.ConfigurationManager": {
+              "target": "Package",
+              "version": "[6.0.0-preview.4.21253.7, )"
             }
           },
           "imports": [
@@ -555,6 +716,9 @@
           "netcoreapp3.1": {
             "targetAlias": "netcoreapp3.1",
             "projectReferences": {
+              "C:\\Obligatorio1-Programacion-De-Redes\\Obligatorio-Programacion-De-Redes\\AdministrativeServer\\AdministrativeServer.csproj": {
+                "projectPath": "C:\\Obligatorio1-Programacion-De-Redes\\Obligatorio-Programacion-De-Redes\\AdministrativeServer\\AdministrativeServer.csproj"
+              },
               "C:\\Obligatorio1-Programacion-De-Redes\\Obligatorio-Programacion-De-Redes\\ClientGRPC\\ClientGRPC.csproj": {
                 "projectPath": "C:\\Obligatorio1-Programacion-De-Redes\\Obligatorio-Programacion-De-Redes\\ClientGRPC\\ClientGRPC.csproj"
               },

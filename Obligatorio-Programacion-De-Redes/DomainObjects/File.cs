@@ -12,5 +12,11 @@ namespace Domain
 
         public Post Post { get; set; }
         public DateTime UploadDate { get; set; }
+        public int Id { get; set; }
+        
+        public override bool Equals(object? obj)
+        {
+            return ((File) obj).Name == Name;
+        }
     }
 }

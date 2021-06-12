@@ -10,9 +10,11 @@ namespace ServicesGRPC
     {
         private PostGrpc.PostGrpcClient _client;
         private readonly IMapper _mapper;
-        public PostServiceGrpc(GrpcChannel channel)
+        public PostServiceGrpc()
         {
+            var channel = GrpcChannel.ForAddress("http://localhost:5001");
             _client = new PostGrpc.PostGrpcClient(channel);
+            
             var config = new MapperConfiguration(
                 conf =>
                 {

@@ -11,9 +11,11 @@ namespace ServicesGRPC
     {
         private readonly ThemeGrpc.ThemeGrpcClient _client;
         private readonly IMapper _mapper;
-        public ThemeServiceGrpc(GrpcChannel channel)
+        public ThemeServiceGrpc()
         {
+            var channel = GrpcChannel.ForAddress("http://localhost:5001");
             _client = new ThemeGrpc.ThemeGrpcClient(channel);
+            
             var config = new MapperConfiguration(
                 cfg =>
                 {

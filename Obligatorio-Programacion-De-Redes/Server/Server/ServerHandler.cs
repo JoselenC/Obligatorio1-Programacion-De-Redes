@@ -9,20 +9,17 @@ using BusinessLogic.Managers;
 using BusinessLogic.Services;
 using DataHandler;
 using Domain;
-using Grpc.Net.Client;
-using LogServer;
-using Server;
+using ServerGRPC.Server;
 
-namespace ServerGRPC.Server
+namespace Server.Server
 {
-    public class Server
+    public class ServerHandler
     {
     
        public static readonly List<Socket> ConnectedClients = new List<Socket>();
        private readonly TcpListener _tcpListener;
        private TcpClient _tcpClient;
        private bool exit = false;
-       private Log log;
 
        private IPostService _postService;
        private IThemeService _themeService;
@@ -31,17 +28,18 @@ namespace ServerGRPC.Server
        private ManagerPostRepository _postRepository;
        private ManagerThemeRepository _themeRepository;
        
-       public Server(ManagerRepository repository,ManagerPostRepository postRepository, ManagerThemeRepository themeRepository)
+       public ServerHandler(ManagerRepository repository,ManagerPostRepository postRepository, ManagerThemeRepository themeRepository)
        {
            _postRepository = postRepository;
            _themeRepository = themeRepository;
            _repository = repository;
-           var rabbitHelper = new RabbitHelper();
-           log = new Log(rabbitHelper);
+           var rabbitClient = new RabbitHelper();
+           rabbitClient.QueueDeclare();
+           rabbitClient.ReceiveMessages();
            _tcpListener = new TcpListener(IPAddress.Parse(ConfigurationManager.AppSettings["ServerIp"]), Int32.Parse(ConfigurationManager.AppSettings["ServerPort"]));
-           _postService = new PostService(repository, log, postRepository, themeRepository );
-           _themeService = new ThemeService(repository, log , postRepository, themeRepository);
-           _fileService = new FileService(repository, postRepository, log);
+           _postService = new PostService(repository, rabbitClient, postRepository, themeRepository );
+           _themeService = new ThemeService(repository, rabbitClient , postRepository, themeRepository);
+           _fileService = new FileService(repository, postRepository, rabbitClient);
        }
 
        public async Task StartServerAsync()
@@ -58,7 +56,7 @@ namespace ServerGRPC.Server
                _tcpListener.Stop();
                await AddConnectedClient(_repository, ConnectedClients);
                SocketHandler socketHandler = new SocketHandler(_tcpClient.GetStream());
-               await new HandleClient(_tcpListener,log,_postService,_themeService,_fileService)
+               await new HandleClient(_tcpListener,_postService,_themeService,_fileService)
                    .HandleClientMethodAsync(_repository, false, ConnectedClients, socketHandler);
            }
          

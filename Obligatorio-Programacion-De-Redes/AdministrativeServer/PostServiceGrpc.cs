@@ -3,8 +3,10 @@ using AutoMapper;
 using Domain;
 using Grpc.Net.Client;
 using GrpcServices;
+using GrpcServicesInterfaces;
+using ServicesGRPC;
 
-namespace ServicesGRPC
+namespace AdministrativeServer
 {
     public class PostServiceGrpc : IPostServiceGrpc
     {

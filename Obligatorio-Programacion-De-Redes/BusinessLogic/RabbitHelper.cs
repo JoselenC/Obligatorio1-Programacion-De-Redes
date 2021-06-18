@@ -1,18 +1,19 @@
 ﻿using System;
 using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
+using BusinessLogic.Services;
+using LogsServerInterface;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 
-namespace LogServer
+namespace BusinessLogic
 {
     public class RabbitHelper
     {
         private readonly string _queueName;
-
+        
         private readonly IConnection _connection;
         private readonly IModel _channel;
+        private ILogService _logService;
         public RabbitHelper()
         {
             _queueName = "ProgramacionRedes";
@@ -21,16 +22,12 @@ namespace LogServer
             _channel = _connection.CreateModel();
         }
         
-        public void Dispose()
-        {
-            _channel.Dispose();
-            _connection.Dispose();
-        }
 
         public void QueueDeclare()
         {
             _channel.QueueDeclare(_queueName, false, false, false, null);
         }
+        
         public void ReceiveMessages()
         {
             var consumer = new EventingBasicConsumer(_channel);
@@ -38,7 +35,7 @@ namespace LogServer
             {
                 var body = ea.Body.ToArray();
                 var message = Encoding.UTF8.GetString(body);
-                Log log = JsonSerializer.Deserialize<Log>(message);
+                _logService.AddLog(message);
             };
             _channel.BasicConsume(_queueName, true, consumer);
         }

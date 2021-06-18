@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using BusinessLogic.Managers;
 using DataHandler;
 using Domain;
-using LogServer;
 using Protocol;
 
 namespace BusinessLogic.Services
@@ -14,14 +13,14 @@ namespace BusinessLogic.Services
         private ManagerRepository repository;
         private ManagerPostRepository _postRepository;
         private ManagerThemeRepository _themeRepository;
-        private Log log;
-        public PostService(ManagerRepository vRepository,Log log, ManagerPostRepository managerPostRepository, 
+        private RabbitHelper rabbitClient;
+        public PostService(ManagerRepository vRepository,RabbitHelper rabbitHelper, ManagerPostRepository managerPostRepository, 
             ManagerThemeRepository managerThemeRepository)
         {
             _postRepository = managerPostRepository;
             _themeRepository = managerThemeRepository;
             repository = vRepository;
-            this.log = log;
+            this.rabbitClient = rabbitHelper;
         }
         
         private async Task SendListThemesPostAsync(SocketHandler socketHandler, string namePost)
@@ -107,7 +106,7 @@ namespace BusinessLogic.Services
             if (_themeRepository.Themes.Get().Count > 0)
             {
                 var packet = await socketHandler.ReceivePackgAsync();
-                log.SaveLog("New post" + packet.Data);
+                rabbitClient.SendMessage("New post" + packet.Data);
                 String[] messageArray = packet.Data.Split('#');
                 string name = messageArray[0];
                 string creationDate = messageArray[1];
@@ -138,7 +137,7 @@ namespace BusinessLogic.Services
             await SendListPostAsync(socketHandler);
             var packet = await socketHandler.ReceivePackgAsync();
             string name = packet.Data;
-            log.SaveLog("Delete post" + packet.Data);
+            rabbitClient.SendMessage("Delete post" + packet.Data);
             if (name != "Back")
             {
          //       if (!AlreadyExistSemaphore(name))
@@ -222,7 +221,7 @@ namespace BusinessLogic.Services
 
         private string AddNewPost(string[] messageArray2, string name, string oldName)
         {
-            log.SaveLog("Modify post, old Name: " + oldName + "new name: "+name);
+            rabbitClient.SendMessage("Modify post, old Name: " + oldName + "new name: "+name);
             string message;
             string newCreationDate = messageArray2[1];
             Post postByName = _postRepository.Posts.Find(x => x.Name == oldName);
@@ -260,7 +259,7 @@ namespace BusinessLogic.Services
             if (namePost != "Back")
             {
                 string nameTheme = messageArray[1];
-                log.SaveLog("Associate theme: " + nameTheme +"to post: "+ namePost);
+                rabbitClient.SendMessage("Associate theme: " + nameTheme +"to post: "+ namePost);
                 if (AlreadyExistTheme(nameTheme))
                 {
                     Post postByName = _postRepository.Posts.Find(x => x.Name == namePost);
@@ -312,7 +311,7 @@ namespace BusinessLogic.Services
             string namePost = messageArray[0];
             string message = "";
             string nameTheme = messageArray[1];
-            log.SaveLog("Associate theme: " + nameTheme +"to post: "+ namePost);
+            rabbitClient.SendMessage("Associate theme: " + nameTheme +"to post: "+ namePost);
             if (AlreadyExistTheme(nameTheme))
             {
                 Post postByName = _postRepository.Posts.Find(x => x.Name == namePost);
@@ -351,7 +350,7 @@ namespace BusinessLogic.Services
                 string message;
                 if (AlreadyExistPost(namePost))
                 {
-                    log.SaveLog("Search post: "+ namePost);
+                    rabbitClient.SendMessage("Search post: "+ namePost);
                     Post post = _postRepository.Posts.Find(x => x.Name == namePost);
                     message = post.Name + "#" + post.CreationDate;
                 }
@@ -386,8 +385,8 @@ namespace BusinessLogic.Services
                 string nameThemeDisassociate = messageArray[1];
                 string nameNewTheme = messageArray[2];
                 string message = "";
-                log.SaveLog("Associate theme: " + nameNewTheme + "Dissasociate theme" + nameThemeDisassociate +
-                            "to post: " + namePost);
+                rabbitClient.SendMessage("Associate theme: " + nameNewTheme + "Dissasociate theme" + nameThemeDisassociate +
+                                                 "to post: " + namePost);
                 if (AlreadyExistPost(postName))
                 {
                     message = await DisassociateAsync(postName, nameThemeDisassociate, nameNewTheme);

@@ -8,19 +8,18 @@ using Grpc.Core;
 using GrpcServices;
 using GrpcServicesInterfaces;
 using Microsoft.Extensions.Logging;
+using Server;
 
 namespace ServerGRPC.ServerGrpc.Services
 {
     public class PostService : PostGrpc.PostGrpcBase
     {
-        private readonly IPostServiceGrpc _postService;
         private IPostService postService;
         private readonly IMapper _mapper;
         private ManagerPostRepository _postRepository;
-        public PostService(ILogger<PostService> logger, IPostServiceGrpc postService, ManagerPostRepository repository)
+        public PostService(ManagerPostRepository repository)
         {
             _postRepository = repository;
-            _postService = postService;
             var config = new MapperConfiguration(
                 conf =>
                 {

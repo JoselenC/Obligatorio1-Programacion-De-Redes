@@ -1,6 +1,6 @@
 ﻿syntax = "proto3";
 
-option csharp_namespace = "ServicesGRPC";
+option csharp_namespace = "AdministrativeServer";
 
 package themes;
 

@@ -28,8 +28,8 @@ namespace WebAPI
         {
             services.AddControllers();
             services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo {Title = "WebAPI", Version = "v1"}); });
-          //  services.AddScoped<IPostServiceGrpc, PostServiceGrpc>();
-          //  services.AddScoped<IThemeServiceGrpc, ThemeServiceGrpc>();
+            services.AddScoped<IPostServiceGrpc, PostServiceGrpc>();
+            services.AddScoped<IThemeServiceGrpc, ThemeServiceGrpc>();
             services.AddScoped<ILogService, LogService>();
             services.AddScoped<ManagerLogRepository, DataBaseLogRepository>();
             services.AddScoped<ManagerPostRepository, DataBasePostRepository>();

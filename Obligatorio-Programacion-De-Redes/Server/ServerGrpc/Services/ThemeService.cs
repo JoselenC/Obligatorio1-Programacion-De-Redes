@@ -6,20 +6,18 @@ using Domain;
 using Grpc.Core;
 using GrpcServices;
 using Microsoft.Extensions.Logging;
+using Server;
 
 namespace ServerGRPC.ServerGrpc.Services
 {
     public class ThemeService : ThemeGrpc.ThemeGrpcBase
     {
-        private readonly IThemeServiceGrpc _themeService;
         private readonly IMapper _mapper;
         private ManagerThemeRepository _themeRepository;
 
-        public ThemeService(ILogger<ThemeService> logger, IThemeServiceGrpc themeService,
-            ManagerThemeRepository repository)
+        public ThemeService(ManagerThemeRepository repository)
         {
             _themeRepository = repository;
-            _themeService = themeService;
             var config = new MapperConfiguration(
                 conf =>
                 {

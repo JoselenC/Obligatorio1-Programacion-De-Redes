@@ -3,7 +3,6 @@ using AutoMapper;
 using Domain;
 using Grpc.Net.Client;
 using GrpcServicesInterfaces;
-using ServicesGRPC;
 
 namespace AdministrativeServer
 {
@@ -28,7 +27,7 @@ namespace AdministrativeServer
         public async Task<Post> AddPostAsyc(Post post)
         {
             var postMessage = _mapper.Map<PostMessage>(post);
-            var reply = await _client.AddPostAsync(
+            AddPostsReply reply = await _client.AddPostAsync(
                 new AddPostsRequest {Post = postMessage}
             );
             return _mapper.Map<Post>(reply);

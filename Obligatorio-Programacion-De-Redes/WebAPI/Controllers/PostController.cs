@@ -13,7 +13,7 @@ namespace WebAPI.Controllers
     {
         private IPostServiceGrpc _postServiceGrpc;
 
-        PostController(IPostServiceGrpc postServiceGrpc)
+        public PostController(IPostServiceGrpc postServiceGrpc)
         {
             _postServiceGrpc = postServiceGrpc;
         }

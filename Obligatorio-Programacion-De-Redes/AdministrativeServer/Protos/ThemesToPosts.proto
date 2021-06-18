@@ -1,10 +1,10 @@
 ﻿syntax = "proto3";
 
-option csharp_namespace = "ServicesGRPC";
+option csharp_namespace = "AdministrativeServer";
 
-package themes;
+package themesToPosts;
 
-service ThemeGrpc {
+service ThemeToPostGrpc {
     rpc AssociateThemeToPost (AssociateThemeToPostRequest) returns (AssociateThemeToPostReply);
 
 }

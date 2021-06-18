@@ -7,14 +7,15 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Protobuf Include="Protos\posts.proto">
-        <Generator>MSBuild:Compile</Generator>
-      </Protobuf>
-      <Protobuf Include="Protos\themes.proto">
-        <Generator>MSBuild:Compile</Generator>
-      </Protobuf>
+        <Protobuf Include="Protos\posts.proto" GrpcServices="Client" />
     </ItemGroup>
-
+    <ItemGroup>
+        <Protobuf Include="Protos\themes.proto" GrpcServices="Client" />
+    </ItemGroup>
+    <ItemGroup>
+        <Protobuf Include="Protos\ThemesToPosts.proto" GrpcServices="Client" />
+    </ItemGroup>
+    
     <ItemGroup>
       <ProjectReference Include="..\GrpcServicesInterfaces\GrpcServicesInterfaces.csproj" />
       <ProjectReference Include="..\Server\Server.csproj" />

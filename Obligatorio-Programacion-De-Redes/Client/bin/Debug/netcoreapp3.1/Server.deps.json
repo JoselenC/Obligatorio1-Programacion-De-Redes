@@ -1434,7 +1434,9 @@
       },
       "BusinessLogic/1.0.0": {
         "dependencies": {
-          "DomainObjects": "1.0.0"
+          "DomainObjects": "1.0.0",
+          "LogsServerInterface": "1.0.0",
+          "RabbitMQ.Client": "6.2.1"
         },
         "runtime": {
           "BusinessLogic.dll": {}
@@ -1484,16 +1486,15 @@
           "GrpcServicesInterfaces.dll": {}
         }
       },
-      "LogServer/1.0.0": {
+      "LogsServerInterface/1.0.0": {
         "dependencies": {
-          "Grpc.Net.Client": "2.37.0",
-          "RabbitMQ.Client": "6.2.1"
+          "DomainObjects": "1.0.0"
         },
         "runtime": {
-          "LogServer.dll": {}
+          "LogsServerInterface.dll": {}
         },
         "compile": {
-          "LogServer.dll": {}
+          "LogsServerInterface.dll": {}
         }
       },
       "Protocol/1.0.0": {
@@ -3152,6 +3153,9 @@
           "WindowsBase.dll": {}
         },
         "compileOnly": true
+      },
+      "LogServer/1.0.0": {
+        "compileOnly": true
       }
     }
   },
@@ -3937,7 +3941,7 @@
       "serviceable": false,
       "sha512": ""
     },
-    "LogServer/1.0.0": {
+    "LogsServerInterface/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
@@ -5314,6 +5318,11 @@
     },
     "WindowsBase/4.0.0.0": {
       "type": "referenceassembly",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "LogServer/1.0.0": {
+      "type": "project",
       "serviceable": false,
       "sha512": ""
     }

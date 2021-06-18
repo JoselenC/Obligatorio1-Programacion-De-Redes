@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Log
+namespace LogsServerInterface
 {
     public class Class1
     {

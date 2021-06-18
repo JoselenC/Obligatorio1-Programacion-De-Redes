@@ -1,7 +1,3 @@
-C:\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\WebAPI\bin\Debug\netcoreapp3.1\LogServer.deps.json
-C:\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\WebAPI\bin\Debug\netcoreapp3.1\LogServer.runtimeconfig.json
-C:\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\WebAPI\bin\Debug\netcoreapp3.1\LogServer.runtimeconfig.dev.json
-C:\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\WebAPI\bin\Debug\netcoreapp3.1\LogServer.exe
 C:\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\WebAPI\bin\Debug\netcoreapp3.1\Server.deps.json
 C:\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\WebAPI\bin\Debug\netcoreapp3.1\Server.runtimeconfig.json
 C:\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\WebAPI\bin\Debug\netcoreapp3.1\Server.runtimeconfig.dev.json
@@ -48,13 +44,11 @@ C:\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\WebAPI\b
 C:\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\WebAPI\bin\Debug\netcoreapp3.1\AdministrativeServer.dll
 C:\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\WebAPI\bin\Debug\netcoreapp3.1\DomainObjects.dll
 C:\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\WebAPI\bin\Debug\netcoreapp3.1\GrpcServicesInterfaces.dll
-C:\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\WebAPI\bin\Debug\netcoreapp3.1\LogServer.dll
 C:\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\WebAPI\bin\Debug\netcoreapp3.1\Protocol.dll
 C:\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\WebAPI\bin\Debug\netcoreapp3.1\ProtocolFiles.dll
 C:\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\WebAPI\bin\Debug\netcoreapp3.1\AdministrativeServer.pdb
 C:\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\WebAPI\bin\Debug\netcoreapp3.1\GrpcServicesInterfaces.pdb
 C:\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\WebAPI\bin\Debug\netcoreapp3.1\DomainObjects.pdb
-C:\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\WebAPI\bin\Debug\netcoreapp3.1\LogServer.pdb
 C:\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\WebAPI\bin\Debug\netcoreapp3.1\Protocol.pdb
 C:\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\WebAPI\bin\Debug\netcoreapp3.1\ProtocolFiles.pdb
 C:\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\WebAPI\obj\Debug\netcoreapp3.1\WebAPI.csprojAssemblyReference.cache
@@ -99,3 +93,7 @@ C:\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\WebAPI\b
 C:\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\WebAPI\bin\Debug\netcoreapp3.1\Server.pdb
 C:\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\WebAPI\bin\Debug\netcoreapp3.1\Server.dll.config
 C:\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\WebAPI\bin\Debug\netcoreapp3.1\Microsoft.EntityFrameworkCore.Design.dll
+C:\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\WebAPI\bin\Debug\netcoreapp3.1\LogsServer.dll
+C:\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\WebAPI\bin\Debug\netcoreapp3.1\LogsServerInterface.dll
+C:\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\WebAPI\bin\Debug\netcoreapp3.1\LogsServer.pdb
+C:\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\WebAPI\bin\Debug\netcoreapp3.1\LogsServerInterface.pdb

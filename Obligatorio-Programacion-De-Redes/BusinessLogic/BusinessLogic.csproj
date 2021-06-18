@@ -6,6 +6,11 @@
 
     <ItemGroup>
       <ProjectReference Include="..\DomainObjects\DomainObjects.csproj" />
+      <ProjectReference Include="..\LogsServerInterface\LogsServerInterface.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="RabbitMQ.Client" Version="6.2.1" />
     </ItemGroup>
 
 </Project>

@@ -1642,13 +1642,18 @@
         },
         "runtime": {
           "bin/placeholder/AdministrativeServer.dll": {}
-        }
+        },
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ]
       },
       "BusinessLogic/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v3.1",
         "dependencies": {
-          "DomainObjects": "1.0.0"
+          "DomainObjects": "1.0.0",
+          "LogsServerInterface": "1.0.0",
+          "RabbitMQ.Client": "6.2.1"
         },
         "compile": {
           "bin/placeholder/BusinessLogic.dll": {}
@@ -1707,15 +1712,38 @@
       "LogServer/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v3.1",
-        "dependencies": {
-          "Grpc.Net.Client": "2.37.0",
-          "RabbitMQ.Client": "6.2.1"
-        },
         "compile": {
           "bin/placeholder/LogServer.dll": {}
         },
         "runtime": {
           "bin/placeholder/LogServer.dll": {}
+        }
+      },
+      "LogsServer/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v3.1",
+        "dependencies": {
+          "BusinessLogic": "1.0.0",
+          "LogsServerInterface": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/LogsServer.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/LogsServer.dll": {}
+        }
+      },
+      "LogsServerInterface/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v3.1",
+        "dependencies": {
+          "DomainObjects": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/LogsServerInterface.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/LogsServerInterface.dll": {}
         }
       },
       "Protocol/1.0.0": {
@@ -6096,6 +6124,16 @@
       "path": "../LogServer/LogServer.csproj",
       "msbuildProject": "../LogServer/LogServer.csproj"
     },
+    "LogsServer/1.0.0": {
+      "type": "project",
+      "path": "../LogsServer/LogsServer.csproj",
+      "msbuildProject": "../LogsServer/LogsServer.csproj"
+    },
+    "LogsServerInterface/1.0.0": {
+      "type": "project",
+      "path": "../LogsServerInterface/LogsServerInterface.csproj",
+      "msbuildProject": "../LogsServerInterface/LogsServerInterface.csproj"
+    },
     "Protocol/1.0.0": {
       "type": "project",
       "path": "../Protocol/Protocol.csproj",
@@ -6116,6 +6154,7 @@
     ".NETCoreApp,Version=v3.1": [
       "AdministrativeServer >= 1.0.0",
       "GrpcServicesInterfaces >= 1.0.0",
+      "LogsServer >= 1.0.0",
       "Microsoft.EntityFrameworkCore.Design >= 3.1.0",
       "Swashbuckle.AspNetCore >= 5.6.3"
     ]
@@ -6152,6 +6191,9 @@
             },
             "C:\\Obligatorio1-Programacion-De-Redes\\Obligatorio-Programacion-De-Redes\\GrpcServicesInterfaces\\GrpcServicesInterfaces.csproj": {
               "projectPath": "C:\\Obligatorio1-Programacion-De-Redes\\Obligatorio-Programacion-De-Redes\\GrpcServicesInterfaces\\GrpcServicesInterfaces.csproj"
+            },
+            "C:\\Obligatorio1-Programacion-De-Redes\\Obligatorio-Programacion-De-Redes\\LogsServer\\LogsServer.csproj": {
+              "projectPath": "C:\\Obligatorio1-Programacion-De-Redes\\Obligatorio-Programacion-De-Redes\\LogsServer\\LogsServer.csproj"
             }
           }
         }

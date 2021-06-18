@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using BusinessLogic.Managers;
 using DataHandler;
 using Domain;
-using LogServer;
 using Protocol;
 using ProtocolFiles;
 
@@ -14,12 +13,12 @@ namespace BusinessLogic.Services
     {
         private ManagerRepository repository;
         private ManagerPostRepository _postRepository;
-        private Log log;
-        public FileService(ManagerRepository vRepository, ManagerPostRepository postRepository,Log log)
+        private RabbitHelper rabbitClient;
+        public FileService(ManagerRepository vRepository, ManagerPostRepository postRepository,RabbitHelper rabbitHelper)
         {
             _postRepository = postRepository;
             repository = vRepository;
-            this.log = log;
+            this.rabbitClient = rabbitHelper;
         }
 
         private async Task SendListPostAsync(SocketHandler socketHandler)
@@ -41,7 +40,7 @@ namespace BusinessLogic.Services
                 await SendListPostAsync(socketHandler);
                 ProtocolHandler protocolHandler = new ProtocolHandler();
                 string[] fileData = await protocolHandler.ReceiveFileAsync(socketHandler);
-                log.SaveLog("Upload file" + fileData[2]);
+                rabbitClient.SendMessage("Upload file" + fileData[2]);
                 string option = fileData[0];
                 if (option != "Back")
                 {
@@ -66,6 +65,7 @@ namespace BusinessLogic.Services
             }
             else
             {
+                rabbitClient.SendMessage("The file was not loaded, there are no posts");
                 await SendListPostAsync(socketHandler);
             }
         }

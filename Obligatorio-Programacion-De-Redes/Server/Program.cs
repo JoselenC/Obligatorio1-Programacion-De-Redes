@@ -1,16 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using BusinessLogic;
 using BusinessLogic.Managers;
 using DataAccess;
-using GrpcServices;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
+using Server.Server;
+using ServerGRPC;
 
-namespace ServerGRPC
+namespace Server
 {
     public class Program
     {
@@ -19,7 +16,7 @@ namespace ServerGRPC
             ManagerRepository repository = new DataBaseManagerRepository();
             ManagerPostRepository managerPostRepository = new DataBasePostRepository();
             ManagerThemeRepository managerThemeRepository = new DataBaseThemeRepository();
-            Server.Server server = new Server.Server(repository,managerPostRepository,managerThemeRepository);
+            ServerHandler server = new ServerHandler(repository,managerPostRepository,managerThemeRepository);
             await server.StartServerAsync();
             CreateHostBuilder(args).Build().Run();
         }

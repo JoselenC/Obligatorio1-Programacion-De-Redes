@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using BusinessLogic.Managers;
 using DataHandler;
 using Domain;
-using LogServer;
 using Protocol;
 
 namespace BusinessLogic.Services
@@ -16,33 +15,23 @@ namespace BusinessLogic.Services
         private ManagerRepository repository;
         private ManagerThemeRepository _themeRepository;
         private ManagerPostRepository _postRepository;
-        private Log log;
+        private RabbitHelper rabbitClient;
         private SemaphoreSlim semaphoreSlim;
-        public ThemeService(ManagerRepository vRepository,Log log,ManagerPostRepository managerPostRepository, 
+        public ThemeService(ManagerRepository vRepository, RabbitHelper rabbitHelper,ManagerPostRepository managerPostRepository, 
         ManagerThemeRepository managerThemeRepository)
         {
             _postRepository = managerPostRepository;
             _themeRepository = managerThemeRepository;
             repository = vRepository;
-            this.log = log;
+            this.rabbitClient = rabbitHelper;
         }
-        public ThemeService(ManagerRepository repository)
-        {
-            this.repository = repository;
-        }
-
-        public ThemeService(ManagerRepository repository,SemaphoreSlim semaphore,Log log)
-        {
-            this.log = log;
-            this.repository = repository;
-            semaphoreSlim = semaphore;
-        }
+    
         public async Task AddThemeAsync(SocketHandler socketHandler)
         {
             var packet = await socketHandler.ReceivePackgAsync();
             String[] messageArray = packet.Data.Split('#');
             string name = messageArray[0];
-            log.SaveLog("New theme" + name);
+            rabbitClient.SendMessage("New theme" + name);
             if (name != "Back")
             {
                 string description = messageArray[1];
@@ -55,15 +44,18 @@ namespace BusinessLogic.Services
                         Theme theme = new Theme() { Name = name, Description = description };
                         _themeRepository.Themes.Add(theme);
                         message = "The theme " + name + " was added";
+                        rabbitClient.SendMessage(message);
                     }
                     else
                     {
                         message = "Not add, the theme " + name + " already exist";
+                        rabbitClient.SendMessage(message);
                     }
                 }
                 else
                 {
                     message = "The theme name cannot be empty";
+                    rabbitClient.SendMessage(message);
                 }
                 Packet packg = new Packet("RES", "4", message);
                 await socketHandler.SendPackgAsync(packg);
@@ -128,7 +120,7 @@ namespace BusinessLogic.Services
                 {
                     _themeRepository.Themes.Update(themeName,theme);
                     message = "The theme " + option + " was modified";
-                    log.SaveLog("Modify theme" + themeName + "new name: "+ theme);
+                    rabbitClient.SendMessage("Modify theme" + themeName + "new name: "+ theme);
                 }
                 else
                 {
@@ -177,7 +169,7 @@ namespace BusinessLogic.Services
                 _themeRepository.Themes.Find(x => x.Name == oldName);
                 if (!IsAssociatedAPost(themeName))
                 {
-                    log.SaveLog("Delete theme" + themeName);
+                    rabbitClient.SendMessage("Delete theme" + themeName);
                     _themeRepository.Themes.Delete(themeName);
                     message = "The theme " + oldName + " was deleted";
                 }

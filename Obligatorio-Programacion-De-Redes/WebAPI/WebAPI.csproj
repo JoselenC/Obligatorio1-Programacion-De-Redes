@@ -15,6 +15,7 @@
     <ItemGroup>
       <ProjectReference Include="..\AdministrativeServer\AdministrativeServer.csproj" />
       <ProjectReference Include="..\GrpcServicesInterfaces\GrpcServicesInterfaces.csproj" />
+      <ProjectReference Include="..\LogsServer\LogsServer.csproj" />
     </ItemGroup>
 
 </Project>

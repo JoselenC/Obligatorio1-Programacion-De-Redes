@@ -1542,7 +1542,9 @@
         "type": "project",
         "framework": ".NETCoreApp,Version=v3.1",
         "dependencies": {
-          "DomainObjects": "1.0.0"
+          "DomainObjects": "1.0.0",
+          "LogsServerInterface": "1.0.0",
+          "RabbitMQ.Client": "6.2.1"
         },
         "compile": {
           "bin/placeholder/BusinessLogic.dll": {}
@@ -1601,15 +1603,24 @@
       "LogServer/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v3.1",
-        "dependencies": {
-          "Grpc.Net.Client": "2.37.0",
-          "RabbitMQ.Client": "6.2.1"
-        },
         "compile": {
           "bin/placeholder/LogServer.dll": {}
         },
         "runtime": {
           "bin/placeholder/LogServer.dll": {}
+        }
+      },
+      "LogsServerInterface/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v3.1",
+        "dependencies": {
+          "DomainObjects": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/LogsServerInterface.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/LogsServerInterface.dll": {}
         }
       },
       "Protocol/1.0.0": {
@@ -5839,6 +5850,11 @@
       "type": "project",
       "path": "../LogServer/LogServer.csproj",
       "msbuildProject": "../LogServer/LogServer.csproj"
+    },
+    "LogsServerInterface/1.0.0": {
+      "type": "project",
+      "path": "../LogsServerInterface/LogsServerInterface.csproj",
+      "msbuildProject": "../LogsServerInterface/LogsServerInterface.csproj"
     },
     "Protocol/1.0.0": {
       "type": "project",

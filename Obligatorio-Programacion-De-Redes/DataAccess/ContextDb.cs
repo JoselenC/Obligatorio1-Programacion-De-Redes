@@ -14,6 +14,8 @@ namespace MSP.BetterCalm.DataAccess
         public DbSet<ThemeDto> Themes { get; set; }
         public DbSet<ClientDto> Clients { get; set; }
         
+        public DbSet<LogDto> Logs { get; set; }
+        
         public DbSet<SemaphoreSlimPostDto> SemaphoresSlimPostDto { get; set; }
         
         public DbSet<SemaphoreSlimThemeDto> SemaphoresSlimThemeDto { get; set; }

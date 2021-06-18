@@ -6,8 +6,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Protocol", "Protocol\Protoc
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProtocolFiles", "ProtocolFiles\ProtocolFiles.csproj", "{E2A260C9-F3E5-4EE2-B6A6-EA1965A97891}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogServer", "LogServer\LogServer.csproj", "{C018244A-C40F-45C1-A54A-E8EB190B8B8A}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server", "Server\Server.csproj", "{36C8D500-8434-410F-89FF-643EFCF0561C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DomainObjects", "DomainObjects\DomainObjects.csproj", "{94BEC43E-4A39-4E29-B216-DC2F59133D93}"
@@ -21,6 +19,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess", "DataAccess\DataAccess.csproj", "{23088926-F1BD-4EA3-952C-E977C7002A0D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinessLogic", "BusinessLogic\BusinessLogic.csproj", "{E67493C2-A911-4628-BFDF-D06F44A7D6DC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogsServer", "LogsServer\LogsServer.csproj", "{ADDD688A-CEA2-475D-B02D-D7DE70FDE7AA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogsServerInterface", "LogsServerInterface\LogsServerInterface.csproj", "{32030D42-5A5F-4EF2-8922-C28C96C5D2D6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -44,10 +46,6 @@ Global
 		{36C8D500-8434-410F-89FF-643EFCF0561C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{36C8D500-8434-410F-89FF-643EFCF0561C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{36C8D500-8434-410F-89FF-643EFCF0561C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C018244A-C40F-45C1-A54A-E8EB190B8B8A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C018244A-C40F-45C1-A54A-E8EB190B8B8A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C018244A-C40F-45C1-A54A-E8EB190B8B8A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C018244A-C40F-45C1-A54A-E8EB190B8B8A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{94BEC43E-4A39-4E29-B216-DC2F59133D93}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{94BEC43E-4A39-4E29-B216-DC2F59133D93}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{94BEC43E-4A39-4E29-B216-DC2F59133D93}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -72,5 +70,13 @@ Global
 		{E67493C2-A911-4628-BFDF-D06F44A7D6DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E67493C2-A911-4628-BFDF-D06F44A7D6DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E67493C2-A911-4628-BFDF-D06F44A7D6DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ADDD688A-CEA2-475D-B02D-D7DE70FDE7AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ADDD688A-CEA2-475D-B02D-D7DE70FDE7AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ADDD688A-CEA2-475D-B02D-D7DE70FDE7AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ADDD688A-CEA2-475D-B02D-D7DE70FDE7AA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{32030D42-5A5F-4EF2-8922-C28C96C5D2D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{32030D42-5A5F-4EF2-8922-C28C96C5D2D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{32030D42-5A5F-4EF2-8922-C28C96C5D2D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{32030D42-5A5F-4EF2-8922-C28C96C5D2D6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

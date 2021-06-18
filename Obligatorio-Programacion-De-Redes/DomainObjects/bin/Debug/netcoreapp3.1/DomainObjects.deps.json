@@ -81,15 +81,6 @@
           }
         }
       },
-      "LogServer/1.0.0": {
-        "dependencies": {
-          "Grpc.Net.Client": "2.37.0",
-          "RabbitMQ.Client": "6.2.1"
-        },
-        "runtime": {
-          "LogServer.dll": {}
-        }
-      },
       "Protocol/1.0.0": {
         "runtime": {
           "Protocol.dll": {}
@@ -166,11 +157,6 @@
       "sha512": "sha512-6akRtHK/wab3246t4p5v3HQrtQk8LboOt5T4dtpNgsp3zvDeM4/Gx8V12t0h+c/W9/enUrilk8n6EQqdQorZAA==",
       "path": "system.threading.channels/4.7.1",
       "hashPath": "system.threading.channels.4.7.1.nupkg.sha512"
-    },
-    "LogServer/1.0.0": {
-      "type": "project",
-      "serviceable": false,
-      "sha512": ""
     },
     "Protocol/1.0.0": {
       "type": "project",

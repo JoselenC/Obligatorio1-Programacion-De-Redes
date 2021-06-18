@@ -89,15 +89,6 @@
           "DomainObjects.dll": {}
         }
       },
-      "LogServer/1.0.0": {
-        "dependencies": {
-          "Grpc.Net.Client": "2.37.0",
-          "RabbitMQ.Client": "6.2.1"
-        },
-        "runtime": {
-          "LogServer.dll": {}
-        }
-      },
       "Protocol/1.0.0": {
         "runtime": {
           "Protocol.dll": {}
@@ -176,11 +167,6 @@
       "hashPath": "system.threading.channels.4.7.1.nupkg.sha512"
     },
     "DomainObjects/1.0.0": {
-      "type": "project",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "LogServer/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

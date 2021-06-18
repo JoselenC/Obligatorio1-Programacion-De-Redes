@@ -6,7 +6,6 @@ using BusinessLogic;
 using BusinessLogic.Services;
 using DataHandler;
 using Domain;
-using LogServer;
 using Protocol;
 
 namespace ServerGRPC.Server
@@ -14,17 +13,14 @@ namespace ServerGRPC.Server
     public class HandleClient
     {
         private TcpListener _tcpListener;
-        private Log log;
         private IPostService _postService;
         private IThemeService _themeService;
         private IFileService _fileService;
-         public HandleClient(TcpListener vTcpListener,Log log, 
-             IPostService postService,IThemeService themeService, IFileService fileService)
+         public HandleClient(TcpListener vTcpListener, IPostService postService,IThemeService themeService, IFileService fileService)
          {
              _fileService = fileService;
              _themeService = themeService;
              _postService = postService;
-             this.log = log;
              _tcpListener = vTcpListener;
          }
          

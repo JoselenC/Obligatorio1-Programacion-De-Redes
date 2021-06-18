@@ -1,22 +1,16 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using BusinessLogic;
+using AdministrativeServer;
 using BusinessLogic.Managers;
 using DataAccess;
 using GrpcServices;
+using GrpcServicesInterfaces;
+using LogsServer;
+using LogsServerInterface;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using ServicesGRPC;
 
 namespace WebAPI
 {
@@ -34,8 +28,10 @@ namespace WebAPI
         {
             services.AddControllers();
             services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo {Title = "WebAPI", Version = "v1"}); });
-            services.AddScoped<IPostServiceGrpc, PostServiceGrpc>();
-            services.AddScoped<IThemeServiceGrpc, ThemeServiceGrpc>();
+          //  services.AddScoped<IPostServiceGrpc, PostServiceGrpc>();
+          //  services.AddScoped<IThemeServiceGrpc, ThemeServiceGrpc>();
+            services.AddScoped<ILogService, LogService>();
+            services.AddScoped<ManagerLogRepository, DataBaseLogRepository>();
             services.AddScoped<ManagerPostRepository, DataBasePostRepository>();
             services.AddScoped<ManagerThemeRepository, DataBaseThemeRepository>();
         }

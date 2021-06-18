@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Domain;
 
-namespace GrpcServices
+namespace GrpcServicesInterfaces
 {
     public interface IPostServiceGrpc
     {

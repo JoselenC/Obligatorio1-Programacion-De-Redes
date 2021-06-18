@@ -161,16 +161,6 @@
       "frameworks": {
         "netcoreapp3.1": {
           "targetAlias": "netcoreapp3.1",
-          "dependencies": {
-            "Grpc.Net.Client": {
-              "target": "Package",
-              "version": "[2.37.0, )"
-            },
-            "RabbitMQ.Client": {
-              "target": "Package",
-              "version": "[6.2.1, )"
-            }
-          },
           "imports": [
             "net461",
             "net462",

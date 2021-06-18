@@ -6,6 +6,7 @@ using BusinessLogic.Services;
 using Domain;
 using Grpc.Core;
 using GrpcServices;
+using GrpcServicesInterfaces;
 using Microsoft.Extensions.Logging;
 
 namespace ServerGRPC.ServerGrpc.Services

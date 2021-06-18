@@ -1,14 +1,8 @@
-C:\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\DomainObjects\bin\Debug\netcoreapp3.1\LogServer.deps.json
-C:\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\DomainObjects\bin\Debug\netcoreapp3.1\LogServer.runtimeconfig.json
-C:\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\DomainObjects\bin\Debug\netcoreapp3.1\LogServer.runtimeconfig.dev.json
-C:\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\DomainObjects\bin\Debug\netcoreapp3.1\LogServer.exe
 C:\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\DomainObjects\bin\Debug\netcoreapp3.1\DomainObjects.deps.json
 C:\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\DomainObjects\bin\Debug\netcoreapp3.1\DomainObjects.dll
 C:\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\DomainObjects\bin\Debug\netcoreapp3.1\DomainObjects.pdb
-C:\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\DomainObjects\bin\Debug\netcoreapp3.1\LogServer.dll
 C:\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\DomainObjects\bin\Debug\netcoreapp3.1\Protocol.dll
 C:\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\DomainObjects\bin\Debug\netcoreapp3.1\ProtocolFiles.dll
-C:\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\DomainObjects\bin\Debug\netcoreapp3.1\LogServer.pdb
 C:\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\DomainObjects\bin\Debug\netcoreapp3.1\ProtocolFiles.pdb
 C:\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\DomainObjects\bin\Debug\netcoreapp3.1\Protocol.pdb
 C:\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\DomainObjects\obj\Debug\netcoreapp3.1\DomainObjects.csprojAssemblyReference.cache

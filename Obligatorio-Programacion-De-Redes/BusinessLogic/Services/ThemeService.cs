@@ -44,15 +44,18 @@ namespace BusinessLogic.Services
                         Theme theme = new Theme() { Name = name, Description = description };
                         _themeRepository.Themes.Add(theme);
                         message = "The theme " + name + " was added";
+                        rabbitClient.SendMessage(message);
                     }
                     else
                     {
                         message = "Not add, the theme " + name + " already exist";
+                        rabbitClient.SendMessage(message);
                     }
                 }
                 else
                 {
                     message = "The theme name cannot be empty";
+                    rabbitClient.SendMessage(message);
                 }
                 Packet packg = new Packet("RES", "4", message);
                 await socketHandler.SendPackgAsync(packg);

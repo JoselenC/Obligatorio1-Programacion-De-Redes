@@ -34,8 +34,6 @@ namespace Server.Server
            _themeRepository = themeRepository;
            _repository = repository;
            var rabbitClient = new RabbitHelper();
-           rabbitClient.QueueDeclare();
-           rabbitClient.ReceiveMessages();
            _tcpListener = new TcpListener(IPAddress.Parse(ConfigurationManager.AppSettings["ServerIp"]), Int32.Parse(ConfigurationManager.AppSettings["ServerPort"]));
            _postService = new PostService(repository, rabbitClient, postRepository, themeRepository );
            _themeService = new ThemeService(repository, rabbitClient , postRepository, themeRepository);

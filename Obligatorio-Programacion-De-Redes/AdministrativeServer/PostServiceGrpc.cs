@@ -2,7 +2,6 @@
 using AutoMapper;
 using Domain;
 using Grpc.Net.Client;
-using GrpcServices;
 using GrpcServicesInterfaces;
 using ServicesGRPC;
 

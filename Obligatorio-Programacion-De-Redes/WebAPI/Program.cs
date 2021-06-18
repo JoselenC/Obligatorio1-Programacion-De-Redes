@@ -13,6 +13,9 @@ namespace WebAPI
     {
         public static void Main(string[] args)
         {
+            var rabbitClient = new RabbitHelper();
+            rabbitClient.QueueDeclare();
+            rabbitClient.ReceiveMessages();
             CreateHostBuilder(args).Build().Run();
         }
 

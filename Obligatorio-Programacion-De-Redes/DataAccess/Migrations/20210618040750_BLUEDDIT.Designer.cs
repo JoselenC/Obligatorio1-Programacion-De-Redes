@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(ContextDb))]
-    [Migration("20210609153057_BluedditDB")]
-    partial class BluedditDB
+    [Migration("20210618040750_BLUEDDIT")]
+    partial class BLUEDDIT
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -78,6 +78,21 @@ namespace DataAccess.Migrations
                     b.HasIndex("ThemeId");
 
                     b.ToTable("FileThemeDto");
+                });
+
+            modelBuilder.Entity("DataAccess.DtoOjects.LogDto", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Message")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Logs");
                 });
 
             modelBuilder.Entity("DataAccess.DtoOjects.PostDto", b =>

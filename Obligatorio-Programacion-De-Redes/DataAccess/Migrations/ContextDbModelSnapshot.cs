@@ -78,6 +78,21 @@ namespace DataAccess.Migrations
                     b.ToTable("FileThemeDto");
                 });
 
+            modelBuilder.Entity("DataAccess.DtoOjects.LogDto", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Message")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Logs");
+                });
+
             modelBuilder.Entity("DataAccess.DtoOjects.PostDto", b =>
                 {
                     b.Property<int>("Id")

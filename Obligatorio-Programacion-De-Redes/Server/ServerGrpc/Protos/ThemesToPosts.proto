@@ -15,10 +15,12 @@ message ThemeToPost{
 }
 
 message AssociateThemeToPostRequest {
-    ThemeToPost Theme=1;
+    string ThemeName=1;
+    string PostName=2;
 }
 
 
 message AssociateThemeToPostReply {
-    ThemeToPost Theme=1;
+    string ThemeName=1;
+    string PostName=2;
 }

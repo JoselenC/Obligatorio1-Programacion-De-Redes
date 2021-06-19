@@ -1,23 +1,20 @@
 ﻿using System.Threading.Tasks;
 using AutoMapper;
-using BusinessLogic;
 using BusinessLogic.Managers;
+using DataAccess;
 using Domain;
 using Grpc.Core;
-using GrpcServices;
-using Microsoft.Extensions.Logging;
-using Server;
 
-namespace ServerGRPC.ServerGrpc.Services
+namespace Server.ServerGrpc.Services
 {
     public class ThemeService : ThemeGrpc.ThemeGrpcBase
     {
         private readonly IMapper _mapper;
         private ManagerThemeRepository _themeRepository;
 
-        public ThemeService(ManagerThemeRepository repository)
+        public ThemeService()
         {
-            _themeRepository = repository;
+            _themeRepository = new DataBaseThemeRepository();
             var config = new MapperConfiguration(
                 conf =>
                 {

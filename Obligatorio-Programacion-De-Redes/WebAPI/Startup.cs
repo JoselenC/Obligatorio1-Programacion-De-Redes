@@ -1,6 +1,8 @@
 using AdministrativeServer;
 using BusinessLogic.Managers;
 using DataAccess;
+using Grpc.Core;
+using Grpc.Net.Client;
 using GrpcServices;
 using GrpcServicesInterfaces;
 using LogsServer;
@@ -30,6 +32,7 @@ namespace WebAPI
             services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo {Title = "WebAPI", Version = "v1"}); });
             services.AddScoped<IPostServiceGrpc, PostServiceGrpc>();
             services.AddScoped<IThemeServiceGrpc, ThemeServiceGrpc>();
+            services.AddScoped<IThemeToPostServiceGrpc, ThemeToPostServiceGrpc>();
             services.AddScoped<ILogService, LogService>();
             services.AddScoped<ManagerLogRepository, DataBaseLogRepository>();
             services.AddScoped<ManagerPostRepository, DataBasePostRepository>();
@@ -42,9 +45,8 @@ namespace WebAPI
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebAPI v1"));
             }
+
 
             app.UseHttpsRedirection();
 

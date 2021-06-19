@@ -1,3 +1,4 @@
+using System;
 using BusinessLogic.Managers;
 using DataAccess;
 using Microsoft.AspNetCore.Hosting;
@@ -9,6 +10,7 @@ namespace WebAPI
     {
         public static void Main(string[] args)
         {
+            AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport",true); 
             ManagerLogRepository _managerLogRepository = new DataBaseLogRepository();
             var rabbitClient = new RabbitHelper(_managerLogRepository);
             rabbitClient.ReceiveMessages();

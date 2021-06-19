@@ -1,25 +1,21 @@
 using System.Threading.Tasks;
 using AutoMapper;
-using BusinessLogic;
 using BusinessLogic.Managers;
 using BusinessLogic.Services;
+using DataAccess;
 using Domain;
 using Grpc.Core;
-using GrpcServices;
-using GrpcServicesInterfaces;
-using Microsoft.Extensions.Logging;
-using Server;
 
-namespace ServerGRPC.ServerGrpc.Services
+namespace Server.ServerGrpc.Services
 {
     public class PostService : PostGrpc.PostGrpcBase
     {
         private IPostService postService;
         private readonly IMapper _mapper;
         private ManagerPostRepository _postRepository;
-        public PostService(ManagerPostRepository repository)
+        public PostService()
         {
-            _postRepository = repository;
+            _postRepository = new DataBasePostRepository();
             var config = new MapperConfiguration(
                 conf =>
                 {
@@ -33,8 +29,8 @@ namespace ServerGRPC.ServerGrpc.Services
         {
             
             Post post = _mapper.Map<Post>(request.Post);
-            
-            var postRepsonse = _postRepository.Posts.Add(post);
+         
+            var postRepsonse =  _postRepository.Posts.Add(post);
             return new AddPostsReply
             {
                 Post = _mapper.Map<PostMessage>(postRepsonse)

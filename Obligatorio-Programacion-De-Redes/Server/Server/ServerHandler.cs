@@ -40,13 +40,13 @@ namespace Server.Server
            _fileService = new FileService(repository, postRepository, rabbitClient);
        }
 
-       public async Task StartServerAsync()
+       public async Task StartServerAsync(string[] args)
        {
            Task.Run(async () =>
            {
                new HomePageServer().MenuAsync(_repository,exit,_postRepository,_themeRepository);
            });
-           
+           Task.Run(async () => { Program.RunGrpc(args); });
            while (!exit)
            {
                _tcpListener.Start(1);

@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using Domain;
-using GrpcServices;
 using GrpcServicesInterfaces;
 using Microsoft.AspNetCore.Mvc;
 

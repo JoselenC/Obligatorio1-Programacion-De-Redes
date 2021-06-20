@@ -2,7 +2,6 @@
 using System.ComponentModel;
 using System.Net.Sockets;
 using System.Threading.Tasks;
-using DataHandler;
 using Protocol;
 using ProtocolFiles;
 
@@ -13,7 +12,7 @@ namespace Client
 
         private async Task<string> ReceiveListPostAsync(SocketHandler socketHandler, string message)
         {
-            var packet = await socketHandler.ReceivePackgAsync();
+            var packet = await socketHandler.ReceivePackageAsync();
             String[] postsNAmes = packet.Data.Split('#');
             int index = await new MenuClient().ShowMenuAsync(postsNAmes,message);
             string optionSelect = postsNAmes[index - 1];
@@ -24,7 +23,7 @@ namespace Client
         {
             ProtocolHandler protocolHandler = new ProtocolHandler();
             Packet packg1 = new Packet("REQ", "8", "Associate file");
-            await socketHandler.SendPackgAsync(packg1);
+            await socketHandler.SendPackageAsync(packg1);
             string title = "Select post to associate file";
             string optionSelect1 = await ReceiveListPostAsync(socketHandler, title);
             if (optionSelect1 != "Back")

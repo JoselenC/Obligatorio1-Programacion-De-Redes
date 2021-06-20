@@ -1,25 +1,25 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using AutoMapper;
 using BusinessLogic;
 using BusinessLogic.Managers;
-using Domain;
+using DataAccess;
+using DomainObjects;
+using DomainObjects.Exceptions;
 using Grpc.Core;
-using GrpcServices;
-using Microsoft.Extensions.Logging;
+using Server.Exceptions;
 
-namespace ServerGRPC.ServerGrpc.Services
+namespace Server.ServerGrpc.Services
 {
     public class ThemeService : ThemeGrpc.ThemeGrpcBase
     {
-        private readonly IThemeServiceGrpc _themeService;
         private readonly IMapper _mapper;
         private ManagerThemeRepository _themeRepository;
-
-        public ThemeService(ILogger<ThemeService> logger, IThemeServiceGrpc themeService,
-            ManagerThemeRepository repository)
+        private RabbitHelper _rabbitHelper;
+        public ThemeService()
         {
-            _themeRepository = repository;
-            _themeService = themeService;
+            _rabbitHelper = new RabbitHelper();
+            _themeRepository = new DataBaseThemeRepository();
             var config = new MapperConfiguration(
                 conf =>
                 {
@@ -31,29 +31,76 @@ namespace ServerGRPC.ServerGrpc.Services
 
         public override async Task<AddThemesReply> AddTheme(AddThemesRequest request, ServerCallContext context)
         {
-            var themeRequest = _mapper.Map<Theme>(request.Theme);
-            var themeRepsonse = _themeRepository.Themes.Add(themeRequest);
-            return new AddThemesReply
+            try
             {
-                Theme = _mapper.Map<ThemeMessage>(themeRepsonse)
-            };
+                var themeRequest = _mapper.Map<Theme>(request.Theme);
+                themeRequest.ValidateName(themeRequest.Name);
+                if (!AlreadyExistThisTheme(themeRequest))
+                {
+                    var themeRepsonse = _themeRepository.Themes.Add(themeRequest);
+                    _rabbitHelper.SendMessage("Theme "+request.Theme.Name + " was added");
+                    return new AddThemesReply
+                    {
+                        Theme = _mapper.Map<ThemeMessage>(themeRepsonse)
+                    };
+                }
+                _rabbitHelper.SendMessage("Theme "+request.Theme.Name + " wasn't added, already exist");
+                throw new RpcException(new Status(StatusCode.AlreadyExists, "Post Already exist"));
+            }
+            catch (InvalidNameLength)
+            {
+                _rabbitHelper.SendMessage("Theme "+request.Theme.Name + " wasn't added, empty name");
+                throw new RpcException(new Status(StatusCode.InvalidArgument, "Post name empty"));
+            }
         }
-        
+
+        public bool AlreadyExistThisTheme(Theme theme)
+        {
+            try
+            {
+                _themeRepository.Themes.Find(x=>x.Name==theme.Name);
+                return true;
+            }
+            catch (KeyNotFoundException)
+            {
+                return false;
+            }
+        }
+
         public override async Task<ModifyThemeReply> ModifyTheme(ModifyThemeRequest request, ServerCallContext context)
         {
-            var themeRequest = _mapper.Map<Theme>(request.Theme);
-            var theme =  _themeRepository.Themes.Find(x=>x.Name==themeRequest.Name);
-            var themeRepsonse = _themeRepository.Themes.Update(theme,themeRequest);
-            return new ModifyThemeReply
+            try
             {
-                Theme = _mapper.Map<ThemeMessage>(themeRepsonse)
-            };
+                var themeRequest = _mapper.Map<Theme>(request.Theme);
+                var theme = _themeRepository.Themes.Find(x => x.Name == themeRequest.Name);
+                var themeRepsonse = _themeRepository.Themes.Update(theme, themeRequest);
+                _rabbitHelper.SendMessage("Theme "+request.Theme.Name + " was modified");
+                return new ModifyThemeReply
+                {
+                    Theme = _mapper.Map<ThemeMessage>(themeRepsonse)
+                };
+            }
+            catch (KeyNotFoundException)
+            {
+                _rabbitHelper.SendMessage("Theme "+request.Theme.Name + " wasn't modified, not exist");
+                throw new RpcException(new Status(StatusCode.NotFound, "Not found"));
+            }
         }
+
         public override async Task<DeleteThemeReply> DeleteTheme(DeleteThemeRequest request, ServerCallContext context)
         {
-            var themeRequest = _mapper.Map<Theme>(request.Theme);
-            _themeRepository.Themes.Delete(themeRequest);
-            return new DeleteThemeReply{ };
+            try
+            {
+                var theme = _themeRepository.Themes.Find(x => x.Name == request.Theme.Name);
+                _themeRepository.Themes.Delete(theme);
+                _rabbitHelper.SendMessage("Theme "+request.Theme.Name + " was deleted");
+                return new DeleteThemeReply { };
+            }
+            catch (KeyNotFoundException)
+            {
+                _rabbitHelper.SendMessage("Theme "+request.Theme.Name + " wasn't deleted, not exist");
+                throw new RpcException(new Status(StatusCode.NotFound, "Not found"));
+            }
         }
     }
 }

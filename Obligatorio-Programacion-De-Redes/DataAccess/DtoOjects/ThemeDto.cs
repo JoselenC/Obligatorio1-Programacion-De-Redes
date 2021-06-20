@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using Domain;
+﻿using System.Collections.Generic;
 
 namespace DataAccess.DtoOjects
 {
@@ -18,7 +16,7 @@ namespace DataAccess.DtoOjects
 
         public override bool Equals(object? obj)
         {
-            return ((ThemeDto) obj).Name == Name;
+            return ((ThemeDto) obj)?.Name == Name;
         }
     }
 }

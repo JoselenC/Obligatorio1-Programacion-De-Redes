@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using BusinessLogic.IServices;
 using BusinessLogic.Managers;
-using DataHandler;
-using Domain;
+using DomainObjects;
 using Protocol;
 using ProtocolFiles;
 
@@ -11,14 +11,14 @@ namespace BusinessLogic.Services
 {
     public class FileService : IFileService
     {
-        private ManagerRepository repository;
-        private ManagerPostRepository _postRepository;
-        private RabbitHelper rabbitClient;
+        private readonly ManagerRepository _repository;
+        private readonly ManagerPostRepository _postRepository;
+        private readonly RabbitHelper _rabbitClient;
         public FileService(ManagerRepository vRepository, ManagerPostRepository postRepository,RabbitHelper rabbitHelper)
         {
             _postRepository = postRepository;
-            repository = vRepository;
-            this.rabbitClient = rabbitHelper;
+            _repository = vRepository;
+            this._rabbitClient = rabbitHelper;
         }
 
         private async Task SendListPostAsync(SocketHandler socketHandler)
@@ -30,7 +30,7 @@ namespace BusinessLogic.Services
             }
             posts += "Back" + "#";
             Packet packg = new Packet("RES", "4", posts);
-            await socketHandler.SendPackgAsync(packg);
+            await socketHandler.SendPackageAsync(packg);
         }
 
         public async Task UploadFile(SocketHandler socketHandler)
@@ -40,7 +40,7 @@ namespace BusinessLogic.Services
                 await SendListPostAsync(socketHandler);
                 ProtocolHandler protocolHandler = new ProtocolHandler();
                 string[] fileData = await protocolHandler.ReceiveFileAsync(socketHandler);
-                rabbitClient.SendMessage("Upload file" + fileData[2]);
+                _rabbitClient.SendMessage("The file " + fileData[2]+" was uploaded in the post "+ fileData[0]);
                 string option = fileData[0];
                 if (option != "Back")
                 {
@@ -51,23 +51,28 @@ namespace BusinessLogic.Services
                         UploadDate = DateTime.Now
                       
                     };
-                    Post oldPost = _postRepository.Posts.Find(x => x.Name == fileData[0]);
-                    Post post = _postRepository.Posts.Find(x => x.Name == fileData[0]);
-                    if (post.File == null) post.File = new File();
-                    post.File = file;
-                    if (file.Themes == null) file.Themes = new List<Theme>();
-                    file.Themes = post.Themes;
-                    if (file.Post == null) file.Post = new Post();
-                    file.Post = post;
-                    _postRepository.Posts.Update(oldPost,post);
-                    repository.Files.Add(file);
+                    UploadFileInPost(fileData, file);
                 }
             }
             else
             {
-                rabbitClient.SendMessage("The file was not loaded, there are no posts");
+                _rabbitClient.SendMessage("The file was not uploaded because there was no post");
                 await SendListPostAsync(socketHandler);
             }
+        }
+
+        private void UploadFileInPost(string[] fileData, File file)
+        {
+            Post oldPost = _postRepository.Posts.Find(x => x.Name == fileData[0]);
+            Post post = _postRepository.Posts.Find(x => x.Name == fileData[0]);
+            post.File ??= new File();
+            post.File = file;
+            file.Themes ??= new List<Theme>();
+            file.Themes = post.Themes;
+            file.Post ??= new Post();
+            file.Post = post;
+            _repository.Files.Add(file);
+            _postRepository.Posts.Update(oldPost, post);
         }
     }
 }

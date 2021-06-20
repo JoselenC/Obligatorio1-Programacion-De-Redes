@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DataAccess.Migrations
 {
-    public partial class BLUEDDIT : Migration
+    public partial class BluedditDB : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -27,7 +27,8 @@ namespace DataAccess.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Message = table.Column<string>(nullable: true)
+                    Message = table.Column<string>(nullable: true),
+                    CreationDate = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -84,25 +85,6 @@ namespace DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "SemaphoresSlimPostDto",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    PostId = table.Column<int>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_SemaphoresSlimPostDto", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_SemaphoresSlimPostDto_Posts_PostId",
-                        column: x => x.PostId,
-                        principalTable: "Posts",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "PostThemeDto",
                 columns: table => new
                 {
@@ -125,25 +107,6 @@ namespace DataAccess.Migrations
                         principalTable: "Themes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "SemaphoresSlimThemeDto",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ThemeId = table.Column<int>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_SemaphoresSlimThemeDto", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_SemaphoresSlimThemeDto_Themes_ThemeId",
-                        column: x => x.ThemeId,
-                        principalTable: "Themes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -186,16 +149,6 @@ namespace DataAccess.Migrations
                 name: "IX_PostThemeDto_ThemeId",
                 table: "PostThemeDto",
                 column: "ThemeId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_SemaphoresSlimPostDto_PostId",
-                table: "SemaphoresSlimPostDto",
-                column: "PostId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_SemaphoresSlimThemeDto_ThemeId",
-                table: "SemaphoresSlimThemeDto",
-                column: "ThemeId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -211,12 +164,6 @@ namespace DataAccess.Migrations
 
             migrationBuilder.DropTable(
                 name: "PostThemeDto");
-
-            migrationBuilder.DropTable(
-                name: "SemaphoresSlimPostDto");
-
-            migrationBuilder.DropTable(
-                name: "SemaphoresSlimThemeDto");
 
             migrationBuilder.DropTable(
                 name: "Files");

@@ -1,9 +1,8 @@
 ﻿using System.Threading.Tasks;
 using AutoMapper;
-using Domain;
+using DomainObjects;
 using Grpc.Net.Client;
-using GrpcServices;
-using ServicesGRPC;
+using GrpcServicesInterfaces;
 
 namespace AdministrativeServer
 {
@@ -11,43 +10,50 @@ namespace AdministrativeServer
     {
         private readonly ThemeGrpc.ThemeGrpcClient _client;
         private readonly IMapper _mapper;
-        public ThemeServiceGrpc(GrpcChannel channel)
+        public ThemeServiceGrpc()
         {
+            var channel = GrpcChannel.ForAddress("http://localhost:5002");
             _client = new ThemeGrpc.ThemeGrpcClient(channel);
+            
             var config = new MapperConfiguration(
                 cfg =>
                 {
                     cfg.CreateMap<ThemeMessage, Theme>();
+                    cfg.CreateMap<Theme, ThemeMessage>();
                 });
             _mapper = config.CreateMapper();
         }
-        
-        public async Task<Theme> AddThemeAsyc(Theme theme)
+
+        public async Task<Theme> AddThemeAsync(Theme theme)
         {
+            theme.Name ??= "";
+            theme.Description ??= "";
             var themeMessage = _mapper.Map<ThemeMessage>(theme);
-            var reply = await _client.AddThemeAsync(
+            AddThemesReply reply = await _client.AddThemeAsync(
                 new AddThemesRequest {Theme = themeMessage}
             );
-            return _mapper.Map<Theme>(reply);
+            return _mapper.Map<Theme>(reply.Theme);
         }
-        
-        public async Task<Theme> ModifyThemeAsyc(Theme theme)
+
+        public async Task<Theme> ModifyThemeAsync(Theme theme)
         {
+            theme.Name ??= "";
+            theme.Description ??= "";
             var themeMessage = _mapper.Map<ThemeMessage>(theme);
-            var reply = await _client.ModifyThemeAsync(
+            ModifyThemeReply reply = await _client.ModifyThemeAsync(
                 new ModifyThemeRequest{Theme = themeMessage}
             );
-            return _mapper.Map<Theme>(reply);
+            return _mapper.Map<Theme>(reply.Theme);
         }
-        
-        public async Task<Theme> DeleteThemeAsyc(Theme theme)
+
+        public async Task DeleteThemeAsync(Theme theme)
         {
             var themeMessage = _mapper.Map<ThemeMessage>(theme);
             var reply = await _client.DeleteThemeAsync(
                 new DeleteThemeRequest {Theme = themeMessage}
             );
-            return _mapper.Map<Theme>(reply);
+
         }
-        
+
     }
 }

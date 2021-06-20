@@ -1,12 +1,12 @@
 ﻿using System.Threading.Tasks;
-using Domain;
+using DomainObjects;
 
 namespace GrpcServicesInterfaces
 {
     public interface IPostServiceGrpc
     {
-        Task<Post> AddPostAsyc(Post post);
-        Task<Post> ModifyPostAsyc(Post post);
-        Task<Post> DeletePostAsyc(Post post);
+        Task<Post> AddPostAsync(Post post);
+        Task<Post> ModifyPostAsync(Post post);
+        Task DeletePostAsync(Post post);
     }
 }

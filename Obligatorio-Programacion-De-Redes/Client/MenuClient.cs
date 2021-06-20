@@ -5,13 +5,13 @@ namespace Client
 {
     public class MenuClient
     {
-        public async Task<int> ShowMenuAsync( string[] _options, string title)
+        public async Task<int> ShowMenuAsync( string[] options, string title)
         {
-            bool salir = false;
+            bool exit = false;
             int indexMenu = 0;
-            while (!salir)
+            while (!exit)
             {
-                PrintOptions(_options, title, indexMenu);
+                PrintOptions(options, title, indexMenu);
 
                 switch (Console.ReadKey().Key)
                 {
@@ -25,13 +25,14 @@ namespace Client
                         break;
                     case ConsoleKey.DownArrow:
                         Console.Clear();
-                        if (indexMenu < _options.Length - 1)
+                        if (indexMenu < options.Length - 1)
                             indexMenu = indexMenu + 1;
                         else
                             indexMenu = 0;
                         break;
                     case ConsoleKey.Escape:
-                        indexMenu = _options.Length - 1;
+                        indexMenu = options.Length - 1;
+                        exit = true;
                         break;
                     default:
                         return 0;
@@ -41,12 +42,12 @@ namespace Client
             return 0;
         }
 
-        private void PrintOptions(string[] _options, string title, int indexMenu)
+        private void PrintOptions(string[] options, string title, int indexMenu)
         {
             Console.ForegroundColor = ConsoleColor.Magenta;
             Console.WriteLine("----" + title + "----");
             Console.ForegroundColor = ConsoleColor.White;
-            for (var i = 0; i < _options.Length; i++)
+            for (var i = 0; i < options.Length; i++)
             {
                 var prefix = "  ";
                 Console.ForegroundColor = ConsoleColor.White;
@@ -58,7 +59,7 @@ namespace Client
                     prefix = "> ";
                 }
 
-                Console.WriteLine($"{prefix}{_options[i]}");
+                Console.WriteLine($"{prefix}{options[i]}");
             }
         }
     }

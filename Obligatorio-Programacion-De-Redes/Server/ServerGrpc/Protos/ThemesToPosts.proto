@@ -2,10 +2,11 @@ syntax = "proto3";
 
 option csharp_namespace = "Server";
 
-package themes;
+package themesToPosts;
 
-service ThemeGrpc {
+service ThemeToPostGrpc {
     rpc AssociateThemeToPost (AssociateThemeToPostRequest) returns (AssociateThemeToPostReply);
+    rpc DissasociateThemeToPost (DissasociateThemeToPostRequest) returns (DissasociateThemeToPostReply);
 
 }
 
@@ -15,10 +16,18 @@ message ThemeToPost{
 }
 
 message AssociateThemeToPostRequest {
-    ThemeToPost Theme=1;
+    ThemeToPost themeToPost = 1;
 }
 
 
 message AssociateThemeToPostReply {
-    ThemeToPost Theme=1;
+    ThemeToPost themeToPost = 1;
+}
+
+message DissasociateThemeToPostRequest {
+    ThemeToPost themeToPost = 1;
+}
+
+
+message DissasociateThemeToPostReply {
 }

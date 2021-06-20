@@ -1,7 +1,8 @@
 ﻿using BusinessLogic;
+using BusinessLogic.Managers;
 using DataAccess.DtoOjects;
 using DataAccess.Mappers;
-using Domain;
+using DomainObjects;
 
 namespace DataAccess
 {
@@ -11,8 +12,6 @@ namespace DataAccess
         {
             Files = new DataBaseRepository<File, FileDto>(new FileMapper());
             Clients = new DataBaseRepository<Client, ClientDto>(new ClientMapper());
-            SemaphoreSlimPosts = new DataBaseRepository<SemaphoreSlimPost, SemaphoreSlimPostDto>(new SemaphorePostMapper());
-            SemaphoreSlimThemes = new DataBaseRepository<SemaphoreSlimTheme, SemaphoreSlimThemeDto>(new SemaphoreThemeMapper());
-        }
+       }
     }
 }

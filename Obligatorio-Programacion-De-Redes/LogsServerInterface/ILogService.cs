@@ -7,5 +7,6 @@ namespace LogsServerInterface
     {
         void AddLog(string log);
         List<Log> Get();
+        List<Log> GetByCreationDate(string creationDate);
     }
 }

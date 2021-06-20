@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using DataAccess.DtoOjects;
-using Domain;
+using DomainObjects;
 using Microsoft.EntityFrameworkCore;
 using MSP.BetterCalm.DataAccess;
 
@@ -19,14 +19,17 @@ namespace DataAccess.Mappers
                     Name = obj.Name,
                     CreationDate = obj.CreationDate,
                 };
-                if (obj.File != null)
-                    postDto.FileDto = new FileMapper().DomainToDto(obj.File, context);
             }
-            else
-            {
+            else{
+            
                 context.Entry(postDto).Collection("PostsThemesDto").Load();
             }
 
+            if (obj.File != null)
+            {
+                postDto.FileDto = new FileMapper().DomainToDto(obj.File, context);
+                postDto.FileId=postDto.FileDto.Id;
+            }
             List<ThemeDto> themes = CreateThemes(obj.Themes, context);
             postDto.PostsThemesDto = new List<PostThemeDto>();
             foreach (var themeDto in themes)
@@ -55,20 +58,6 @@ namespace DataAccess.Mappers
                             Name = theme.Name
                         };
                     }
-                    if (theme.Posts != null)
-                    {
-                        foreach (var post in theme.Posts)
-                        {
-                            postThemeDtos = new List<PostThemeDto>()
-                            {
-                                new PostThemeDto()
-                                {
-                                    Theme = themeDto,
-                                }
-                            };
-                        }
-                    }
-                    themeDto.PostsThemesDto = postThemeDtos;
                     themesDto.Add(themeDto);
                 }
             }
@@ -115,8 +104,12 @@ namespace DataAccess.Mappers
             ThemeMapper themeMapper = new ThemeMapper();
             objToUpdate.Name = updatedObject.Name;
             objToUpdate.CreationDate = updatedObject.CreationDate;
-            if(updatedObject.File!=null)
-             objToUpdate.FileDto = new FileMapper().DomainToDto(updatedObject.File,context);
+            if (updatedObject.File != null)
+            {
+                objToUpdate.FileDto = context.Files.FirstOrDefault(x => x.Name == updatedObject.File.Name);
+                objToUpdate.FileId = objToUpdate.FileDto.Id;
+             
+            }
             var diffListOldValuesThemes = UpdatePostsThemesDto(objToUpdate, updatedObject, context, themeMapper);
             objToUpdate.PostsThemesDto = diffListOldValuesThemes;
             return objToUpdate;

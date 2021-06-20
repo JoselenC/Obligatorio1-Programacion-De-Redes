@@ -5,7 +5,7 @@ namespace ProtocolFiles
 {
     public class FileHandler
     {
-        public bool FileExists(string path)
+        private bool FileExists(string path)
         {
             return File.Exists(path);
         }
@@ -37,9 +37,9 @@ namespace ProtocolFiles
         private bool IsValidSize(string path)
         {
             long length = path.Length;
-            long fileSizeInKB = length / 1024;
-            long fileSizeInMB = fileSizeInKB / 1024;
-            return fileSizeInMB <= 100;
+            long fileSizeInKb = length / 1024;
+            long fileSizeInMb = fileSizeInKb / 1024;
+            return fileSizeInMb <= 100;
         }
     }
 }

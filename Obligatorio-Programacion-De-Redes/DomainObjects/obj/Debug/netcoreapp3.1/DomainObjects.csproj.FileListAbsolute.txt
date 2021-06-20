@@ -1,0 +1,14 @@
+C:\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\DomainObjects\bin\Debug\netcoreapp3.1\DomainObjects.deps.json
+C:\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\DomainObjects\bin\Debug\netcoreapp3.1\DomainObjects.dll
+C:\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\DomainObjects\bin\Debug\netcoreapp3.1\DomainObjects.pdb
+C:\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\DomainObjects\bin\Debug\netcoreapp3.1\Protocol.dll
+C:\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\DomainObjects\bin\Debug\netcoreapp3.1\ProtocolFiles.dll
+C:\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\DomainObjects\bin\Debug\netcoreapp3.1\ProtocolFiles.pdb
+C:\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\DomainObjects\bin\Debug\netcoreapp3.1\Protocol.pdb
+C:\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\DomainObjects\obj\Debug\netcoreapp3.1\DomainObjects.csprojAssemblyReference.cache
+C:\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\DomainObjects\obj\Debug\netcoreapp3.1\DomainObjects.AssemblyInfoInputs.cache
+C:\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\DomainObjects\obj\Debug\netcoreapp3.1\DomainObjects.AssemblyInfo.cs
+C:\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\DomainObjects\obj\Debug\netcoreapp3.1\DomainObjects.csproj.CoreCompileInputs.cache
+C:\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\DomainObjects\obj\Debug\netcoreapp3.1\DomainObjects.csproj.CopyComplete
+C:\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\DomainObjects\obj\Debug\netcoreapp3.1\DomainObjects.dll
+C:\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\DomainObjects\obj\Debug\netcoreapp3.1\DomainObjects.pdb

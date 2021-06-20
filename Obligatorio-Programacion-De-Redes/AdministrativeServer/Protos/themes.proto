@@ -1,0 +1,43 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "AdministrativeServer";
+
+package themes;
+
+service ThemeGrpc {
+    rpc AddTheme (AddThemesRequest) returns (AddThemesReply);
+    rpc DeleteTheme(DeleteThemeRequest) returns (DeleteThemeReply);
+    rpc ModifyTheme(ModifyThemeRequest) returns (ModifyThemeReply);
+
+}
+
+message ThemeMessage{
+    string name=1;
+    string description=2;
+}
+
+message AddThemesRequest {
+    ThemeMessage Theme=1;
+}
+
+
+message AddThemesReply {
+    ThemeMessage Theme=1;
+}
+
+message DeleteThemeRequest {
+    ThemeMessage Theme=1;
+}
+
+
+message DeleteThemeReply {
+}
+
+message ModifyThemeRequest {
+    ThemeMessage Theme=1;
+}
+
+
+message ModifyThemeReply {
+    ThemeMessage Theme=1;
+}

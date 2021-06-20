@@ -11,10 +11,10 @@
 
         public Packet(string head, string command, string data )
         {
-            this.Header = head;
-            this.Command = command.ToString().PadLeft(2, '0');
-            this.Data = data;
-            this.Length = (data.Length+5).ToString().PadLeft(4, '0');
+            Header = head;
+            Command = command.PadLeft(2, '0');
+            Data = data;
+            Length = (data.Length+5).ToString().PadLeft(4, '0');
         }
         
     }

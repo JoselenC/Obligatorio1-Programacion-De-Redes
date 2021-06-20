@@ -1,29 +1,26 @@
 ﻿using System;
 using System.Net.Sockets;
-using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
-using Protocol;
 
-
-namespace DataHandler
+namespace Protocol
 {
     public class SocketHandler 
     {
-        public NetworkStream networkStream { get; set; }
+        public NetworkStream NetworkStream { get;}
         public SocketHandler(NetworkStream vNetworkStream)
         {
-            networkStream = vNetworkStream;
+            NetworkStream = vNetworkStream;
         }
 
-        public async Task<Packet> ReceivePackgAsync()
+        public async Task<Packet> ReceivePackageAsync()
         {
             byte[] data = new byte[9];
             Packet packet = new Packet();
             int received = 0;
             while (received < 9)
             {
-                int receivedBytes = await networkStream.ReadAsync(data);
+                int receivedBytes = await NetworkStream.ReadAsync(data);
                 if (receivedBytes == 0)
                 {
                     throw new SocketException();
@@ -38,7 +35,7 @@ namespace DataHandler
             byte[] dataBuffer = new byte[length];
             while (received < length + 9)
             {
-                int receivedBytes = await networkStream.ReadAsync(dataBuffer);
+                int receivedBytes = await NetworkStream.ReadAsync(dataBuffer);
                 if (receivedBytes == 0)
                 {
                     throw new SocketException();
@@ -51,20 +48,20 @@ namespace DataHandler
             return packet;
         }
 
-        public async Task SendPackgAsync(Packet pack)
+        public async Task SendPackageAsync(Packet pack)
         {
             try
             {
-                String fullCommand = pack.Header.ToString();
-                fullCommand += pack.Command.ToString();
-                fullCommand += pack.Length.ToString();
-                fullCommand += pack.Data.ToString();
+                string fullCommand = pack.Header;
+                fullCommand += pack.Command;
+                fullCommand += pack.Length;
+                fullCommand += pack.Data;
                 byte[] send = Encoding.UTF8.GetBytes(fullCommand);
-                await networkStream.WriteAsync(send);
+                await NetworkStream.WriteAsync(send);
             }
             catch (Exception e)
             {
-
+                // ignored
             }
         }
     }

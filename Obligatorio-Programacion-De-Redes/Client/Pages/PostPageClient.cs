@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Net.Sockets;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using Domain;
-using DataHandler;
 using Protocol;
 
 namespace Client
@@ -21,31 +17,31 @@ namespace Client
                     case 1:
                         Console.Clear();
                         Packet packg1 = new Packet("REQ", "1", "Add post");
-                        await socketHandler.SendPackgAsync(packg1);
+                        await socketHandler.SendPackageAsync(packg1);
                         await AddPostAsync(socketHandler);
                         break;
                     case 2:
                         Console.Clear();
                         Packet packg2 = new Packet("REQ", "2", "Modify post");
-                        await socketHandler.SendPackgAsync(packg2);
+                        await socketHandler.SendPackageAsync(packg2);
                         await ModifyPostAsync(socketHandler);
                         break;
                     case 3:
                         Console.Clear();
                         Packet packg3 = new Packet("REQ", "3", "Delete post");
-                        await socketHandler.SendPackgAsync(packg3);
+                        await socketHandler.SendPackageAsync(packg3);
                         await DeletePostAsync(socketHandler);
                         break;
                     case 4:
                         Console.Clear();
                         Packet packg4 = new Packet("REQ", "4", "Associate theme");
-                        await socketHandler.SendPackgAsync(packg4);
+                        await socketHandler.SendPackageAsync(packg4);
                         await AsociateThemeAsync(socketHandler);
                         break;
                     case 5:
                         Console.Clear();
                         Packet packg11 = new Packet("REQ", "11", "Disassociate theme");
-                        await socketHandler.SendPackgAsync(packg11);
+                        await socketHandler.SendPackageAsync(packg11);
                         await DisassociateThemeAsync(socketHandler);
                         break;
                     case 6:
@@ -64,14 +60,14 @@ namespace Client
             if (optionSelect == "Back")
             {
                 Packet packg = new Packet("REQ", "3", optionSelect);
-                await socketHandler.SendPackgAsync(packg);
+                await socketHandler.SendPackageAsync(packg);
                 await MenuAsync(socketHandler);
             }
             else
             {
                 Packet packg = new Packet("REQ", "3", optionSelect);
-                await socketHandler.SendPackgAsync(packg);
-                var packet = await socketHandler.ReceivePackgAsync();
+                await socketHandler.SendPackageAsync(packg);
+                var packet = await socketHandler.ReceivePackageAsync();
                 string messageReceive = packet.Data;
                 Console.WriteLine(messageReceive);
                 await MenuAsync(socketHandler);
@@ -86,14 +82,14 @@ namespace Client
             if (optionSelect == "Back")
             {
                 Packet packg = new Packet("REQ", "2", optionSelect);
-                await socketHandler.SendPackgAsync(packg);
+                await socketHandler.SendPackageAsync(packg);
                 await MenuAsync(socketHandler);
             }
             else
             {
                 string message2 = optionSelect;
                 Packet packg2 = new Packet("REQ", "2", message2);
-                await socketHandler.SendPackgAsync(packg2);
+                await socketHandler.SendPackageAsync(packg2);
                 Console.ForegroundColor = ConsoleColor.Magenta;
                 Console.Write("-----New data----- \n");
                 Console.Write("Name: ");
@@ -123,8 +119,8 @@ namespace Client
                 }
                 string message = name + "#" + creationDate;
                 Packet packg = new Packet("REQ", "2", message);
-                await socketHandler.SendPackgAsync(packg);
-                var packet = await socketHandler.ReceivePackgAsync();
+                await socketHandler.SendPackageAsync(packg);
+                var packet = await socketHandler.ReceivePackageAsync();
                 string messageReceive = packet.Data;
                 Console.WriteLine(messageReceive);
                 await MenuAsync(socketHandler);
@@ -157,7 +153,7 @@ namespace Client
 
         public async Task AddPostAsync(SocketHandler socketHandler)
         {
-            var packetCantPost = await socketHandler.ReceivePackgAsync();
+            var packetCantPost = await socketHandler.ReceivePackageAsync();
             string cantPost = packetCantPost.Data;
             if (Int32.Parse(cantPost) > 0)
             {
@@ -191,8 +187,8 @@ namespace Client
 
                 string message = name + "#" + creationDate;
                 Packet packg = new Packet("REQ", "1", message);
-                await socketHandler.SendPackgAsync(packg);
-                var packet = await socketHandler.ReceivePackgAsync();
+                await socketHandler.SendPackageAsync(packg);
+                var packet = await socketHandler.ReceivePackageAsync();
                 string messageReceive = packet.Data;
                 Console.WriteLine(messageReceive);
                 if (messageReceive.Substring(0, 3) != "Not")
@@ -209,13 +205,13 @@ namespace Client
         private async Task AddThemeToPostAsync(SocketHandler socketHandler, string postName)
         {
             Packet packg1 = new Packet("REQ", "12", "Add post");
-            await socketHandler.SendPackgAsync(packg1);
+            await socketHandler.SendPackageAsync(packg1);
             string title = "Themes to add to the post";
             string optionSelect = await ReceiveThemesAsync(socketHandler, title);
             string message = postName + "#" + optionSelect;
             Packet packg = new Packet("REQ", "2", message);
-            await socketHandler.SendPackgAsync(packg);
-            var packet = await socketHandler.ReceivePackgAsync();
+            await socketHandler.SendPackageAsync(packg);
+            var packet = await socketHandler.ReceivePackageAsync();
             string messageReceive = packet.Data;
             Console.WriteLine(messageReceive);
             await MenuAsync(socketHandler);
@@ -229,19 +225,19 @@ namespace Client
             if (optionSelect == "Back")
             {
                 Packet packg2 = new Packet("REQ", "11", optionSelect);
-                await socketHandler.SendPackgAsync(packg2);
+                await socketHandler.SendPackageAsync(packg2);
                 await MenuAsync(socketHandler);
             }
             else
             {
                 Packet packg2 = new Packet("REQ", "11", optionSelect);
-                await socketHandler.SendPackgAsync(packg2);
+                await socketHandler.SendPackageAsync(packg2);
                 string title2="Select theme to disassociate to the post";
                 var optionSelectThemes = await ReceiveThemesAsync(socketHandler,title2);
                 if (optionSelectThemes == "Back")
                 {
                     Packet packg3 = new Packet("REQ", "11", optionSelect);
-                    await socketHandler.SendPackgAsync(packg3);
+                    await socketHandler.SendPackageAsync(packg3);
                     await MenuAsync(socketHandler);
                 }
                 else
@@ -250,8 +246,8 @@ namespace Client
                     var optionSelectThemes2 = await ReceiveThemesAsync(socketHandler, title3);
                     string message = optionSelect + "#" + optionSelectThemes + "#" + optionSelectThemes2;
                     Packet packg4 = new Packet("REQ", "11", message);
-                    await socketHandler.SendPackgAsync(packg4);
-                    var packet = await socketHandler.ReceivePackgAsync();
+                    await socketHandler.SendPackageAsync(packg4);
+                    var packet = await socketHandler.ReceivePackageAsync();
                     string messageReceive = packet.Data;
                     Console.WriteLine(messageReceive);
                     await MenuAsync( socketHandler);
@@ -262,7 +258,7 @@ namespace Client
 
         private async Task<string> ReceiveThemesAsync(SocketHandler socketHandler,string message)
         {
-            var packet = await socketHandler.ReceivePackgAsync();
+            var packet = await socketHandler.ReceivePackageAsync();
             String[] themesNames= packet.Data.Split('#');
             int indexThemes = await new MenuClient().ShowMenuAsync(themesNames,message);
             string optionSelectThemes = themesNames[indexThemes-1];
@@ -274,7 +270,7 @@ namespace Client
             Console.ForegroundColor = ConsoleColor.Magenta;
             Console.WriteLine("----"+message+"----\n");
             Console.ForegroundColor = ConsoleColor.White;
-            var packet = await socketHandler.ReceivePackgAsync();
+            var packet = await socketHandler.ReceivePackageAsync();
             String[] postsNAmes = packet.Data.Split('#');
             int index = await new MenuClient().ShowMenuAsync(postsNAmes,"Posts");
             string optionSelect = postsNAmes[index-1];
@@ -287,10 +283,10 @@ namespace Client
             string optionSelect1 = await ReceiveListPostAsync(socketHandler,title);
             if (optionSelect1 == "Back")
             {
-                var packet = await socketHandler.ReceivePackgAsync();
+                var packet = await socketHandler.ReceivePackageAsync();
                 String[] themesNames = packet.Data.Split('#');
                 Packet packg = new Packet("REQ", "4", optionSelect1);
-                await socketHandler.SendPackgAsync(packg);
+                await socketHandler.SendPackageAsync(packg);
                 await new HomePageClient().MenuAsync(socketHandler,false);
             }
             else
@@ -300,15 +296,15 @@ namespace Client
                 if (optionSelect == "Back")
                 {
                     Packet packg = new Packet("REQ", "4", optionSelect);
-                    await socketHandler.SendPackgAsync(packg);
+                    await socketHandler.SendPackageAsync(packg);
                     await new HomePageClient().MenuAsync(socketHandler,false);
                 }
                 else
                 {
                     string message = optionSelect1 + "#" + optionSelect;
                     Packet packg = new Packet("REQ", "4", message);
-                    await socketHandler.SendPackgAsync(packg);
-                    var packet = await socketHandler.ReceivePackgAsync();
+                    await socketHandler.SendPackageAsync(packg);
+                    var packet = await socketHandler.ReceivePackageAsync();
                     string messageReceive = packet.Data;
                     Console.WriteLine(messageReceive);
                     await MenuAsync(socketHandler);
@@ -323,14 +319,14 @@ namespace Client
             if (optionSelect == "Back")
             {
                 Packet packg = new Packet("REQ", "9", optionSelect);
-                await socketHandler.SendPackgAsync(packg);
+                await socketHandler.SendPackageAsync(packg);
                 await new HomePageClient().MenuAsync(socketHandler,false);
             }
             else
             {
                 Packet packg = new Packet("REQ", "2", optionSelect);
-                await socketHandler.SendPackgAsync(packg);
-                var packet = await socketHandler.ReceivePackgAsync();
+                await socketHandler.SendPackageAsync(packg);
+                var packet = await socketHandler.ReceivePackageAsync();
                 String[] messageArray = packet.Data.Split('#');
                 string name = messageArray[0];
                 Console.WriteLine("Name:" + name);

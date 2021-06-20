@@ -1,0 +1,16 @@
+C:\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\GrpcServicesInterfaces\bin\Debug\netcoreapp3.1\GrpcServicesInterfaces.deps.json
+C:\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\GrpcServicesInterfaces\bin\Debug\netcoreapp3.1\GrpcServicesInterfaces.dll
+C:\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\GrpcServicesInterfaces\bin\Debug\netcoreapp3.1\GrpcServicesInterfaces.pdb
+C:\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\GrpcServicesInterfaces\bin\Debug\netcoreapp3.1\DomainObjects.dll
+C:\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\GrpcServicesInterfaces\bin\Debug\netcoreapp3.1\Protocol.dll
+C:\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\GrpcServicesInterfaces\bin\Debug\netcoreapp3.1\ProtocolFiles.dll
+C:\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\GrpcServicesInterfaces\bin\Debug\netcoreapp3.1\DomainObjects.pdb
+C:\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\GrpcServicesInterfaces\bin\Debug\netcoreapp3.1\Protocol.pdb
+C:\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\GrpcServicesInterfaces\bin\Debug\netcoreapp3.1\ProtocolFiles.pdb
+C:\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\GrpcServicesInterfaces\obj\Debug\netcoreapp3.1\GrpcServicesInterfaces.csprojAssemblyReference.cache
+C:\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\GrpcServicesInterfaces\obj\Debug\netcoreapp3.1\GrpcServicesInterfaces.AssemblyInfoInputs.cache
+C:\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\GrpcServicesInterfaces\obj\Debug\netcoreapp3.1\GrpcServicesInterfaces.AssemblyInfo.cs
+C:\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\GrpcServicesInterfaces\obj\Debug\netcoreapp3.1\GrpcServicesInterfaces.csproj.CoreCompileInputs.cache
+C:\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\GrpcServicesInterfaces\obj\Debug\netcoreapp3.1\GrpcServicesInterfaces.csproj.CopyComplete
+C:\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\GrpcServicesInterfaces\obj\Debug\netcoreapp3.1\GrpcServicesInterfaces.dll
+C:\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\GrpcServicesInterfaces\obj\Debug\netcoreapp3.1\GrpcServicesInterfaces.pdb

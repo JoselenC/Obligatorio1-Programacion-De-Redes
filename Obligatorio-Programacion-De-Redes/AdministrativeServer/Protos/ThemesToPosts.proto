@@ -1,0 +1,33 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "AdministrativeServer";
+
+package themesToPosts;
+
+service ThemeToPostGrpc {
+    rpc AssociateThemeToPost (AssociateThemeToPostRequest) returns (AssociateThemeToPostReply);
+    rpc DissasociateThemeToPost (DissasociateThemeToPostRequest) returns (DissasociateThemeToPostReply);
+
+}
+
+message ThemeToPost{
+    string postName=1;
+    string themeName=2;
+}
+
+message AssociateThemeToPostRequest {
+    ThemeToPost themeToPost = 1;
+}
+
+
+message AssociateThemeToPostReply {
+    ThemeToPost themeToPost = 1;
+}
+
+message DissasociateThemeToPostRequest {
+    ThemeToPost themeToPost = 1;
+}
+
+
+message DissasociateThemeToPostReply {
+}

@@ -1,0 +1,44 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "AdministrativeServer";
+
+package posts;
+
+service PostGrpc {
+    rpc AddPost (AddPostsRequest) returns (AddPostsReply);
+    rpc DeletePost(DeletePostRequest) returns (DeletePostReply);
+    rpc ModifyPost(ModifyPostRequest) returns (ModifyPostReply);
+
+}
+
+message PostMessage{
+    string name=1;
+    string creationDate=2;
+    string themeName=3;
+}
+
+message AddPostsRequest {
+    PostMessage post=1;
+}
+
+
+message AddPostsReply {
+    PostMessage post=1;
+}
+
+message DeletePostRequest {
+    PostMessage post=1;
+}
+
+
+message DeletePostReply {
+}
+
+message ModifyPostRequest {
+    PostMessage post=1;
+}
+
+
+message ModifyPostReply {
+    PostMessage post=1;
+}

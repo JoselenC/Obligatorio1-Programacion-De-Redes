@@ -1,6 +1,6 @@
 ﻿namespace ProtocolFiles
 {
-    public class ProtocolConstant
+    public static class ProtocolConstant
     {
         public const int FileNameLength = 4;
         public const int FileSizeLength = 8;

@@ -26,15 +26,19 @@ namespace AdministrativeServer
 
         public async Task<Theme> AddThemeAsync(Theme theme)
         {
-                var themeMessage = _mapper.Map<ThemeMessage>(theme);
-                AddThemesReply reply = await _client.AddThemeAsync(
-                    new AddThemesRequest {Theme = themeMessage}
-                );
-                return _mapper.Map<Theme>(reply.Theme);
+            theme.Name ??= "";
+            theme.Description ??= "";
+            var themeMessage = _mapper.Map<ThemeMessage>(theme);
+            AddThemesReply reply = await _client.AddThemeAsync(
+                new AddThemesRequest {Theme = themeMessage}
+            );
+            return _mapper.Map<Theme>(reply.Theme);
         }
 
         public async Task<Theme> ModifyThemeAsync(Theme theme)
         {
+            theme.Name ??= "";
+            theme.Description ??= "";
             var themeMessage = _mapper.Map<ThemeMessage>(theme);
             ModifyThemeReply reply = await _client.ModifyThemeAsync(
                 new ModifyThemeRequest{Theme = themeMessage}
@@ -42,13 +46,12 @@ namespace AdministrativeServer
             return _mapper.Map<Theme>(reply.Theme);
         }
 
-        public async Task<Theme> DeleteThemeAsync(Theme theme)
+        public async Task DeleteThemeAsync(Theme theme)
         {
             var themeMessage = _mapper.Map<ThemeMessage>(theme);
             var reply = await _client.DeleteThemeAsync(
                 new DeleteThemeRequest {Theme = themeMessage}
             );
-            return _mapper.Map<Theme>(reply);
 
         }
 

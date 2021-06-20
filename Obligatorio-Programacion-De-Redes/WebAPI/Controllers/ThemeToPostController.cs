@@ -2,10 +2,12 @@
 using GrpcServicesInterfaces;
 using Microsoft.AspNetCore.Mvc;
 using WebAPI.Dto;
+using WebAPI.Fillter;
 
 namespace WebAPI.Controllers
 {
     [ApiController]
+    [FilterExceptions]
     [Route("post/theme")]
    
     public class ThemeToPostController:ControllerBase

@@ -7,6 +7,6 @@ namespace GrpcServicesInterfaces
     {
         Task<Theme> AddThemeAsync(Theme theme);
         Task<Theme> ModifyThemeAsync(Theme theme);
-        Task<Theme> DeleteThemeAsync(Theme theme);
+        Task DeleteThemeAsync(Theme theme);
     }
 }

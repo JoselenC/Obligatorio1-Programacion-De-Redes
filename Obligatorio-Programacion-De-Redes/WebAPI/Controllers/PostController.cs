@@ -36,7 +36,7 @@ namespace WebAPI.Controllers
         [HttpDelete ("{name}")]
         public async Task<IActionResult>  DeletePost([FromQuery] string name)
         {
-            await _postServiceGrpc.DeletePostAsync(new Post(){Name = name,CreationDate = ""});
+            await _postServiceGrpc.DeletePostAsync(new Post(){Name = name,CreationDate = "",ThemeName = ""});
             return Ok("The post was deleted");
         }
     }

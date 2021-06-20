@@ -7,6 +7,6 @@ namespace GrpcServicesInterfaces
     {
         Task<Post> AddPostAsync(Post post);
         Task<Post> ModifyPostAsync(Post post);
-        Task<Post> DeletePostAsync(Post post);
+        Task DeletePostAsync(Post post);
     }
 }

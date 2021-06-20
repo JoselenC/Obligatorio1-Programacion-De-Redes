@@ -36,8 +36,8 @@ namespace WebAPI.Controllers
         [HttpDelete ("{name}")]
         public async Task<IActionResult>  DeleteTheme([FromQuery] string name)
         {
-            var response = await _themeServiceGrpc.DeleteThemeAsync(new Theme(){Name = name});
-            return Ok(response);
+            await _themeServiceGrpc.DeleteThemeAsync(new Theme(){Name = name, Description = ""});
+            return Ok("Theme was deleted");
         }
     }
 }

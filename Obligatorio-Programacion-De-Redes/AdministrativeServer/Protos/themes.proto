@@ -13,7 +13,7 @@ service ThemeGrpc {
 
 message ThemeMessage{
     string name=1;
-    string creationDate=2;
+    string description=2;
 }
 
 message AddThemesRequest {

@@ -34,7 +34,7 @@ namespace Server.ServerGrpc.Services
             try
             {
                 var themeRequest = _mapper.Map<Theme>(request.Theme);
-                themeRequest.SetName(themeRequest.Name);
+                themeRequest.ValidateName(themeRequest.Name);
                 if (!AlreadyExistThisTheme(themeRequest))
                 {
                     var themeRepsonse = _themeRepository.Themes.Add(themeRequest);
@@ -80,10 +80,10 @@ namespace Server.ServerGrpc.Services
                     Theme = _mapper.Map<ThemeMessage>(themeRepsonse)
                 };
             }
-            catch (RpcException ex) when (ex.StatusCode != StatusCode.NotFound)
+            catch (KeyNotFoundException)
             {
                 _rabbitHelper.SendMessage("Theme "+request.Theme.Name + " wasn't modified, not exist");
-                throw new KeyNotFoundException();
+                throw new RpcException(new Status(StatusCode.NotFound, "Not found"));
             }
         }
 
@@ -96,10 +96,10 @@ namespace Server.ServerGrpc.Services
                 _rabbitHelper.SendMessage("Theme "+request.Theme.Name + " was deleted");
                 return new DeleteThemeReply { };
             }
-            catch (RpcException ex) when (ex.StatusCode != StatusCode.NotFound)
+            catch (KeyNotFoundException)
             {
                 _rabbitHelper.SendMessage("Theme "+request.Theme.Name + " wasn't deleted, not exist");
-                throw new KeyNotFoundException();
+                throw new RpcException(new Status(StatusCode.NotFound, "Not found"));
             }
         }
     }

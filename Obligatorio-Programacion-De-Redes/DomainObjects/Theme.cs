@@ -7,7 +7,7 @@ namespace DomainObjects
     {
        public string Name {get; set; }
 
-       public void SetName(string vName)
+       public void ValidateName(string vName)
        {
            if (vName.Length <1)
                throw new InvalidNameLength();

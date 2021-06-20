@@ -15,6 +15,8 @@ namespace AdministrativeServer
 
         public async Task<string> AssociateThemeToPost(string nameTheme, string namePost)
         {
+            nameTheme ??= "";
+            namePost ??= "";
             AssociateThemeToPostReply reply = await _client.AssociateThemeToPostAsync(
                 new AssociateThemeToPostRequest
                     {ThemeToPost = new ThemeToPost() {PostName = namePost, ThemeName = nameTheme}}

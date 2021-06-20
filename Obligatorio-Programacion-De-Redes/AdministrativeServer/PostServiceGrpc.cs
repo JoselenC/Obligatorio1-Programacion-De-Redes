@@ -24,18 +24,24 @@ namespace AdministrativeServer
                 });
             _mapper = config.CreateMapper();
         }
-        
+
         public async Task<Post> AddPostAsync(Post post)
         {
-                var postMessage = _mapper.Map<PostMessage>(post);
-                AddPostsReply reply = await _client.AddPostAsync(
-                    new AddPostsRequest {Post = postMessage}
-                );
-                return _mapper.Map<Post>(reply.Post);
+            post.Name ??= "";
+            post.ThemeName ??= "";
+            post.CreationDate ??= "";
+            var postMessage = _mapper.Map<PostMessage>(post);
+            AddPostsReply reply = await _client.AddPostAsync(
+                new AddPostsRequest {Post = postMessage}
+            );
+            return _mapper.Map<Post>(reply.Post);
         }
-        
+
         public async Task<Post> ModifyPostAsync(Post post)
         {
+            post.Name ??= "";
+            post.ThemeName ??= "";
+            post.CreationDate ??= "";
                 var postMessage = _mapper.Map<PostMessage>(post);
                 ModifyPostReply reply = await _client.ModifyPostAsync(
                     new ModifyPostRequest {Post = postMessage}
@@ -43,13 +49,15 @@ namespace AdministrativeServer
                 return _mapper.Map<Post>(reply.Post);
         }
 
-        public async Task<Post> DeletePostAsync(Post post)
+        public async Task DeletePostAsync(Post post)
         {
-                var postMessage = _mapper.Map<PostMessage>(post);
-                DeletePostReply reply = await _client.DeletePostAsync(
-                    new DeletePostRequest {Post = postMessage}
-                );
-                return _mapper.Map<Post>(reply);
+            post.Name ??= "";
+            post.ThemeName ??= "";
+            post.CreationDate ??= "";
+            var postMessage = _mapper.Map<PostMessage>(post);
+            DeletePostReply reply = await _client.DeletePostAsync(
+                new DeletePostRequest {Post = postMessage}
+            );
         }
 
     }

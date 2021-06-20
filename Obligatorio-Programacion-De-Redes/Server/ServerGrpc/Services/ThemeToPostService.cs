@@ -40,10 +40,10 @@ namespace Server.ServerGrpc.Services
                  }
               };
           }
-          catch (RpcException ex) when (ex.StatusCode != StatusCode.NotFound)
+          catch (KeyNotFoundException)
           {
               _rabbitHelper.SendMessage("Theme "+request.ThemeToPost.ThemeName + " wasn't associated to post " + request.ThemeToPost.PostName);
-              throw new KeyNotFoundException();
+              throw new RpcException(new Status(StatusCode.NotFound, "Not found"));
           }
       }
 
@@ -62,10 +62,10 @@ namespace Server.ServerGrpc.Services
               _rabbitHelper.SendMessage("Theme "+request.ThemeToPost.ThemeName + " was dissasociated to post " + request.ThemeToPost.PostName);
               return new DissasociateThemeToPostReply();
           }
-          catch (RpcException ex) when (ex.StatusCode != StatusCode.NotFound)
+          catch (KeyNotFoundException)
           {
               _rabbitHelper.SendMessage("Theme "+request.ThemeToPost.ThemeName + " wasn't dissasociated to post " + request.ThemeToPost.PostName);
-              throw new KeyNotFoundException();
+              throw new RpcException(new Status(StatusCode.NotFound, "Not found"));
           }
       }
     }

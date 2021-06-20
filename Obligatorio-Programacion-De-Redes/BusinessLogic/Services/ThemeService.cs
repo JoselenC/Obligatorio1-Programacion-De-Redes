@@ -27,7 +27,6 @@ namespace BusinessLogic.Services
             var packet = await socketHandler.ReceivePackageAsync();
             String[] messageArray = packet.Data.Split('#');
             string name = messageArray[0];
-            _rabbitClient.SendMessage("New theme" + name);
             if (name != "Back")
             {
                 string description = messageArray[1];
@@ -40,19 +39,17 @@ namespace BusinessLogic.Services
                         Theme theme = new Theme() { Name = name, Description = description };
                         _themeRepository.Themes.Add(theme);
                         message = "The theme " + name + " was added";
-                        _rabbitClient.SendMessage(message);
                     }
                     else
                     {
                         message = "Not add, the theme " + name + " already exist";
-                        _rabbitClient.SendMessage(message);
                     }
                 }
                 else
                 {
                     message = "The theme name cannot be empty";
-                    _rabbitClient.SendMessage(message);
                 }
+                _rabbitClient.SendMessage(message);
                 Packet package = new Packet("RES", "4", message);
                 await socketHandler.SendPackageAsync(package);
             }

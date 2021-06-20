@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 using BusinessLogic.Managers;
 using LogsServerInterface;
 using RabbitMQ.Client;
@@ -37,6 +38,8 @@ namespace LogsServer
             _channel.BasicConsume(queue: "logs",
                 autoAck: true,
                 consumer: consumer);
+            Console.WriteLine($"Listening queue logs");
+            Console.ReadLine();
         }
 
     }

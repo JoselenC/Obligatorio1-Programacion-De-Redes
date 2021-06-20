@@ -101,3 +101,7 @@ C:\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\WebAPI\b
 C:\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\WebAPI\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
 C:\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\WebAPI\bin\Debug\netcoreapp3.1\Newtonsoft.Json.dll
 C:\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\WebAPI\bin\Debug\netcoreapp3.1\Newtonsoft.Json.Bson.dll
+C:\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\WebAPI\bin\Debug\netcoreapp3.1\LogsServer.deps.json
+C:\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\WebAPI\bin\Debug\netcoreapp3.1\LogsServer.runtimeconfig.json
+C:\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\WebAPI\bin\Debug\netcoreapp3.1\LogsServer.runtimeconfig.dev.json
+C:\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\WebAPI\bin\Debug\netcoreapp3.1\LogsServer.exe

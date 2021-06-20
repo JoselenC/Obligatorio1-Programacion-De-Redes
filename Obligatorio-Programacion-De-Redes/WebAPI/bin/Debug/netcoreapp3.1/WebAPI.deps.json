@@ -1606,7 +1606,6 @@
       },
       "DomainObjects/1.0.0": {
         "dependencies": {
-          "LogServer": "1.0.0",
           "Protocol": "1.0.0",
           "ProtocolFiles": "1.0.0"
         },
@@ -1631,6 +1630,7 @@
       "LogsServer/1.0.0": {
         "dependencies": {
           "BusinessLogic": "1.0.0",
+          "DataAccess": "1.0.0",
           "LogsServerInterface": "1.0.0"
         },
         "runtime": {
@@ -3323,9 +3323,6 @@
         "compile": {
           "WindowsBase.dll": {}
         },
-        "compileOnly": true
-      },
-      "LogServer/1.0.0": {
         "compileOnly": true
       }
     }
@@ -5581,11 +5578,6 @@
     },
     "WindowsBase/4.0.0.0": {
       "type": "referenceassembly",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "LogServer/1.0.0": {
-      "type": "project",
       "serviceable": false,
       "sha512": ""
     }

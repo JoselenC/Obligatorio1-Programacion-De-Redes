@@ -115,10 +115,11 @@ namespace DataAccess.Mappers
             ThemeMapper themeMapper = new ThemeMapper();
             objToUpdate.Name = updatedObject.Name;
             objToUpdate.CreationDate = updatedObject.CreationDate;
-            if(updatedObject.File!=null)
-             objToUpdate.FileDto = new FileMapper().DomainToDto(updatedObject.File,context);
+            if (updatedObject.File != null)
+                objToUpdate.FileDto = context.Files.FirstOrDefault(x => x.Name == updatedObject.File.Name);
             var diffListOldValuesThemes = UpdatePostsThemesDto(objToUpdate, updatedObject, context, themeMapper);
             objToUpdate.PostsThemesDto = diffListOldValuesThemes;
+            objToUpdate.FileId = objToUpdate.FileDto.Id;
             return objToUpdate;
         }
         

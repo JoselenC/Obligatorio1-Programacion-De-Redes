@@ -11,10 +11,7 @@ namespace WebAPI
     {
         public static void Main(string[] args)
         {
-            AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport",true); 
-            ManagerLogRepository managerLogRepository = new DataBaseLogRepository();
-            var rabbitClient = new RabbitHelper(managerLogRepository);
-            rabbitClient.ReceiveMessages();
+            AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
             CreateHostBuilder(args).Build().Run();
         }
 

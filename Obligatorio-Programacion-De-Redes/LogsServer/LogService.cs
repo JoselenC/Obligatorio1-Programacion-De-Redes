@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using BusinessLogic.Managers;
 using DomainObjects;
 using LogsServerInterface;
@@ -17,7 +18,7 @@ namespace LogsServer
 
         public void AddLog(string log)
         {
-            Log logToAdd = new Log() {Message = log};
+            Log logToAdd = new Log() {Message = log, CreationDate = DateTime.Now.ToString()};
             _managerLogRepository.Logs.Add(logToAdd);
         }
 

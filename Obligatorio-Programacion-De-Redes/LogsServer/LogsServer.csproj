@@ -2,10 +2,12 @@
 
     <PropertyGroup>
         <TargetFramework>netcoreapp3.1</TargetFramework>
+        <OutputType>Exe</OutputType>
     </PropertyGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\BusinessLogic\BusinessLogic.csproj" />
+      <ProjectReference Include="..\DataAccess\DataAccess.csproj" />
       <ProjectReference Include="..\LogsServerInterface\LogsServerInterface.csproj" />
     </ItemGroup>
 

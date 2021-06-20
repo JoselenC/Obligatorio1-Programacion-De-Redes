@@ -65,14 +65,14 @@ namespace BusinessLogic.Services
         {
             Post oldPost = _postRepository.Posts.Find(x => x.Name == fileData[0]);
             Post post = _postRepository.Posts.Find(x => x.Name == fileData[0]);
-            if (post.File == null) post.File = new File();
+            post.File ??= new File();
             post.File = file;
-            if (file.Themes == null) file.Themes = new List<Theme>();
+            file.Themes ??= new List<Theme>();
             file.Themes = post.Themes;
-            if (file.Post == null) file.Post = new Post();
+            file.Post ??= new Post();
             file.Post = post;
-            _postRepository.Posts.Update(oldPost, post);
             _repository.Files.Add(file);
+            _postRepository.Posts.Update(oldPost, post);
         }
     }
 }

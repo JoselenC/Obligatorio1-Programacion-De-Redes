@@ -18,12 +18,7 @@ namespace DataAccess.Mappers
                 {
                     Name = obj.Name,
                     Size = obj.Size,
-                    UploadDate = obj.UploadDate,
-                    Post = new PostDto()
-                        {
-                            Name = obj.Post.Name,
-                            CreationDate = obj.Post.CreationDate
-                        }
+                    UploadDate = obj.UploadDate
                 };
             }
             else
@@ -31,16 +26,9 @@ namespace DataAccess.Mappers
                 context.Entry(fileDto).Collection("FilesThemesDto").Load();
             }
 
-            List<ThemeDto> themes = new PostMapper().CreateThemes(obj.Post.Themes, context);
-            fileDto.Post.PostsThemesDto = new List<PostThemeDto>();
-            foreach (var themeDto in themes)
-            {
-                fileDto.Post.PostsThemesDto.Add(new PostThemeDto(){Post = fileDto.Post, Theme = themeDto});
-            }
-
             if (obj.Themes != null)
             {
-                themes = CreateThemes(obj.Themes, context);
+                List<ThemeDto> themes = CreateThemes(obj.Themes, context);
                 fileDto.FilesThemesDto = new List<FileThemeDto>();
                 foreach (var themeDto in themes)
                 {
@@ -48,20 +36,25 @@ namespace DataAccess.Mappers
                 }
             }
 
+            if (obj.Post != null)
+            {
+                fileDto.Post = context.Posts.FirstOrDefault(x => x.Name == obj.Post.Name);
+            }
+
             return fileDto;
         }
 
-        private List<ThemeDto> CreateThemes(List<Theme> themes, ContextDb context)
+        public List<ThemeDto> CreateThemes(List<Theme> themes, ContextDb context)
         {
               
             List<ThemeDto> themesDto = new List<ThemeDto>();
             DbSet<ThemeDto> themesSet = context.Set<ThemeDto>();
-            List<PostThemeDto> postThemeDtos = new List<PostThemeDto>();
+            List<FileThemeDto> postThemeDtos = new List<FileThemeDto>();
             if (!(themes is null))
             {
                 foreach (Theme theme in themes)
                 {
-                    ThemeDto themeDto= themesSet.FirstOrDefault(x => x.Id == theme.Id);
+                    ThemeDto themeDto= themesSet.FirstOrDefault(x => x.Name == theme.Name);
                     if (themeDto == null)
                     {
                         themeDto = new ThemeDto()
@@ -74,21 +67,22 @@ namespace DataAccess.Mappers
                     {
                         foreach (var post in theme.Posts)
                         {
-                            postThemeDtos = new List<PostThemeDto>()
+                            postThemeDtos = new List<FileThemeDto>()
                             {
-                                new PostThemeDto()
+                                new FileThemeDto()
                                 {
                                     Theme = themeDto,
                                 }
                             };
                         }
                     }
-                    themeDto.PostsThemesDto = postThemeDtos;
+                    themeDto.FilesThemesDto = postThemeDtos;
                     themesDto.Add(themeDto);
                 }
             }
             return themesDto;
         }
+
 
         public File DtoToDomain(FileDto obj, ContextDb context)
         {

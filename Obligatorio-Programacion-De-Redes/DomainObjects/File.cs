@@ -9,7 +9,6 @@ namespace DomainObjects
         public double Size { get; set; }
         
         public List<Theme> Themes { get; set; }
-
         public Post Post { get; set; }
         public DateTime UploadDate { get; set; }
         public int Id { get; set; }

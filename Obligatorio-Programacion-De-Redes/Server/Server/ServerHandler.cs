@@ -43,11 +43,12 @@ namespace Server.Server
 
        public async Task StartServerAsync(string[] args)
        {
-           await Task.Run(async () =>
+           Task.Run(async () => { Program.RunGrpc(args); });
+           Task.Run(async () =>
            {
                await new HomePageServer().MenuAsync(_repository,exit,_postRepository,_themeRepository);
            });
-           await Task.Run(async () => { Program.RunGrpc(args); });
+           
            while (!exit)
            {
                _tcpListener.Start(1);

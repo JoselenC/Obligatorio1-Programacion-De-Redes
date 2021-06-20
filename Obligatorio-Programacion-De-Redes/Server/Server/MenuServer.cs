@@ -1,14 +1,14 @@
 ﻿using System;
 
-namespace ServerGRPC.Server
+namespace Server.Server
 {
     public class MenuServer
     {
         public int ShowMenu(string[] options, string title)
         {
-            bool salir = false;
+            bool exit = false;
             int indexMenu = 0;
-            while (!salir)
+            while (!exit)
             {
                 PrintOptions(options, title, indexMenu);
                 switch (Console.ReadKey().Key)
@@ -39,12 +39,12 @@ namespace ServerGRPC.Server
             return 0;
         }
 
-        private static void PrintOptions(string[] _options, string title, int indexMenu)
+        private static void PrintOptions(string[] options, string title, int indexMenu)
         {
             Console.ForegroundColor = ConsoleColor.DarkCyan;
             Console.WriteLine("----" + title + "----");
             Console.ForegroundColor = ConsoleColor.White;
-            for (var i = 0; i < _options.Length; i++)
+            for (var i = 0; i < options.Length; i++)
             {
                 var prefix = "  ";
                 Console.ForegroundColor = ConsoleColor.White;
@@ -56,7 +56,7 @@ namespace ServerGRPC.Server
                     prefix = "> ";
                 }
 
-                Console.WriteLine($"{prefix}{_options[i]}");
+                Console.WriteLine($"{prefix}{options[i]}");
             }
         }
     }

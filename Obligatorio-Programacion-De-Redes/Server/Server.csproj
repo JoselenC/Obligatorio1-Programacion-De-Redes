@@ -20,16 +20,9 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="ServerGrpc" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Protobuf Include="ServerGrpc\Protos\posts.proto">
-        <Generator>MSBuild:Compile</Generator>
-      </Protobuf>
-      <Protobuf Include="ServerGrpc\Protos\themes.proto">
-        <Generator>MSBuild:Compile</Generator>
-      </Protobuf>
+        <Protobuf Include="ServerGrpc\Protos\posts.proto" GrpcServices="Server" />
+        <Protobuf Include="ServerGrpc\Protos\themes.proto" GrpcServices="Server" />
+        <Protobuf Include="ServerGrpc\Protos\ThemesToPosts.proto" GrpcServices="Server" />
     </ItemGroup>
 
     <ItemGroup>

@@ -1,13 +1,9 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using BusinessLogic.Managers;
 using DataAccess;
+using LogsServer;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 
 namespace WebAPI
 {
@@ -15,9 +11,7 @@ namespace WebAPI
     {
         public static void Main(string[] args)
         {
-            ManagerLogRepository _managerLogRepository = new DataBaseLogRepository();
-            var rabbitClient = new RabbitHelper(_managerLogRepository);
-            rabbitClient.ReceiveMessages();
+            AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
             CreateHostBuilder(args).Build().Run();
         }
 

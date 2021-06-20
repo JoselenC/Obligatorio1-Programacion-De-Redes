@@ -85,6 +85,9 @@ namespace DataAccess.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("CreationDate")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Message")
                         .HasColumnType("nvarchar(max)");
 
@@ -130,40 +133,6 @@ namespace DataAccess.Migrations
                     b.HasIndex("ThemeId");
 
                     b.ToTable("PostThemeDto");
-                });
-
-            modelBuilder.Entity("DataAccess.DtoOjects.SemaphoreSlimPostDto", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int?>("PostId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PostId");
-
-                    b.ToTable("SemaphoresSlimPostDto");
-                });
-
-            modelBuilder.Entity("DataAccess.DtoOjects.SemaphoreSlimThemeDto", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int?>("ThemeId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ThemeId");
-
-                    b.ToTable("SemaphoresSlimThemeDto");
                 });
 
             modelBuilder.Entity("DataAccess.DtoOjects.ThemeDto", b =>
@@ -221,20 +190,6 @@ namespace DataAccess.Migrations
                         .HasForeignKey("ThemeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("DataAccess.DtoOjects.SemaphoreSlimPostDto", b =>
-                {
-                    b.HasOne("DataAccess.DtoOjects.PostDto", "Post")
-                        .WithMany()
-                        .HasForeignKey("PostId");
-                });
-
-            modelBuilder.Entity("DataAccess.DtoOjects.SemaphoreSlimThemeDto", b =>
-                {
-                    b.HasOne("DataAccess.DtoOjects.ThemeDto", "Theme")
-                        .WithMany()
-                        .HasForeignKey("ThemeId");
                 });
 #pragma warning restore 612, 618
         }

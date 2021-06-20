@@ -3,8 +3,7 @@ using System.Configuration;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
-using DataHandler;
-using ProtocolFiles;
+using Protocol;
 
 namespace Client
 {

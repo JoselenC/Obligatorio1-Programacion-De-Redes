@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Net.Sockets;
 using BusinessLogic;
 using BusinessLogic.Managers;
-using DataHandler;
-using Domain;
+using DomainObjects;
 using Server;
-using ServerGRPC.Server;
+using Server.Server;
+using Server.Server.Pages;
 
 namespace Server
 {

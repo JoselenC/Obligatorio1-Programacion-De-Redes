@@ -8,7 +8,7 @@ namespace WebAPI.Controllers
 {
     [ApiController]
     [FilterExceptions]
-    [Route("post/theme")]
+    [Route("posts/theme")]
    
     public class ThemeToPostController:ControllerBase
     {
@@ -23,7 +23,7 @@ namespace WebAPI.Controllers
         public async Task<IActionResult>  AssociateThemeToPost([FromBody] ThemePostDto themePostDto)
         {
             var response = await _themePostServiceGrpc.AssociateThemeToPost(themePostDto.ThemeName,themePostDto.PostName);
-            return Ok(response);
+            return Created(string.Empty,response);
         }
         
         [HttpPut]

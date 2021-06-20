@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using DomainObjects;
 using GrpcServicesInterfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -23,7 +24,7 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> AddPost([FromBody] Post post)
         {
             var response= await _postServiceGrpc.AddPostAsync(post);
-            return Ok(response);
+            return Created(String.Empty,response);
         }
 
         [HttpPut]

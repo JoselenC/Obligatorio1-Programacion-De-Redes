@@ -1693,7 +1693,10 @@
         },
         "runtime": {
           "bin/placeholder/AdministrativeServer.dll": {}
-        }
+        },
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ]
       },
       "BusinessLogic/1.0.0": {
         "type": "project",
@@ -1733,6 +1736,7 @@
         "type": "project",
         "framework": ".NETCoreApp,Version=v3.1",
         "dependencies": {
+          "LogServer": "1.0.0",
           "Protocol": "1.0.0",
           "ProtocolFiles": "1.0.0"
         },
@@ -1756,12 +1760,23 @@
           "bin/placeholder/GrpcServicesInterfaces.dll": {}
         }
       },
+      "LogServer/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v3.1",
+        "compile": {
+          "bin/placeholder/LogServer.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/LogServer.dll": {}
+        }
+      },
       "LogsServer/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v3.1",
         "dependencies": {
           "BusinessLogic": "1.0.0",
           "DataAccess": "1.0.0",
+          "Grpc.Core.Api": "2.37.0",
           "LogsServerInterface": "1.0.0"
         },
         "compile": {
@@ -6230,6 +6245,11 @@
       "type": "project",
       "path": "../GrpcServicesInterfaces/GrpcServicesInterfaces.csproj",
       "msbuildProject": "../GrpcServicesInterfaces/GrpcServicesInterfaces.csproj"
+    },
+    "LogServer/1.0.0": {
+      "type": "project",
+      "path": "../LogServer/LogServer.csproj",
+      "msbuildProject": "../LogServer/LogServer.csproj"
     },
     "LogsServer/1.0.0": {
       "type": "project",

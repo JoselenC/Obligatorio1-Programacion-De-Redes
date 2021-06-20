@@ -23,7 +23,7 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> AddTheme([FromBody] Theme theme)
         {
             var response= await _themeServiceGrpc.AddThemeAsync(theme);
-            return Ok(response);
+            return Created(string.Empty,response);
         }
 
         [HttpPut]

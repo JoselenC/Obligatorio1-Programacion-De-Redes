@@ -28,11 +28,12 @@ namespace BusinessLogic.Services
         {
             Packet package = new Packet("RES", "2", _themeRepository.Themes.Get().Count.ToString());
             await socketHandler.SendPackageAsync(package);
+            string name = "";
             if (_themeRepository.Themes.Get().Count > 0)
             {
                 var packet = await socketHandler.ReceivePackageAsync();
                 String[] messageArray = packet.Data.Split('#');
-                string name = messageArray[0];
+                name = messageArray[0];
                 string creationDate = messageArray[1];
                 var message = "";
                 if (name != "")
@@ -55,7 +56,7 @@ namespace BusinessLogic.Services
                 {
                     message = "The post name cannot be empty";
                 }
-                _rabbitClient.SendMessage(message);
+                _rabbitClient.SendMessage(message+"#"+"post"+ "#" + name);
                 Packet package2 = new Packet("RES", "2", message);
                 await socketHandler.SendPackageAsync(package2);
             }
@@ -68,7 +69,7 @@ namespace BusinessLogic.Services
             string name = packet.Data;
             if (name != "Back")
             {
-                _rabbitClient.SendMessage("Delete post" + packet.Data);
+                _rabbitClient.SendMessage("Delete post" +"#"+"post"+ "#" +  packet.Data);
                 var message = _postHelper.DeletePost(name, _postRepository);
                 Packet package = new Packet("RES", "2", message);
                 await socketHandler.SendPackageAsync(package);
@@ -97,9 +98,10 @@ namespace BusinessLogic.Services
             var packet = await socketHandler.ReceivePackageAsync();
             String[] messageArray = packet.Data.Split('#');
             string namePost = messageArray[0];
+            string nameTheme = "";
             if (namePost != "Back")
             {
-                string nameTheme = messageArray[1];
+                nameTheme = messageArray[1];
                 var message = "";
                 if (_postHelper.AlreadyExistTheme(nameTheme, _themeRepository))
                 {
@@ -124,7 +126,7 @@ namespace BusinessLogic.Services
                 {
                     message = "Not associated, the theme " + nameTheme + " does not exist";
                 }
-                _rabbitClient.SendMessage(message);
+                _rabbitClient.SendMessage(message+"#"+"post"+ "#" +  nameTheme);
                 Packet package = new Packet("RES", "2", message);
                 await socketHandler.SendPackageAsync(package);
             }
@@ -160,7 +162,7 @@ namespace BusinessLogic.Services
             {
                 message = "Not associated, the theme " + nameTheme + " does not exist";
             }
-            _rabbitClient.SendMessage(message);
+            _rabbitClient.SendMessage(message +"#"+"theme"+ "#" + nameTheme );
             Packet package = new Packet("RES", "2", message);
             await socketHandler.SendPackageAsync(package);
         }
@@ -177,13 +179,13 @@ namespace BusinessLogic.Services
                 {
                     Post post = _postRepository.Posts.Find(x => x.Name == namePost);
                     message = post.Name + "#" + post.CreationDate;
-                    _rabbitClient.SendMessage("Search post: " + namePost);
+                    _rabbitClient.SendMessage("Search post: " +"#"+"post"+ "#" + namePost);
                 }
                 else
 
                 {
                     message = "The post " + namePost + " does not exist";
-                    _rabbitClient.SendMessage(message);
+                    _rabbitClient.SendMessage(message+"#"+"post"+ "#" + namePost);
                 }
                  
                 Packet package = new Packet("RES", "2", message);
@@ -224,7 +226,7 @@ namespace BusinessLogic.Services
                 {
                     message = "Not disassociated, the theme " + postName + " does not exist";
                 }
-                _rabbitClient.SendMessage(message);
+                _rabbitClient.SendMessage(message+"#"+"post"+ "#" + postName);
                 Packet package = new Packet("RES", "2", message);
                 await socketHandler.SendPackageAsync(package);
             }

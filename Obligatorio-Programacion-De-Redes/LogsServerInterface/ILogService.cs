@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using DomainObjects;
 
 namespace LogsServerInterface
 {
     public interface ILogService
     {
-        void AddLog(string log);
-        List<Log> Get();
-        List<Log> GetByCreationDate(string creationDate);
+        Task<Log> AddLogAsync(Log log);
+        Task<List<Log>> GetLogsAsync();
+        Task<List<Log>> GetByCreationDateAsync(string creationDate);
     }
 }

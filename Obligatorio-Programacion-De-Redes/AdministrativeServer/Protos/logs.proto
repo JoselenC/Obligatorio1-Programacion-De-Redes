@@ -1,0 +1,29 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "AdministrativeServer";
+
+package logs;
+
+service LogGrpc {
+    rpc GetLogs (GetLogsRequest) returns (GetLogsReply);
+    rpc AddLog (AddLogRequest) returns (AddLogReply);
+}
+
+message LogMessage {
+    string message = 1;
+    string creationDate = 2;
+}
+
+
+message GetLogsRequest {}
+message GetLogsReply {
+    repeated LogMessage logs = 1;
+}
+
+message AddLogRequest {
+    LogMessage log = 1;
+}
+message AddLogReply {
+    LogMessage log = 1;
+}
+

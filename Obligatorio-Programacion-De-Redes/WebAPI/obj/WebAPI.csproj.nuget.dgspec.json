@@ -491,6 +491,9 @@
           "netcoreapp3.1": {
             "targetAlias": "netcoreapp3.1",
             "projectReferences": {
+              "C:\\Obligatorio1-Programacion-De-Redes\\Obligatorio-Programacion-De-Redes\\AdministrativeServer\\AdministrativeServer.csproj": {
+                "projectPath": "C:\\Obligatorio1-Programacion-De-Redes\\Obligatorio-Programacion-De-Redes\\AdministrativeServer\\AdministrativeServer.csproj"
+              },
               "C:\\Obligatorio1-Programacion-De-Redes\\Obligatorio-Programacion-De-Redes\\BusinessLogic\\BusinessLogic.csproj": {
                 "projectPath": "C:\\Obligatorio1-Programacion-De-Redes\\Obligatorio-Programacion-De-Redes\\BusinessLogic\\BusinessLogic.csproj"
               },
@@ -529,6 +532,9 @@
           "assetTargetFallback": true,
           "warn": true,
           "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }

@@ -6,6 +6,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\AdministrativeServer\AdministrativeServer.csproj" />
       <ProjectReference Include="..\BusinessLogic\BusinessLogic.csproj" />
       <ProjectReference Include="..\DataAccess\DataAccess.csproj" />
       <ProjectReference Include="..\LogsServerInterface\LogsServerInterface.csproj" />

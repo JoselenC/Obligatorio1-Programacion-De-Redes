@@ -1,4 +1,5 @@
-﻿using BusinessLogic.Services;
+﻿using System.Threading.Tasks;
+using BusinessLogic.Services;
 using LogsServerInterface;
 using Microsoft.AspNetCore.Mvc;
 using WebAPI.Fillter;
@@ -18,16 +19,17 @@ namespace WebAPI.Controllers
         }
         
         [HttpGet]
-        public ActionResult Get()
+        public async Task<ActionResult> Get()
         {
-            return Ok(_logService.Get());
+            var posts = await _logService.GetLogsAsync();
+            return Ok(posts );
         }
         
          
         [HttpGet("{creationDate}")]
         public ActionResult GetByDate(string creationDate)
         {
-            return Ok(_logService.GetByCreationDate(creationDate));
+            return Ok(_logService.GetByCreationDateAsync(creationDate));
         }
     }
 }

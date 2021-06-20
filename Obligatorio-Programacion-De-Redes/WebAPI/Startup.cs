@@ -38,7 +38,7 @@ namespace WebAPI
             services.AddScoped<IPostServiceGrpc, PostServiceGrpc>();
             services.AddScoped<IThemeServiceGrpc, ThemeServiceGrpc>();
             services.AddScoped<IThemeToPostServiceGrpc, ThemeToPostServiceGrpc>();
-            services.AddScoped<ILogService, LogService>();
+            services.AddScoped<ILogService, LogServiceGrpc>();
             services.AddScoped<ManagerLogRepository, DataBaseLogRepository>();
             services.AddScoped<ManagerPostRepository, DataBasePostRepository>();
             services.AddScoped<ManagerThemeRepository, DataBaseThemeRepository>();

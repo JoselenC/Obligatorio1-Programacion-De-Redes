@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using System.Threading.Tasks;
 using BusinessLogic.Managers;
 using LogsServerInterface;
 using RabbitMQ.Client;
@@ -10,16 +11,14 @@ namespace LogsServer
     public class RabbitHelper
     {
         private readonly IModel _channel;
-        private readonly ILogService _logService;
         public RabbitHelper(ManagerLogRepository managerLogRepository)
         {
-            _logService = new LogService(managerLogRepository);
             var connectionFactory = new ConnectionFactory { HostName = "localhost" };
             var connection = connectionFactory.CreateConnection();
             _channel = connection.CreateModel();
         }
         
-        public void ReceiveMessages()
+        public async Task ReceiveMessagesAsync(Func<string, Task> addLog)
         {
             _channel.QueueDeclare(queue: "logs",
                 durable: false,
@@ -32,7 +31,7 @@ namespace LogsServer
             {
                 var body = ea.Body.ToArray();
                 var message = Encoding.UTF8.GetString(body);
-                 _logService.AddLog(message);
+                await addLog(message);
               
             };
             _channel.BasicConsume(queue: "logs",

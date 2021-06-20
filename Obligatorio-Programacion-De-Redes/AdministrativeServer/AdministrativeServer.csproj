@@ -10,6 +10,7 @@
         <Protobuf Include="Protos\posts.proto" GrpcServices="Client" />
         <Protobuf Include="Protos\themes.proto" GrpcServices="Client" />
         <Protobuf Include="Protos\ThemesToPosts.proto" GrpcServices="Client" />
+        <Protobuf Include="Protos\logs.proto" GrpcServices="Client" />
     </ItemGroup>
     
     <ItemGroup>

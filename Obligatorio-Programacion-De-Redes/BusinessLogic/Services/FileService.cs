@@ -35,12 +35,14 @@ namespace BusinessLogic.Services
 
         public async Task UploadFile(SocketHandler socketHandler)
         {
+            string nameFile = ""; 
             if (_postRepository.Posts.Get().Count != 0)
             {
                 await SendListPostAsync(socketHandler);
                 ProtocolHandler protocolHandler = new ProtocolHandler();
                 string[] fileData = await protocolHandler.ReceiveFileAsync(socketHandler);
-                _rabbitClient.SendMessage("The file " + fileData[2]+" was uploaded in the post "+ fileData[0]);
+                nameFile = fileData[2];
+                _rabbitClient.SendMessage("The file " + fileData[2]+" was uploaded in the post "+ fileData[0] +"#"+"file"+ "#" + fileData[2]);
                 string option = fileData[0];
                 if (option != "Back")
                 {
@@ -56,7 +58,7 @@ namespace BusinessLogic.Services
             }
             else
             {
-                _rabbitClient.SendMessage("The file was not uploaded because there was no post");
+                _rabbitClient.SendMessage("The file was not uploaded because there was no post"+"#"+"file"+ "#" + nameFile);
                 await SendListPostAsync(socketHandler);
             }
         }

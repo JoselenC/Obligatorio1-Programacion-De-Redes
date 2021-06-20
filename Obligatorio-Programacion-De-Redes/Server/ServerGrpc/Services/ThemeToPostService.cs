@@ -31,7 +31,8 @@ namespace Server.ServerGrpc.Services
               Theme theme = _themeRepository.Themes.Find(x => x.Name == request.ThemeToPost.ThemeName);
               newPost.Themes.Add(theme);
               _postRepository.Posts.Update(post, newPost);
-              _rabbitHelper.SendMessage("Theme "+request.ThemeToPost.ThemeName + " was associated to post " + request.ThemeToPost.PostName);
+              _rabbitHelper.SendMessage("Theme "+request.ThemeToPost.ThemeName + " was associated to post " 
+                                        + request.ThemeToPost.PostName +"#"+"post"+ "#" + request.ThemeToPost.PostName);
               return new AssociateThemeToPostReply
               {
                  ThemeToPost= new ThemeToPost()
@@ -42,7 +43,8 @@ namespace Server.ServerGrpc.Services
           }
           catch (KeyNotFoundException)
           {
-              _rabbitHelper.SendMessage("Theme "+request.ThemeToPost.ThemeName + " wasn't associated to post " + request.ThemeToPost.PostName);
+              _rabbitHelper.SendMessage("Theme "+request.ThemeToPost.ThemeName + " wasn't associated to post " + 
+                                        request.ThemeToPost.PostName + request.ThemeToPost.PostName +"#"+"post"+ "#" + request.ThemeToPost.PostName);
               throw new RpcException(new Status(StatusCode.NotFound, "Not found"));
           }
       }
@@ -59,12 +61,14 @@ namespace Server.ServerGrpc.Services
                   newPost.Themes.Remove(theme);
                   _postRepository.Posts.Update(post, newPost);
               }
-              _rabbitHelper.SendMessage("Theme "+request.ThemeToPost.ThemeName + " was dissasociated to post " + request.ThemeToPost.PostName);
+              _rabbitHelper.SendMessage("Theme "+request.ThemeToPost.ThemeName + " was dissasociated to post " + 
+                                        request.ThemeToPost.PostName + request.ThemeToPost.PostName +"#"+"post"+ "#" + request.ThemeToPost.PostName);
               return new DissasociateThemeToPostReply();
           }
           catch (KeyNotFoundException)
           {
-              _rabbitHelper.SendMessage("Theme "+request.ThemeToPost.ThemeName + " wasn't dissasociated to post " + request.ThemeToPost.PostName);
+              _rabbitHelper.SendMessage("Theme "+request.ThemeToPost.ThemeName + " wasn't dissasociated to post " 
+                                        + request.ThemeToPost.PostName + request.ThemeToPost.PostName +"#"+"post"+ "#" + request.ThemeToPost.PostName);
               throw new RpcException(new Status(StatusCode.NotFound, "Not found"));
           }
       }

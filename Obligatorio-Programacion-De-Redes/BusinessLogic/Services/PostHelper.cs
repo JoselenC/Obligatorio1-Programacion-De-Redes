@@ -123,7 +123,7 @@ namespace BusinessLogic.Services
             {
                 message = "Not modified, the post" + name + " already exist";
             }
-            rabbitClient.SendMessage(message);
+            rabbitClient.SendMessage(message +"#"+"post"+ "#" + name);
             return message;
         }
 

@@ -58,7 +58,7 @@ namespace BusinessLogic.Services
             {
                 message = "The theme " + name + " cannot be empty";
             }
-            rabbitClient.SendMessage(message);
+            rabbitClient.SendMessage(message+"#"+"theme"+ "#" + name);
             return message;
         }
 
@@ -87,7 +87,7 @@ namespace BusinessLogic.Services
             {
                 message = "Not delete, the theme " + oldName + " not exist";
             }
-            rabbitClient.SendMessage(message);
+            rabbitClient.SendMessage(message+"#"+"theme"+ "#" + oldName);
             return message;
         }
 

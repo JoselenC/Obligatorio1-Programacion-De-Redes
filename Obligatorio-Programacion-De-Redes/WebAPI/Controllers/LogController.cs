@@ -25,9 +25,27 @@ namespace WebAPI.Controllers
         
          
         [HttpGet("{creationDate}")]
-        public ActionResult GetByDate(string creationDate)
+        public ActionResult GetLogByDate([FromQuery]string creationDate)
         {
             return Ok(_logService.GetByCreationDate(creationDate));
+        }
+        
+        [HttpGet("post")]
+        public ActionResult GetLogByPost([FromQuery]string name)
+        {
+            return Ok(_logService.GetByPost(name));
+        }
+        
+        [HttpGet("theme")]
+        public ActionResult GetLogByTheme([FromQuery]string name)
+        {
+            return Ok(_logService.GetByTheme(name));
+        }
+        
+        [HttpGet("type")]
+        public ActionResult GetLogByType([FromQuery]string type)
+        {
+            return Ok(_logService.GetByType(type));
         }
     }
 }

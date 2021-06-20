@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 using DataAccess.DtoOjects;
-using Domain;
+using DomainObjects;
 using MSP.BetterCalm.DataAccess;
 
 namespace DataAccess.Mappers

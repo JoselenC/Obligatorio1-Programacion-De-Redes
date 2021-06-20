@@ -1,11 +1,12 @@
 ﻿using System.Threading.Tasks;
 using GrpcServicesInterfaces;
 using Microsoft.AspNetCore.Mvc;
+using WebAPI.Dto;
 
 namespace WebAPI.Controllers
 {
     [ApiController]
-    [Route("posts")]
+    [Route("post/theme")]
    
     public class ThemeToPostController:ControllerBase
     {
@@ -16,11 +17,18 @@ namespace WebAPI.Controllers
             _themePostServiceGrpc = themePostServiceGrpc;
         }
 
-        [HttpPut]
-        public async Task<IActionResult>  ModifyPost(string namePost, string nameTheme)
+        [HttpPost]
+        public async Task<IActionResult>  AssociateThemeToPost([FromBody] ThemePostDto themePostDto)
         {
-            var response = await _themePostServiceGrpc.AssociateThemeToPost(nameTheme,namePost);
+            var response = await _themePostServiceGrpc.AssociateThemeToPost(themePostDto.ThemeName,themePostDto.PostName);
             return Ok(response);
+        }
+        
+        [HttpPut]
+        public async Task<IActionResult>  DissasociateThemeToPost([FromBody] ThemePostDto themePostDto)
+        {
+            await _themePostServiceGrpc.DisasociateThemeToPost(themePostDto.ThemeName,themePostDto.PostName);
+            return Ok("Dissasociate theme " + themePostDto.ThemeName + "to post" + themePostDto.PostName);
         }
     }
 }

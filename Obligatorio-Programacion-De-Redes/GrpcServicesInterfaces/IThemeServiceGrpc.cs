@@ -1,12 +1,12 @@
 ﻿using System.Threading.Tasks;
-using Domain;
+using DomainObjects;
 
-namespace GrpcServices
+namespace GrpcServicesInterfaces
 {
     public interface IThemeServiceGrpc
     {
-        Task<Theme> AddThemeAsyc(Theme theme);
-        Task<Theme> ModifyThemeAsyc(Theme theme);
-        Task<Theme> DeleteThemeAsyc(Theme theme);
+        Task<Theme> AddThemeAsync(Theme theme);
+        Task<Theme> ModifyThemeAsync(Theme theme);
+        Task<Theme> DeleteThemeAsync(Theme theme);
     }
 }

@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Net.Sockets;
-using BusinessLogic;
 using BusinessLogic.Managers;
-using Domain;
-using DataHandler;
+using DomainObjects;
 
-namespace Server
+namespace Server.Server.Pages
 {
     public class ClientPageServer
     {

@@ -1,11 +1,13 @@
 ﻿using System.Threading.Tasks;
-using Domain;
+using DomainObjects;
 using GrpcServicesInterfaces;
 using Microsoft.AspNetCore.Mvc;
+using WebAPI.Fillter;
 
 namespace WebAPI.Controllers
 {
     [ApiController]
+    [FilterExceptions]
     [Route("posts")]
    
     public class PostController:ControllerBase
@@ -20,22 +22,22 @@ namespace WebAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> AddPost([FromBody] Post post)
         {
-            var response= await _postServiceGrpc.AddPostAsyc(post);
+            var response= await _postServiceGrpc.AddPostAsync(post);
             return Ok(response);
         }
 
         [HttpPut]
-        public async Task<IActionResult>  ModifyPost([FromBody] Post post, [FromQuery] string oldName)
+        public async Task<IActionResult>  ModifyPost([FromBody] Post post)
         {
-            var response = await _postServiceGrpc.ModifyPostAsyc(post);
+            var response = await _postServiceGrpc.ModifyPostAsync(post);
             return Ok(response);
         }
 
-        [HttpDelete ("{postName}")]
-        public async Task<IActionResult>  DeletePost([FromQuery] string postName)
+        [HttpDelete ("{name}")]
+        public async Task<IActionResult>  DeletePost([FromQuery] string name)
         {
-            var response = await _postServiceGrpc.DeletePostAsyc(new Post(){Name = postName});
-            return Ok(response);
+            await _postServiceGrpc.DeletePostAsync(new Post(){Name = name,CreationDate = ""});
+            return Ok("The post was deleted");
         }
     }
 }

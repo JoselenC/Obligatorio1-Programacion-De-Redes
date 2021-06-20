@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
-using DataHandler;
+using Protocol;
 
-namespace BusinessLogic.Services
+namespace BusinessLogic.IServices
 {
     public interface IThemeService
     {

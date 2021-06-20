@@ -1,4 +1,4 @@
-namespace Domain
+namespace DomainObjects
 {
     public class Client
     {
@@ -8,7 +8,7 @@ namespace Domain
         
         public override bool Equals(object? obj)
         {
-            return ((Client) obj).Ip == Ip;
+            return ((Client) obj)?.Ip == Ip;
         }
     }
 }

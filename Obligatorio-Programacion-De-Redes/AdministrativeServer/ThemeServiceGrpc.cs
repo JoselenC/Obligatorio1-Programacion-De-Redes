@@ -1,8 +1,8 @@
 ﻿using System.Threading.Tasks;
 using AutoMapper;
-using Domain;
+using DomainObjects;
 using Grpc.Net.Client;
-using GrpcServices;
+using GrpcServicesInterfaces;
 
 namespace AdministrativeServer
 {
@@ -23,17 +23,17 @@ namespace AdministrativeServer
                 });
             _mapper = config.CreateMapper();
         }
-        
-        public async Task<Theme> AddThemeAsyc(Theme theme)
+
+        public async Task<Theme> AddThemeAsync(Theme theme)
         {
-            var themeMessage = _mapper.Map<ThemeMessage>(theme);
-            AddThemesReply reply = await _client.AddThemeAsync(
-                new AddThemesRequest {Theme = themeMessage}
-            );
-            return _mapper.Map<Theme>(reply.Theme);
+                var themeMessage = _mapper.Map<ThemeMessage>(theme);
+                AddThemesReply reply = await _client.AddThemeAsync(
+                    new AddThemesRequest {Theme = themeMessage}
+                );
+                return _mapper.Map<Theme>(reply.Theme);
         }
-        
-        public async Task<Theme> ModifyThemeAsyc(Theme theme)
+
+        public async Task<Theme> ModifyThemeAsync(Theme theme)
         {
             var themeMessage = _mapper.Map<ThemeMessage>(theme);
             ModifyThemeReply reply = await _client.ModifyThemeAsync(
@@ -41,15 +41,16 @@ namespace AdministrativeServer
             );
             return _mapper.Map<Theme>(reply.Theme);
         }
-        
-        public async Task<Theme> DeleteThemeAsyc(Theme theme)
+
+        public async Task<Theme> DeleteThemeAsync(Theme theme)
         {
             var themeMessage = _mapper.Map<ThemeMessage>(theme);
             var reply = await _client.DeleteThemeAsync(
                 new DeleteThemeRequest {Theme = themeMessage}
             );
             return _mapper.Map<Theme>(reply);
+
         }
-        
+
     }
 }

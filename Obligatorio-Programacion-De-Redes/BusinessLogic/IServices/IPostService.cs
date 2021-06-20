@@ -1,15 +1,15 @@
 ﻿using System.Threading.Tasks;
-using DataHandler;
+using Protocol;
 
-namespace BusinessLogic.Services
+namespace BusinessLogic.IServices
 {
     public interface IPostService
     {
         Task AddPostAsync(SocketHandler socketHandler);
         Task DeletePostAsync(SocketHandler socketHandler);
         Task ModifyPostAsync(SocketHandler socketHandler);
-        Task AsociateThemeAsync(SocketHandler socketHandler);
-        Task AsociateThemeToPostAsync(SocketHandler socketHandler);
+        Task AssociateThemeAsync(SocketHandler socketHandler);
+        Task AssociateThemeToPostAsync(SocketHandler socketHandler);
         Task SearchPostAsync(SocketHandler socketHandler);
         Task DisassociateThemeAsync(SocketHandler socketHandler);
     }

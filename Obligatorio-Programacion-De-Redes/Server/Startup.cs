@@ -34,6 +34,7 @@ namespace ServerGRPC
             {
                 endpoints.MapGrpcService<PostService>();
                 endpoints.MapGrpcService<ThemeService>();
+                endpoints.MapGrpcService<ThemeToPostService>();
                 endpoints.MapGet("/",
                     async context =>
                     {

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using DataAccess.DtoOjects;
-using Domain;
+using DomainObjects;
 using Microsoft.EntityFrameworkCore;
 using MSP.BetterCalm.DataAccess;
 
@@ -54,21 +54,7 @@ namespace DataAccess.Mappers
                             CreationDate = post.CreationDate
                         };
                     }
-                    if (post.Themes != null)
-                    {
-                        foreach (var theme in post.Themes)
-                        {
-                            postThemeDtos = new List<PostThemeDto>()
-                            {
-                                new PostThemeDto()
-                                {
-                                    Post = postDto,
-                                    Theme = new ThemeMapper().DomainToDto(theme,context)
-                                }
-                            };
-                        }
-                    }
-                    postDto.PostsThemesDto = postThemeDtos;
+                  postDto.PostsThemesDto = postThemeDtos;
                     postsDto.Add(postDto);
                 }
             }

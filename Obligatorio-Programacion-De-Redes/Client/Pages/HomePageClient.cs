@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Net.Sockets;
 using System.Threading.Tasks;
-using DataHandler;
 using Protocol;
-using SocketHandler = DataHandler.SocketHandler;
+using SocketHandler = Protocol.SocketHandler;
 
 namespace Client
 {
@@ -30,7 +29,7 @@ namespace Client
                     case 4:
                         Console.Clear();
                         Packet packg1 = new Packet("REQ", "9", "Search post");
-                        await socketHandler.SendPackgAsync(packg1);
+                        await socketHandler.SendPackageAsync(packg1);
                         await new PostPageClient().SearchPostAsync(socketHandler);
                         break;
                     case 5:

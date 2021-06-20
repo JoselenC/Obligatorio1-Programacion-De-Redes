@@ -5,7 +5,7 @@ namespace ProtocolFiles
 {
     public class ProtocolHelper
     {
-        public int GetLength()
+        public static int GetLength()
         {
             return ProtocolConstant.FileNameLength + ProtocolConstant.FileSizeLength;
         }
@@ -15,7 +15,7 @@ namespace ProtocolFiles
             var header = new byte[GetLength()];
             var fileNameLength = BitConverter.GetBytes(Encoding.UTF8.GetBytes(filename).Length);
             if (fileNameLength.Length != ProtocolConstant.FileNameLength)
-                throw new Exception("Hay algo mal en esta especificacion");
+                throw new Exception();
             var fileSize = BitConverter.GetBytes(filesize);
             
             Array.Copy(fileNameLength,0,header,0,ProtocolConstant.FileNameLength);

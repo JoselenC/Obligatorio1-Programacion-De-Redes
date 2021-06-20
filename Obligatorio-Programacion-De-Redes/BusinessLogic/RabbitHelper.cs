@@ -1,9 +1,5 @@
-﻿using System;
-using System.Text;
-using BusinessLogic.Services;
-using LogsServerInterface;
+﻿using System.Text;
 using RabbitMQ.Client;
-using RabbitMQ.Client.Events;
 
 namespace BusinessLogic
 {

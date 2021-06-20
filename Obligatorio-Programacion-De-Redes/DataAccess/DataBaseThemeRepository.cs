@@ -1,7 +1,7 @@
 ﻿using BusinessLogic.Managers;
 using DataAccess.DtoOjects;
 using DataAccess.Mappers;
-using Domain;
+using DomainObjects;
 
 namespace DataAccess
 {

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using DataAccess.DtoOjects;
-using Domain;
+using DomainObjects;
 using Microsoft.EntityFrameworkCore;
 using MSP.BetterCalm.DataAccess;
 

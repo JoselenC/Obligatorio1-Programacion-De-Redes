@@ -1,14 +1,7 @@
-﻿using System;
-using System.Net.Sockets;
-using System.Threading.Tasks;
-using BusinessLogic;
+﻿using System.Threading.Tasks;
 using BusinessLogic.Managers;
-using DataHandler;
-using Protocol;
-using Server;
-using ServerGRPC.Server;
 
-namespace Server
+namespace Server.Server.Pages
 {
     public class HomePageServer
     {

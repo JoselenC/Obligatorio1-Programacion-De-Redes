@@ -97,3 +97,7 @@ C:\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\WebAPI\o
 C:\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\WebAPI\obj\Debug\netcoreapp3.1\WebAPI.dll
 C:\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\WebAPI\obj\Debug\netcoreapp3.1\WebAPI.pdb
 C:\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\WebAPI\obj\Debug\netcoreapp3.1\WebAPI.genruntimeconfig.cache
+C:\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\WebAPI\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.JsonPatch.dll
+C:\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\WebAPI\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+C:\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\WebAPI\bin\Debug\netcoreapp3.1\Newtonsoft.Json.dll
+C:\Obligatorio1-Programacion-De-Redes\Obligatorio-Programacion-De-Redes\WebAPI\bin\Debug\netcoreapp3.1\Newtonsoft.Json.Bson.dll

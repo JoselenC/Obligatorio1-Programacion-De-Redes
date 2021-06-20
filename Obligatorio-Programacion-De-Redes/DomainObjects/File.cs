@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Domain
+namespace DomainObjects
 {
     public class File
     {
@@ -16,7 +16,7 @@ namespace Domain
         
         public override bool Equals(object? obj)
         {
-            return ((File) obj).Name == Name;
+            return ((File) obj)?.Name == Name;
         }
     }
 }

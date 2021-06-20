@@ -1,4 +1,4 @@
-﻿using Domain;
+﻿using DomainObjects;
 
 namespace BusinessLogic.Managers
 {

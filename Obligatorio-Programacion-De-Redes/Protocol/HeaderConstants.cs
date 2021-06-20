@@ -1,10 +1,9 @@
 ﻿namespace Protocol
 {
-    public class HeaderConstants
+    public static class HeaderConstants
     {
-        public static int CommandLength = 2;
-        public static int DataLength = 4;
-        public static int HeaderLength = 3;
-        public static int Length = 4;
+        public const int CommandLength = 2;
+        public const int HeaderLength = 3;
+        public const int Length = 4;
     }
 }

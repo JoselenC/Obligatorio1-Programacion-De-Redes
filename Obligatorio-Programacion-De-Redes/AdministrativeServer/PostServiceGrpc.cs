@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 using AutoMapper;
-using Domain;
+using DomainObjects;
 using Grpc.Net.Client;
 using GrpcServicesInterfaces;
 
@@ -8,7 +8,7 @@ namespace AdministrativeServer
 {
     public class PostServiceGrpc : IPostServiceGrpc
     {
-        private PostGrpc.PostGrpcClient _client;
+        private readonly PostGrpc.PostGrpcClient _client;
         private readonly IMapper _mapper;
         public PostServiceGrpc()
         {
@@ -25,32 +25,32 @@ namespace AdministrativeServer
             _mapper = config.CreateMapper();
         }
         
-        public async Task<Post> AddPostAsyc(Post post)
+        public async Task<Post> AddPostAsync(Post post)
         {
-            var postMessage = _mapper.Map<PostMessage>(post);
-            AddPostsReply reply = await _client.AddPostAsync(
-                new AddPostsRequest {Post = postMessage}
-            );
-            return _mapper.Map<Post>(reply.Post);
+                var postMessage = _mapper.Map<PostMessage>(post);
+                AddPostsReply reply = await _client.AddPostAsync(
+                    new AddPostsRequest {Post = postMessage}
+                );
+                return _mapper.Map<Post>(reply.Post);
         }
         
-        public async Task<Post> ModifyPostAsyc(Post post)
+        public async Task<Post> ModifyPostAsync(Post post)
         {
-            var postMessage = _mapper.Map<PostMessage>(post);
-            ModifyPostReply reply = await _client.ModifyPostAsync(
-                new ModifyPostRequest{Post = postMessage}
-            );
-            return _mapper.Map<Post>(reply.Post);
+                var postMessage = _mapper.Map<PostMessage>(post);
+                ModifyPostReply reply = await _client.ModifyPostAsync(
+                    new ModifyPostRequest {Post = postMessage}
+                );
+                return _mapper.Map<Post>(reply.Post);
         }
-        
-        public async Task<Post> DeletePostAsyc(Post post)
+
+        public async Task<Post> DeletePostAsync(Post post)
         {
-            var postMessage = _mapper.Map<PostMessage>(post);
-            DeletePostReply reply = await _client.DeletePostAsync(
-                new DeletePostRequest {Post = postMessage}
-            );
-            return _mapper.Map<Post>(reply);
+                var postMessage = _mapper.Map<PostMessage>(post);
+                DeletePostReply reply = await _client.DeletePostAsync(
+                    new DeletePostRequest {Post = postMessage}
+                );
+                return _mapper.Map<Post>(reply);
         }
-        
+
     }
 }

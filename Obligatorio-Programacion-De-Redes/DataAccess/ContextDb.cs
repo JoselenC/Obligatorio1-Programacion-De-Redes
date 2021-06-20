@@ -16,9 +16,6 @@ namespace MSP.BetterCalm.DataAccess
         
         public DbSet<LogDto> Logs { get; set; }
         
-        public DbSet<SemaphoreSlimPostDto> SemaphoresSlimPostDto { get; set; }
-        
-        public DbSet<SemaphoreSlimThemeDto> SemaphoresSlimThemeDto { get; set; }
         public ContextDb() { }
         public ContextDb(DbContextOptions<ContextDb> options): base(options) { }
 

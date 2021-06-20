@@ -6,6 +6,7 @@ package themesToPosts;
 
 service ThemeToPostGrpc {
     rpc AssociateThemeToPost (AssociateThemeToPostRequest) returns (AssociateThemeToPostReply);
+    rpc DissasociateThemeToPost (DissasociateThemeToPostRequest) returns (DissasociateThemeToPostReply);
 
 }
 
@@ -15,12 +16,18 @@ message ThemeToPost{
 }
 
 message AssociateThemeToPostRequest {
-    string ThemeName=1;
-    string PostName=2;
+    ThemeToPost themeToPost = 1;
 }
 
 
 message AssociateThemeToPostReply {
-    string ThemeName=1;
-    string PostName=2;
+    ThemeToPost themeToPost = 1;
+}
+
+message DissasociateThemeToPostRequest {
+    ThemeToPost themeToPost = 1;
+}
+
+
+message DissasociateThemeToPostReply {
 }

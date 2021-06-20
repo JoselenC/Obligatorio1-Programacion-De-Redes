@@ -1,7 +1,5 @@
-﻿using DataHandler;
-using Protocol;
+﻿using Protocol;
 using System;
-using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -9,7 +7,7 @@ namespace ProtocolFiles
 {
     public class ProtocolHandler
     {
-        public long GetFileParts(long filesize)
+        private long GetFileParts(long filesize)
         {
             var parts = filesize / ProtocolConstant.MaxPacketSize;
             return parts * ProtocolConstant.MaxPacketSize == filesize ? parts : parts + 1;
@@ -18,8 +16,8 @@ namespace ProtocolFiles
         public async Task<string[]> ReceiveFileAsync(SocketHandler socketHandler)
         {
             var fileStreamHandler = new FileStreamHandler();
-            NetworkStreamHandler networkStreamHandler = new NetworkStreamHandler(socketHandler.networkStream);
-            var header = await networkStreamHandler.ReadAsync(new ProtocolHelper().GetLength());
+            NetworkStreamHandler networkStreamHandler = new NetworkStreamHandler(socketHandler.NetworkStream);
+            var header = await networkStreamHandler.ReadAsync(ProtocolHelper.GetLength());
             var fileNameSize = BitConverter.ToInt32(header, 0);
             var fileSize = BitConverter.ToInt64(header, ProtocolConstant.FileNameLength);
 
@@ -45,7 +43,7 @@ namespace ProtocolFiles
                 await fileStreamHandler.WriteAsync(fileName, data);
                 currentPart++;
             }
-            var packet = await socketHandler.ReceivePackgAsync();
+            var packet = await socketHandler.ReceivePackageAsync();
             return packet.Data.Split('#');
         }
 
@@ -60,7 +58,7 @@ namespace ProtocolFiles
                 var fileName = fileHandler.GetFileName(path);
                 var header = new ProtocolHelper().CreateHeader(fileName, fileSize);
 
-                NetworkStreamHandler networkStreamHandler = new NetworkStreamHandler(socketHandler.networkStream);
+                NetworkStreamHandler networkStreamHandler = new NetworkStreamHandler(socketHandler.NetworkStream);
                 await networkStreamHandler.WriteAsync(header);
                 var fileNameByte = Encoding.UTF8.GetBytes(fileName);
                 await networkStreamHandler.WriteAsync(fileNameByte);
@@ -89,14 +87,14 @@ namespace ProtocolFiles
                 }
 
                 string message = postName + "#" + fileSize + "#" + fileName;
-                Packet packg = new Packet("REQ", "4", message);
-                await socketHandler.SendPackgAsync(packg);
+                Packet package = new Packet("REQ", "4", message);
+                await socketHandler.SendPackageAsync(package);
             }
             else
             {
                 string message = "Not associated";
-                Packet packg = new Packet("REQ", "4", message);
-                await socketHandler.SendPackgAsync(packg);
+                Packet package = new Packet("REQ", "4", message);
+                await socketHandler.SendPackageAsync(package);
             }
         }
 

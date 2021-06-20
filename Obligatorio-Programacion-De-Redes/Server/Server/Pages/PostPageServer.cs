@@ -1,23 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Sockets;
-using BusinessLogic;
 using BusinessLogic.Managers;
-using Domain;
-using DataHandler;
-using Server;
-using ServerGRPC.Server;
+using DomainObjects;
 
-namespace Server
+namespace Server.Server.Pages
 {
     public class PostPageServer
     {
 
         public void Menu(ManagerRepository repository, ManagerPostRepository managerPostRepository, ManagerThemeRepository managerThemeRepository)
         {
-            string[] _options = {"Show theme post", "Show post", "Show file post", "Back"};
-            int option = new MenuServer().ShowMenu(_options,"Post menu");
+            string[] options = {"Show theme post", "Show post", "Show file post", "Back"};
+            int option = new MenuServer().ShowMenu(options,"Post menu");
                 switch (option)
                 {
                     case 1:

@@ -1,23 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Sockets;
-using BusinessLogic;
 using BusinessLogic.Managers;
-using DataHandler;
-using Domain;
-using Server;
-using ServerGRPC.Server;
+using DomainObjects;
 
-namespace Server
+namespace Server.Server.Pages
 {
     public class FilePageServer
     {
         
         public void ShowFileList(ManagerRepository repository,ManagerPostRepository managerPostRepository,ManagerThemeRepository managerThemeRepository)
         {
-            string[] _options = {"All files", "By theme", "Order by creation date", "Order by name", "Order by size", "Back"};
-            int option = new MenuServer().ShowMenu(_options, "File menu");
+            string[] options = {"All files", "By theme", "Order by creation date", "Order by name", "Order by size", "Back"};
+            int option = new MenuServer().ShowMenu(options, "File menu");
             switch (option)
             {
                 case 1:
@@ -66,7 +61,7 @@ namespace Server
             }
             Console.WriteLine(orderList.Count+1 +".  Back");
             var var=Console.ReadLine();
-            int indexPost= Int32.Parse(var);
+            int indexPost= Int32.Parse(var ?? string.Empty);
             if (indexPost > orderList.Count)
             {
                 return "Back";
@@ -101,7 +96,7 @@ namespace Server
                 var prefix = "File" + i + 1 + ":  ";
                 Console.BackgroundColor = ConsoleColor.Black;
                 Console.WriteLine(prefix + "Name: " + orderList[i].Name + "Size: " +
-                                  orderList[i].Size.ToString() + "Upload date: " + orderList[i].UploadDate.ToString());
+                                  orderList[i].Size + "Upload date: " + orderList[i].UploadDate);
                 if (repository.Files.Get()[i].Themes != null)
                 {
                     Console.WriteLine("Themes");

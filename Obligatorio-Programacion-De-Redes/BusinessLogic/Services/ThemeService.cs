@@ -49,7 +49,7 @@ namespace BusinessLogic.Services
                 {
                     message = "The theme name cannot be empty";
                 }
-                _rabbitClient.SendMessage(message);
+                _rabbitClient.SendMessage(message+"#"+"theme"+ "#" + name);
                 Packet package = new Packet("RES", "4", message);
                 await socketHandler.SendPackageAsync(package);
             }

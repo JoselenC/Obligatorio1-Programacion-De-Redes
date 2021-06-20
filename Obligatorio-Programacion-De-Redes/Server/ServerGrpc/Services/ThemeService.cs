@@ -38,18 +38,18 @@ namespace Server.ServerGrpc.Services
                 if (!AlreadyExistThisTheme(themeRequest))
                 {
                     var themeRepsonse = _themeRepository.Themes.Add(themeRequest);
-                    _rabbitHelper.SendMessage("Theme "+request.Theme.Name + " was added");
+                    _rabbitHelper.SendMessage("Theme "+request.Theme.Name + " was added" +"#"+"theme"+ "#" + request.Theme.Name);
                     return new AddThemesReply
                     {
                         Theme = _mapper.Map<ThemeMessage>(themeRepsonse)
                     };
                 }
-                _rabbitHelper.SendMessage("Theme "+request.Theme.Name + " wasn't added, already exist");
+                _rabbitHelper.SendMessage("Theme "+request.Theme.Name + " wasn't added, already exist"+"#"+"theme"+ "#" + request.Theme.Name);
                 throw new RpcException(new Status(StatusCode.AlreadyExists, "Post Already exist"));
             }
             catch (InvalidNameLength)
             {
-                _rabbitHelper.SendMessage("Theme "+request.Theme.Name + " wasn't added, empty name");
+                _rabbitHelper.SendMessage("Theme "+request.Theme.Name + " wasn't added, empty name"+"#"+"theme"+ "#" + request.Theme.Name);
                 throw new RpcException(new Status(StatusCode.InvalidArgument, "Post name empty"));
             }
         }
@@ -74,7 +74,7 @@ namespace Server.ServerGrpc.Services
                 var themeRequest = _mapper.Map<Theme>(request.Theme);
                 var theme = _themeRepository.Themes.Find(x => x.Name == themeRequest.Name);
                 var themeRepsonse = _themeRepository.Themes.Update(theme, themeRequest);
-                _rabbitHelper.SendMessage("Theme "+request.Theme.Name + " was modified");
+                _rabbitHelper.SendMessage("Theme "+request.Theme.Name + " was modified"+"#"+"theme"+ "#" + request.Theme.Name);
                 return new ModifyThemeReply
                 {
                     Theme = _mapper.Map<ThemeMessage>(themeRepsonse)
@@ -82,7 +82,7 @@ namespace Server.ServerGrpc.Services
             }
             catch (KeyNotFoundException)
             {
-                _rabbitHelper.SendMessage("Theme "+request.Theme.Name + " wasn't modified, not exist");
+                _rabbitHelper.SendMessage("Theme "+request.Theme.Name + " wasn't modified, not exist"+"#"+"theme"+ "#" + request.Theme.Name);
                 throw new RpcException(new Status(StatusCode.NotFound, "Not found"));
             }
         }
@@ -93,12 +93,12 @@ namespace Server.ServerGrpc.Services
             {
                 var theme = _themeRepository.Themes.Find(x => x.Name == request.Theme.Name);
                 _themeRepository.Themes.Delete(theme);
-                _rabbitHelper.SendMessage("Theme "+request.Theme.Name + " was deleted");
+                _rabbitHelper.SendMessage("Theme "+request.Theme.Name + " was deleted"+"#"+"theme"+ "#" + request.Theme.Name);
                 return new DeleteThemeReply { };
             }
             catch (KeyNotFoundException)
             {
-                _rabbitHelper.SendMessage("Theme "+request.Theme.Name + " wasn't deleted, not exist");
+                _rabbitHelper.SendMessage("Theme "+request.Theme.Name + " wasn't deleted, not exist"+"#"+"theme"+ "#" + request.Theme.Name);
                 throw new RpcException(new Status(StatusCode.NotFound, "Not found"));
             }
         }

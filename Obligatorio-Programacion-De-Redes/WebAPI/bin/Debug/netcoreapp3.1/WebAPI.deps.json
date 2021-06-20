@@ -1631,6 +1631,7 @@
         "dependencies": {
           "BusinessLogic": "1.0.0",
           "DataAccess": "1.0.0",
+          "Grpc.Core.Api": "2.37.0",
           "LogsServerInterface": "1.0.0"
         },
         "runtime": {

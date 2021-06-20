@@ -1576,7 +1576,6 @@
         "type": "project",
         "framework": ".NETCoreApp,Version=v3.1",
         "dependencies": {
-          "LogServer": "1.0.0",
           "Protocol": "1.0.0",
           "ProtocolFiles": "1.0.0"
         },
@@ -1598,16 +1597,6 @@
         },
         "runtime": {
           "bin/placeholder/GrpcServicesInterfaces.dll": {}
-        }
-      },
-      "LogServer/1.0.0": {
-        "type": "project",
-        "framework": ".NETCoreApp,Version=v3.1",
-        "compile": {
-          "bin/placeholder/LogServer.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/LogServer.dll": {}
         }
       },
       "LogsServerInterface/1.0.0": {
@@ -5845,11 +5834,6 @@
       "type": "project",
       "path": "../GrpcServicesInterfaces/GrpcServicesInterfaces.csproj",
       "msbuildProject": "../GrpcServicesInterfaces/GrpcServicesInterfaces.csproj"
-    },
-    "LogServer/1.0.0": {
-      "type": "project",
-      "path": "../LogServer/LogServer.csproj",
-      "msbuildProject": "../LogServer/LogServer.csproj"
     },
     "LogsServerInterface/1.0.0": {
       "type": "project",

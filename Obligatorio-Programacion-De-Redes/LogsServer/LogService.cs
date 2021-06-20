@@ -21,7 +21,12 @@ namespace LogsServer
 
         public void AddLog(string log)
         {
-            Log logToAdd = new Log() {Message = log, CreationDate = DateTime.Now.Date.ToString()};
+            string[] dataLog = log.Split("#");
+            Log logToAdd = new Log()
+            {
+                Message = dataLog[0], CreationDate = DateTime.Now.Date.ToShortDateString(),
+                ObjectName = dataLog[2], ObjectType = dataLog[1]
+            };
             _managerLogRepository.Logs.Add(logToAdd);
         }
 
@@ -29,34 +34,54 @@ namespace LogsServer
         {
            return _managerLogRepository.Logs.Get();
         }
-        
-        public void ValidateCreationDate(string date)
-        {
-            bool goodFormat = false;
-            Regex regex = new Regex(@"\b\d{2}(/|-|.|\s)\d{2}(/|-|.|\s)(\d{4})");
-            var match = regex.Match(date);
-            if (!match.Success)
-                throw new InvalidCreationDate();
-        }
 
         public List<Log> GetByCreationDate(string creationDate)
         {
-            try
+            List<Log> logsByCreationDate = new List<Log>();
+            foreach (var log in _managerLogRepository.Logs.Get())
             {
-                ValidateCreationDate(creationDate);
-                List<Log> logsByCreationDate = new List<Log>();
-                foreach (var log in _managerLogRepository.Logs.Get())
-                {
-                    if (log.CreationDate == creationDate)
-                        logsByCreationDate.Add(log);
-                }
+                if (log.CreationDate == creationDate)
+                    logsByCreationDate.Add(log);
+            }
 
-                return logsByCreationDate;
-            }
-            catch (InvalidCreationDate)
+            return logsByCreationDate;
+        }
+
+
+        public List<Log> GetByPost(string postName)
+        {
+            List<Log> logsByPost = new List<Log>();
+            foreach (var log in _managerLogRepository.Logs.Get())
             {
-                throw new RpcException(new Status(StatusCode.InvalidArgument, "Invalid format creation date: the date format must be: dd/mm/yyyy \n "));
+                if (log.ObjectType.ToLower() == "post" && log.ObjectName.ToLower() == postName.ToLower())
+                    logsByPost.Add(log);
             }
+
+            return logsByPost;
+        }
+        
+        public List<Log> GetByTheme(string themeName)
+        {
+            List<Log> logsByTheme = new List<Log>();
+            foreach (var log in _managerLogRepository.Logs.Get())
+            {
+                if (log.ObjectType.ToLower() == "theme" && log.ObjectName.ToLower() == themeName.ToLower())
+                    logsByTheme.Add(log);
+            }
+
+            return logsByTheme;
+        }
+        
+        public List<Log> GetByType(string type)
+        {
+            List<Log> logsByType = new List<Log>();
+            foreach (var log in _managerLogRepository.Logs.Get())
+            {
+                if (log.ObjectType.ToLower() == type.ToLower())
+                    logsByType.Add(log);
+            }
+
+            return logsByType;
         }
     }
 }

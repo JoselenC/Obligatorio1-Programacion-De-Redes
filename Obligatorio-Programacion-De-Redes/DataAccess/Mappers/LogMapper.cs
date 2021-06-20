@@ -11,7 +11,9 @@ namespace DataAccess.Mappers
             return new LogDto()
             {
                 Message = obj.Message,
-                CreationDate = obj.CreationDate
+                CreationDate = obj.CreationDate,
+                ObjectName = obj.ObjectName,
+                ObjectType = obj.ObjectType
             };
         }
 
@@ -20,7 +22,9 @@ namespace DataAccess.Mappers
             return new Log()
             {
                 Message = obj.Message,
-                CreationDate = obj.CreationDate
+                CreationDate = obj.CreationDate,
+                ObjectName = obj.ObjectName,
+                ObjectType = obj.ObjectType
             };
         }
 
@@ -28,6 +32,8 @@ namespace DataAccess.Mappers
         { 
             objToUpdate.Message = updatedObject.Message;
             objToUpdate.CreationDate = updatedObject.CreationDate;
+            objToUpdate.ObjectName = updatedObject.ObjectName;
+            objToUpdate.ObjectType = updatedObject.ObjectType;
             return objToUpdate;
         }
     }

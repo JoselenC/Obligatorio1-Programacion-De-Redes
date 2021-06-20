@@ -41,17 +41,17 @@ namespace Server.ServerGrpc.Services
             }
             catch (InvalidNameLength)
             {
-                _rabbitHelper.SendMessage("Post " + request.Post.Name + " wasn't added, invalid empty name");
+                _rabbitHelper.SendMessage("Post " + request.Post.Name + " wasn't added, invalid empty name" +"#"+"post"+ "#" + request.Post.Name);
                 throw new RpcException(new Status(StatusCode.InvalidArgument, "Name cannot be empty"));
             }
             catch (InvalidCreationDate)
             {
-                _rabbitHelper.SendMessage("Post " + request.Post.Name + " wasn't added, invalid creation date");
+                _rabbitHelper.SendMessage("Post " + request.Post.Name + " wasn't added, invalid creation date"+"#"+"post"+ "#" + request.Post.Name);
                 throw new RpcException(new Status(StatusCode.InvalidArgument, "Invalid format creation date: the date format must be: dd/mm/yyyy \n "));
             }
             catch (KeyNotFoundException)
             {
-                _rabbitHelper.SendMessage("Theme "+request.Post.Name + " not exist");
+                _rabbitHelper.SendMessage("Theme "+request.Post.Name + " not exist"+"#"+"post"+ "#" + request.Post.Name);
                 throw new RpcException(new Status(StatusCode.NotFound, "Theme not found"));
             }
            
@@ -70,7 +70,7 @@ namespace Server.ServerGrpc.Services
                 if (post.Themes == null) post.Themes = new List<Theme>();
                 post.Themes.Add(theme);
                 var postRepsonse = _postRepository.Posts.Add(post);
-                _rabbitHelper.SendMessage("Post " + request.Post.Name + " was added");
+                _rabbitHelper.SendMessage("Post " + request.Post.Name + " was added" +"#"+"post"+ "#" + request.Post.Name);
                 return new AddPostsReply
                 {
                     Post = new PostMessage()
@@ -81,7 +81,7 @@ namespace Server.ServerGrpc.Services
             }
             else
             {
-                _rabbitHelper.SendMessage("Post " + request.Post.Name + " wasn't added, already exist");
+                _rabbitHelper.SendMessage("Post " + request.Post.Name + " wasn't added, already exist" +"#"+"post"+ "#" + request.Post.Name);
                 throw new RpcException(new Status(StatusCode.AlreadyExists, "Post Already exist"));
             }
         }
@@ -107,17 +107,17 @@ namespace Server.ServerGrpc.Services
             }
             catch (InvalidNameLength)
             {
-                _rabbitHelper.SendMessage("Post "+request.Post.Name + " wasn't modified, invalid empty name");
+                _rabbitHelper.SendMessage("Post "+request.Post.Name + " wasn't modified, invalid empty name" +"#"+"post"+ "#" + request.Post.Name);
                 throw new RpcException(new Status(StatusCode.InvalidArgument, "Name cannot be empty"));
             }
             catch (InvalidCreationDate)
             {
-                _rabbitHelper.SendMessage("Post " + request.Post.Name + " wasn't modified");
-                throw new RpcException(new Status(StatusCode.InvalidArgument, "invalid creation date"));
+                _rabbitHelper.SendMessage("Post " + request.Post.Name + " wasn't modified" +"#"+"post"+ "#" + request.Post.Name);
+                throw new RpcException(new Status(StatusCode.InvalidArgument, "invalid creation date" +"#"+"post"+ "#" + request.Post.Name));
             }
             catch (KeyNotFoundException)
             {
-                _rabbitHelper.SendMessage("Post " + request.Post.Name + " wasn't modified");
+                _rabbitHelper.SendMessage("Post " + request.Post.Name + " wasn't modified" +"#"+"post"+ "#" + request.Post.Name);
                 throw new RpcException(new Status(StatusCode.NotFound, "not found"));
             }
         }
@@ -137,7 +137,7 @@ namespace Server.ServerGrpc.Services
             }
 
             var postRepsonse = _postRepository.Posts.Update(post, postRequest);
-            _rabbitHelper.SendMessage("Post " + request.Post.Name + " was modified");
+            _rabbitHelper.SendMessage("Post " + request.Post.Name + " was modified" +"#"+"post"+ "#" + request.Post.Name);
             return new ModifyPostReply
             {
                 Post = _mapper.Map<PostMessage>(postRepsonse)
@@ -150,12 +150,12 @@ namespace Server.ServerGrpc.Services
             {
                 var post = _postRepository.Posts.Find(x => x.Name == request.Post.Name);
                 _postRepository.Posts.Delete(post);
-                _rabbitHelper.SendMessage("Post "+request.Post.Name + " was deleted");
+                _rabbitHelper.SendMessage("Post "+request.Post.Name + " was deleted" +"#"+"post"+ "#" + request.Post.Name);
                 return new DeletePostReply { };
             }
             catch (KeyNotFoundException)
             {
-                _rabbitHelper.SendMessage("Post "+request.Post.Name + " wasnt deleted");
+                _rabbitHelper.SendMessage("Post "+request.Post.Name + " wasnt deleted" +"#"+"post"+ "#" + request.Post.Name);
                 throw new RpcException(new Status(StatusCode.NotFound, "Post not found"));
             }
         }
